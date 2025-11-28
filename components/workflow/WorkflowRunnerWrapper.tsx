@@ -92,7 +92,6 @@ export function WorkflowRunnerWrapper({ workflow, userId }: WorkflowRunnerWrappe
       toast({
         title: 'Error',
         description: 'Failed to save workflow completion',
-        variant: 'destructive',
       });
     }
   };

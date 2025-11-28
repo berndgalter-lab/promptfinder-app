@@ -92,7 +92,6 @@ export function AccountSettings({ userId, userEmail }: AccountSettingsProps) {
       toast({
         title: 'Export failed',
         description: 'There was an error exporting your data. Please try again.',
-        variant: 'destructive',
       });
     } finally {
       setIsExporting(false);
@@ -129,7 +128,6 @@ export function AccountSettings({ userId, userEmail }: AccountSettingsProps) {
       toast({
         title: 'Deletion failed',
         description: 'There was an error deleting your account. Please contact support.',
-        variant: 'destructive',
       });
       setIsDeleting(false);
     }
