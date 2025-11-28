@@ -1,0 +1,88 @@
+// PromptFinder Workflow Type Definitions
+
+// Step Types
+export type StepType = 'prompt' | 'instruction' | 'input';
+
+// Field Types (for prompt steps)
+export type FieldType = 'text' | 'textarea' | 'select';
+
+// Field Definition
+export interface WorkflowField {
+  name: string;
+  label: string;
+  type: FieldType;
+  required: boolean;
+  placeholder?: string;
+  options?: string[];  // only for type: 'select'
+}
+
+// Base Step (shared properties)
+export interface BaseStep {
+  number: number;
+  type: StepType;
+  title: string;
+  description: string;
+}
+
+// Prompt Step - has fields and prompt template
+export interface PromptStep extends BaseStep {
+  type: 'prompt';
+  prompt_template: string;
+  fields: WorkflowField[];
+}
+
+// Instruction Step - just text and icon
+export interface InstructionStep extends BaseStep {
+  type: 'instruction';
+  instruction_text: string;
+  instruction_icon?: 'clipboard' | 'arrow-right' | 'check' | 'info' | 'paste' | 'send';
+}
+
+// Input Step - user pastes their own content
+export interface InputStep extends BaseStep {
+  type: 'input';
+  input_label: string;
+  input_placeholder?: string;
+  input_description?: string;
+  input_name?: string;  // Variable name for use in prompts, e.g. "meeting_notes" → {{meeting_notes}}
+}
+
+// Union type for all steps
+export type WorkflowStep = PromptStep | InstructionStep | InputStep;
+
+// Workflow Type
+export type WorkflowType = 'combined' | 'sequential';
+
+// Complete Workflow
+export interface Workflow {
+  id: string;  // UUID from Supabase
+  slug: string;
+  title: string;
+  description: string;
+  tier: 'essential' | 'advanced';
+  workflow_type: WorkflowType;
+  steps: WorkflowStep[];
+  created_at: string;
+}
+
+// User's progress through a workflow
+export interface WorkflowProgress {
+  currentStep: number;
+  completedSteps: number[];
+  fieldValues: Record<number, Record<string, string>>;  // stepNumber -> fieldName -> value
+  inputValues: Record<number, string>;  // stepNumber -> user input text
+}
+
+// Type guards for step types
+export function isPromptStep(step: WorkflowStep): step is PromptStep {
+  return step.type === 'prompt';
+}
+
+export function isInstructionStep(step: WorkflowStep): step is InstructionStep {
+  return step.type === 'instruction';
+}
+
+export function isInputStep(step: WorkflowStep): step is InputStep {
+  return step.type === 'input';
+}
+
