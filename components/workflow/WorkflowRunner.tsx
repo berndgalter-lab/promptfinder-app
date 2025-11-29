@@ -206,20 +206,24 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
 
   // Open in ChatGPT
   const handleOpenChatGPT = (prompt: string) => {
+    // Copy to clipboard as fallback
     navigator.clipboard.writeText(prompt);
-    window.open('https://chat.openai.com/', '_blank');
+    
+    // Open ChatGPT with pre-filled prompt
+    const encodedPrompt = encodeURIComponent(prompt);
+    window.open(`https://chat.openai.com/?q=${encodedPrompt}`, '_blank');
     
     // Different toast for Single vs Multi-Step
     if (isSingleMode) {
       handleSingleModeComplete();
       toast({
         title: '✅ ChatGPT opened!',
-        description: 'Prompt copied - paste it in the chat.',
+        description: 'Your prompt is ready in ChatGPT.',
       });
     } else {
       toast({
         title: 'Opening ChatGPT',
-        description: 'Prompt copied to clipboard',
+        description: 'Your prompt is ready to use.',
       });
     }
   };
@@ -357,7 +361,7 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
             {isCompleted && (
               <span className="text-xs text-green-500 flex items-center gap-1">
                 <Check className="w-3 h-3" />
-                Done! Now paste in ChatGPT
+                Done! Ready to use
               </span>
             )}
           </div>
@@ -398,7 +402,7 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
               className="flex-1 !bg-blue-600 hover:!bg-blue-700 !text-white disabled:opacity-50"
             >
               <ExternalLink className="w-4 h-4 mr-2" />
-              Open in ChatGPT
+              Use in ChatGPT
             </Button>
           </div>
           
@@ -407,7 +411,7 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
             <div className="mt-4 p-3 rounded-lg bg-green-500/10 border border-green-500/20">
               <p className="text-sm text-green-400 flex items-center gap-2">
                 <Check className="w-4 h-4" />
-                Prompt copied! Paste it in ChatGPT to get your result.
+                Workflow completed! Your prompt is ready to use in ChatGPT.
               </p>
             </div>
           )}
