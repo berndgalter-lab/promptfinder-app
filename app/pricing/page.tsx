@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Check } from 'lucide-react';
+import { Check, Mail } from 'lucide-react';
 import Link from 'next/link';
 
 type BillingInterval = 'monthly' | 'annual';
@@ -272,6 +272,20 @@ export default function PricingPage() {
               </Button>
             </CardContent>
           </Card>
+
+          {/* Contact Info */}
+          <div className="mt-8">
+            <p className="text-zinc-400 flex items-center justify-center gap-2">
+              <Mail className="w-4 h-4" />
+              <span>Questions? Contact us at</span>
+              <a 
+                href="mailto:support@prompt-finder.com" 
+                className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
+              >
+                support@prompt-finder.com
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </div>

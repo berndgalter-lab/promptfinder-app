@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function PrivacyPage() {
@@ -78,11 +78,14 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-2xl font-semibold text-white mb-4">Contact</h2>
-            <p className="text-zinc-300">
-              For any privacy-related questions or requests, please contact us at:{' '}
-              <a href="mailto:contact@promptfinder.com" className="text-blue-400 hover:text-blue-300">
-                contact@promptfinder.com
-              </a>
+            <p className="text-zinc-300 flex items-start gap-2">
+              <Mail className="w-5 h-5 text-blue-400 mt-0.5 shrink-0" />
+              <span>
+                For any privacy-related questions or requests, please contact us at:{' '}
+                <a href="mailto:support@prompt-finder.com" className="text-blue-400 hover:text-blue-300 font-medium">
+                  support@prompt-finder.com
+                </a>
+              </span>
             </p>
           </section>
         </div>

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function LegalNoticePage() {
@@ -34,8 +34,14 @@ export default function LegalNoticePage() {
           <section>
             <h2 className="text-2xl font-semibold text-white mb-4">Contact</h2>
             <div className="space-y-2 text-zinc-300">
-              <p><strong>Email:</strong> <a href="mailto:contact@promptfinder.com" className="text-blue-400 hover:text-blue-300">contact@promptfinder.com</a></p>
-              <p><strong>Website:</strong> promptfinder.com</p>
+              <p className="flex items-center gap-2">
+                <Mail className="w-4 h-4 text-blue-400" />
+                <strong>Email:</strong> 
+                <a href="mailto:support@prompt-finder.com" className="text-blue-400 hover:text-blue-300">
+                  support@prompt-finder.com
+                </a>
+              </p>
+              <p><strong>Website:</strong> prompt-finder.com</p>
             </div>
           </section>
 

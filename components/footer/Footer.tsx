@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Mail } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -109,9 +110,18 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-zinc-800">
-          <p className="text-sm text-zinc-500 text-center">
-            © 2025 PromptFinder. Built with ❤️ for professionals who need reliable AI.
-          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-zinc-500 text-center sm:text-left">
+              © 2025 PromptFinder. Built with ❤️ for professionals who need reliable AI.
+            </p>
+            <a 
+              href="mailto:support@prompt-finder.com" 
+              className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors"
+            >
+              <Mail className="w-4 h-4" />
+              <span>support@prompt-finder.com</span>
+            </a>
+          </div>
         </div>
       </div>
     </footer>
