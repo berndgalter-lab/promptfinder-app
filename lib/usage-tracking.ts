@@ -18,8 +18,11 @@ export interface AnonymousUsageData {
 }
 
 const STORAGE_KEY = 'promptfinder_usage';
+const SESSION_STORAGE_KEY = 'promptfinder_session';
+const COOKIE_NAME = 'pf_session';
 const FREE_USER_LIMIT = 5; // Free users: 5 workflows per month
 const ANONYMOUS_SOFT_LIMIT = 3; // Show sign-up prompt after 3 uses
+const ANONYMOUS_HARD_LIMIT = 5; // Hard limit - must register
 
 // Get current month in YYYY-MM format
 const getCurrentMonth = (): string => {
@@ -59,6 +62,68 @@ const saveAnonymousUsageData = (data: AnonymousUsageData): void => {
   } catch (error) {
     console.error('Error saving anonymous usage data:', error);
   }
+};
+
+// Get session storage count
+const getSessionStorageCount = (): number => {
+  if (typeof window === 'undefined') return 0;
+  
+  try {
+    const data = sessionStorage.getItem(SESSION_STORAGE_KEY);
+    if (!data) return 0;
+    const parsed = JSON.parse(data);
+    return parsed.count || 0;
+  } catch (error) {
+    return 0;
+  }
+};
+
+// Save session storage count
+const saveSessionStorageCount = (count: number): void => {
+  if (typeof window === 'undefined') return;
+  
+  try {
+    sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify({ count }));
+  } catch (error) {
+    console.error('Error saving session storage count:', error);
+  }
+};
+
+// Get cookie count
+const getCookieCount = (): number => {
+  if (typeof window === 'undefined' || typeof document === 'undefined') return 0;
+  
+  try {
+    const cookies = document.cookie.split(';');
+    const cookie = cookies.find(c => c.trim().startsWith(`${COOKIE_NAME}=`));
+    if (!cookie) return 0;
+    const value = cookie.split('=')[1];
+    return parseInt(value, 10) || 0;
+  } catch (error) {
+    return 0;
+  }
+};
+
+// Save cookie count (7 days expiry)
+const saveCookieCount = (count: number): void => {
+  if (typeof window === 'undefined' || typeof document === 'undefined') return;
+  
+  try {
+    const expires = new Date();
+    expires.setDate(expires.getDate() + 7);
+    document.cookie = `${COOKIE_NAME}=${count}; expires=${expires.toUTCString()}; path=/; SameSite=Strict`;
+  } catch (error) {
+    console.error('Error saving cookie count:', error);
+  }
+};
+
+// Get maximum count from all sources (prevents bypass)
+const getMaxAnonymousCount = (): number => {
+  const localCount = getAnonymousUsageData()?.count || 0;
+  const sessionCount = getSessionStorageCount();
+  const cookieCount = getCookieCount();
+  
+  return Math.max(localCount, sessionCount, cookieCount);
 };
 
 /**
@@ -197,19 +262,13 @@ export async function checkUserLimit(userId: string): Promise<UsageLimit> {
  */
 export function checkAnonymousLimit(): UsageLimit {
   const currentMonth = getCurrentMonth();
+  
+  // Get maximum count from all sources (prevents bypass)
+  const totalCount = getMaxAnonymousCount();
   const data = getAnonymousUsageData();
 
-  if (!data) {
-    // No usage data yet
-    return {
-      count: 0,
-      canUse: true,
-      showSignUpPrompt: false,
-    };
-  }
-
-  // Check if it's a new month - reset count
-  if (data.month !== currentMonth) {
+  // Check if it's a new month - reset if needed
+  if (data && data.month !== currentMonth) {
     const sessionId = data.sessionId;
     const resetData: AnonymousUsageData = {
       count: 0,
@@ -218,24 +277,42 @@ export function checkAnonymousLimit(): UsageLimit {
       sessionId,
     };
     saveAnonymousUsageData(resetData);
+    saveSessionStorageCount(0);
+    saveCookieCount(0);
     
     return {
       count: 0,
       canUse: true,
+      remaining: ANONYMOUS_HARD_LIMIT,
       showSignUpPrompt: false,
     };
   }
 
-  // Anonymous users have soft limit - always can use, but show prompt after 3
+  // Hard limit: block after 5 workflows
+  if (totalCount >= ANONYMOUS_HARD_LIMIT) {
+    return {
+      count: totalCount,
+      limit: ANONYMOUS_HARD_LIMIT,
+      canUse: false,
+      remaining: 0,
+      showSignUpPrompt: true, // Force sign-up
+    };
+  }
+
+  // Soft limit: show prompt after 3 workflows
+  const showPrompt = totalCount >= ANONYMOUS_SOFT_LIMIT;
+  
   return {
-    count: data.count,
-    canUse: true, // Soft limit - always allowed
-    showSignUpPrompt: data.count >= ANONYMOUS_SOFT_LIMIT,
+    count: totalCount,
+    limit: ANONYMOUS_HARD_LIMIT,
+    canUse: true,
+    remaining: ANONYMOUS_HARD_LIMIT - totalCount,
+    showSignUpPrompt: showPrompt,
   };
 }
 
 /**
- * Increment anonymous usage counter
+ * Increment anonymous usage counter (all storages)
  */
 export function incrementAnonymousUsage(): void {
   const currentMonth = getCurrentMonth();
@@ -250,13 +327,18 @@ export function incrementAnonymousUsage(): void {
       sessionId: getOrCreateSessionId(),
     };
     saveAnonymousUsageData(newData);
+    saveSessionStorageCount(1);
+    saveCookieCount(1);
   } else {
-    // Increment existing count
+    // Increment existing count in all storages
+    const newCount = existingData.count + 1;
     const updatedData: AnonymousUsageData = {
       ...existingData,
-      count: existingData.count + 1,
+      count: newCount,
     };
     saveAnonymousUsageData(updatedData);
+    saveSessionStorageCount(newCount);
+    saveCookieCount(newCount);
   }
 }
 

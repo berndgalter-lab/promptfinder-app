@@ -3,12 +3,8 @@ import { getUser } from '@/lib/auth';
 import { Badge } from '@/components/ui/badge';
 import { FavoriteButton } from '@/components/workflow/FavoriteButton';
 import { WorkflowRunnerWrapper } from '@/components/workflow/WorkflowRunnerWrapper';
+import { WorkflowLimitGuard } from '@/components/workflow/WorkflowLimitGuard';
 import { notFound } from 'next/navigation';
-import { hasReachedFreeLimit } from '@/lib/subscription';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { Lock, Zap } from 'lucide-react';
 import { type Workflow, type WorkflowStep } from '@/lib/types/workflow';
 
 interface PageProps {
@@ -77,7 +73,6 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
 
   // Check if workflow is favorited (only if user is logged in)
   let isFavorited = false;
-  let hasReachedLimit = false;
   
   if (user) {
     const { data: favorite } = await supabase
@@ -88,16 +83,13 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
       .single();
     
     isFavorited = !!favorite;
-    
-    // Check if user has reached free limit
-    hasReachedLimit = await hasReachedFreeLimit(user.id);
   }
 
   const tierVariant = workflow.tier === 'essential' ? 'success' : 'default';
   const tierLabel = workflow.tier === 'essential' ? 'Essential' : 'Advanced';
 
-  // If user is logged in and has reached limit, show upgrade prompt
-  if (user && hasReachedLimit) {
+  // Remove old limit check - now handled by WorkflowLimitGuard
+  if (false) {
     return (
       <div className="min-h-screen bg-zinc-950 px-4 py-12 text-white">
         <div className="mx-auto max-w-2xl">
@@ -196,13 +188,15 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
           />
         </div>
 
-        {/* Workflow Runner */}
+        {/* Workflow Runner with Limit Guard */}
         <div className="mt-12">
           {workflow.steps && workflow.steps.length > 0 ? (
-            <WorkflowRunnerWrapper 
-              workflow={workflow}
-              userId={user?.id || null}
-            />
+            <WorkflowLimitGuard userId={user?.id || null}>
+              <WorkflowRunnerWrapper 
+                workflow={workflow}
+                userId={user?.id || null}
+              />
+            </WorkflowLimitGuard>
           ) : (
             <div className="rounded-lg border border-zinc-800 bg-zinc-900 p-12 text-center">
               <p className="text-zinc-500">

@@ -40,7 +40,7 @@ export default function RefundPage() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-white mb-2">Request a Refund</h3>
-                  <p>Email us at <a href="mailto:contact@promptfinder.com" className="text-blue-400 hover:text-blue-300">contact@promptfinder.com</a> within 30 days of your purchase.</p>
+                  <p>Email us at <a href="mailto:support@prompt-finder.com" className="text-blue-400 hover:text-blue-300">support@prompt-finder.com</a> within 30 days of your purchase.</p>
                 </div>
               </div>
 
@@ -116,7 +116,7 @@ export default function RefundPage() {
             <p className="text-zinc-300 mb-6">
               Have questions about refunds or want to request one?
             </p>
-            <a href="mailto:contact@promptfinder.com">
+            <a href="mailto:support@prompt-finder.com">
               <Button className="!bg-blue-600 hover:!bg-blue-700 !text-white">
                 Contact Support
               </Button>
