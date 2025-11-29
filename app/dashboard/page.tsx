@@ -154,7 +154,13 @@ export default async function DashboardPage() {
                   {/* Simple progress bar without radix */}
                   <div className="flex-1 h-2 bg-zinc-800 rounded-full overflow-hidden">
                     <div 
-                      className="h-full bg-gradient-to-r from-blue-600 to-blue-500 transition-all duration-500"
+                      className={`h-full transition-all duration-500 ${
+                        currentPlan !== 'free'
+                          ? 'bg-gradient-to-r from-purple-600 to-pink-500'
+                          : (monthlyUsage || 0) > FREE_USER_LIMIT
+                          ? 'bg-gradient-to-r from-red-600 to-orange-500'
+                          : 'bg-gradient-to-r from-blue-600 to-blue-500'
+                      }`}
                       style={{ 
                         width: currentPlan !== 'free' 
                           ? '100%' 
@@ -165,6 +171,8 @@ export default async function DashboardPage() {
                   <span className="text-sm font-medium">
                     {currentPlan !== 'free' ? (
                       <span className="text-purple-400 font-semibold">∞ Unlimited</span>
+                    ) : (monthlyUsage || 0) > FREE_USER_LIMIT ? (
+                      <span className="text-red-400 font-semibold">{monthlyUsage}/{FREE_USER_LIMIT} ⚠️</span>
                     ) : (
                       <>{monthlyUsage || 0}/{FREE_USER_LIMIT}</>
                     )}
@@ -191,15 +199,20 @@ export default async function DashboardPage() {
                 <p className="text-2xl font-bold">{favoritesCount || 0}</p>
               </div>
 
-              {/* Current streak */}
-              {userStats?.current_streak && userStats.current_streak > 0 && (
-                <div className="pt-3 border-t border-zinc-800 mt-3">
-                  <p className="text-sm text-zinc-400">Aktuelle Serie</p>
-                  <p className="text-2xl font-bold">
-                    🔥 {userStats.current_streak} {userStats.current_streak === 1 ? 'Tag' : 'Tage'}
+              {/* Current streak - ALWAYS show */}
+              <div className="pt-3 border-t border-zinc-800 mt-3">
+                <p className="text-sm text-zinc-400">Aktuelle Serie 🔥</p>
+                {userStats?.current_streak && userStats.current_streak > 0 ? (
+                  <p className="text-2xl font-bold text-orange-400">
+                    {userStats.current_streak} {userStats.current_streak === 1 ? 'Tag' : 'Tage'}
                   </p>
-                </div>
-              )}
+                ) : (
+                  <div>
+                    <p className="text-2xl font-bold text-zinc-600">0 Tage</p>
+                    <p className="text-xs text-zinc-500 mt-1">Nutze heute einen Workflow, um deine Serie zu starten!</p>
+                  </div>
+                )}
+              </div>
             </CardContent>
           </Card>
 
