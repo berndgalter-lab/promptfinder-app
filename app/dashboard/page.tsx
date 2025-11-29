@@ -155,11 +155,19 @@ export default async function DashboardPage() {
                   <div className="flex-1 h-2 bg-zinc-800 rounded-full overflow-hidden">
                     <div 
                       className="h-full bg-gradient-to-r from-blue-600 to-blue-500 transition-all duration-500"
-                      style={{ width: `${Math.min(100, (monthlyUsage || 0) / FREE_USER_LIMIT * 100)}%` }}
+                      style={{ 
+                        width: currentPlan === 'pro' 
+                          ? '100%' 
+                          : `${Math.min(100, (monthlyUsage || 0) / FREE_USER_LIMIT * 100)}%` 
+                      }}
                     />
                   </div>
                   <span className="text-sm font-medium">
-                    {monthlyUsage || 0}/{FREE_USER_LIMIT}
+                    {currentPlan === 'pro' ? (
+                      <span className="text-purple-400 font-semibold">∞ Unlimited</span>
+                    ) : (
+                      <>{monthlyUsage || 0}/{FREE_USER_LIMIT}</>
+                    )}
                   </span>
                 </div>
               </div>
@@ -178,14 +186,14 @@ export default async function DashboardPage() {
               )}
 
               {/* Favorites count */}
-              <div>
+              <div className="pt-3 border-t border-zinc-800 mt-3">
                 <p className="text-sm text-zinc-400">Favoriten</p>
                 <p className="text-2xl font-bold">{favoritesCount || 0}</p>
               </div>
 
               {/* Current streak */}
               {userStats?.current_streak && userStats.current_streak > 0 && (
-                <div className="pt-2 border-t border-zinc-800">
+                <div className="pt-3 border-t border-zinc-800 mt-3">
                   <p className="text-sm text-zinc-400">Aktuelle Serie</p>
                   <p className="text-2xl font-bold">
                     🔥 {userStats.current_streak} {userStats.current_streak === 1 ? 'Tag' : 'Tage'}
