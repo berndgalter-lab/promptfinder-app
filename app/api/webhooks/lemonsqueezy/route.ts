@@ -41,9 +41,14 @@ function verifySignature(payload: string, signature: string): boolean {
 
 /**
  * Find user by email in Supabase Auth
+ * Returns the MOST RECENT user with matching email (in case of duplicates)
  */
 async function findUserByEmail(email: string) {
   try {
+    // Normalize email for comparison
+    const normalizedEmail = email.toLowerCase().trim();
+    
+    // List all users (cached by Supabase for performance)
     const { data, error } = await supabaseAdmin.auth.admin.listUsers();
     
     if (error) {
@@ -51,13 +56,30 @@ async function findUserByEmail(email: string) {
       return null;
     }
 
-    const user = data.users.find(u => u.email?.toLowerCase() === email.toLowerCase());
-    
-    if (!user) {
-      console.log(`⚠️  User not found for email: ${email}`);
+    // Filter users by email
+    const matchingUsers = data.users.filter(
+      u => u.email?.toLowerCase().trim() === normalizedEmail
+    );
+
+    if (matchingUsers.length === 0) {
+      console.log(`⚠️  No user found for email: ${email}`);
+      return null;
     }
+
+    // If multiple users exist (duplicates), take the MOST RECENT one
+    if (matchingUsers.length > 1) {
+      console.warn(`⚠️  Multiple users found for ${email}, using most recent`);
+      
+      // Sort by created_at DESC (newest first)
+      matchingUsers.sort((a, b) => 
+        new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime()
+      );
+    }
+
+    const selectedUser = matchingUsers[0];
+    console.log(`✅ User found: ${selectedUser.id} (${selectedUser.email})`);
     
-    return user;
+    return selectedUser;
   } catch (error) {
     console.error('❌ Error finding user:', error);
     return null;
@@ -117,14 +139,19 @@ export async function POST(request: NextRequest) {
     
     if (!user) {
       console.error(`❌ User not found for email: ${customerEmail}`);
-      // Return 200 to avoid retries, but log the error
+      console.error(`📧 Customer needs to create account before purchasing`);
+      
+      // Return 200 to avoid Lemon Squeezy retries
+      // User will need to sign up and contact support
       return NextResponse.json({ 
         received: true, 
-        warning: 'User not found - they may need to sign up first' 
+        error: 'user_not_found',
+        message: 'User must create account before purchasing',
+        customer_email: customerEmail
       });
     }
 
-    console.log('👤 User found:', user.id);
+    console.log('👤 User found:', user.id, `(${user.email})`);
 
     // Determine plan type from variant name
     let planType: 'monthly' | 'annual' = 'monthly';
@@ -143,6 +170,17 @@ export async function POST(request: NextRequest) {
       case 'subscription_created':
       case 'subscription_payment_success': {
         console.log('💳 Processing subscription activation...');
+        
+        // Check if subscription already exists (idempotency)
+        const { data: existingSub } = await supabaseAdmin
+          .from('subscriptions')
+          .select('id, status, subscription_id')
+          .eq('user_id', user.id)
+          .single();
+
+        if (existingSub && existingSub.subscription_id === subscriptionId) {
+          console.log(`ℹ️  Subscription already exists, updating status`);
+        }
         
         const { error } = await supabaseAdmin
           .from('subscriptions')
@@ -165,30 +203,49 @@ export async function POST(request: NextRequest) {
 
         if (error) {
           console.error('❌ Database error:', error);
-          return NextResponse.json({ error: 'Database error' }, { status: 500 });
+          console.error('Error details:', JSON.stringify(error, null, 2));
+          return NextResponse.json({ 
+            error: 'Database error', 
+            details: error.message 
+          }, { status: 500 });
         }
 
-        console.log(`✅ Subscription activated for ${user.email}`);
+        console.log(`✅ Subscription activated for ${user.email} (${user.id})`);
+        console.log(`📦 Plan: ${planType} | Status: active`);
         break;
       }
 
       case 'subscription_updated': {
         console.log('🔄 Processing subscription update...');
         
+        // Normalize status
+        const normalizedStatus = status === 'on_trial' ? 'active' : status;
+        
         const updateData: any = {
-          status: status === 'active' || status === 'on_trial' ? 'active' : status,
+          status: normalizedStatus,
           lemon_squeezy_data: data,
           updated_at: new Date().toISOString()
         };
 
+        // Update renewal date if provided
         if (attributes.renews_at) {
           updateData.current_period_end = attributes.renews_at;
+        }
+
+        // Update plan type if changed
+        if (variantName) {
+          const newPlanType: 'monthly' | 'annual' = 
+            variantName.toLowerCase().includes('annual') || 
+            variantName.toLowerCase().includes('year') 
+              ? 'annual' 
+              : 'monthly';
+          updateData.plan_type = newPlanType;
         }
 
         const { error } = await supabaseAdmin
           .from('subscriptions')
           .update(updateData)
-          .eq('subscription_id', subscriptionId);
+          .eq('user_id', user.id);
 
         if (error) {
           console.error('❌ Database error:', error);
@@ -196,6 +253,7 @@ export async function POST(request: NextRequest) {
         }
 
         console.log(`✅ Subscription updated for ${user.email}`);
+        console.log(`📊 New status: ${normalizedStatus}`);
         break;
       }
 
@@ -211,14 +269,15 @@ export async function POST(request: NextRequest) {
             lemon_squeezy_data: data,
             updated_at: new Date().toISOString()
           })
-          .eq('subscription_id', subscriptionId);
+          .eq('user_id', user.id);
 
         if (error) {
           console.error('❌ Database error:', error);
           return NextResponse.json({ error: 'Database error' }, { status: 500 });
         }
 
-        console.log(`✅ Subscription canceled for ${user.email}`);
+        console.log(`✅ Subscription canceled for ${user.email} (${user.id})`);
+        console.log(`📅 Canceled at: ${new Date().toISOString()}`);
         break;
       }
 
@@ -232,13 +291,15 @@ export async function POST(request: NextRequest) {
             lemon_squeezy_data: data,
             updated_at: new Date().toISOString()
           })
-          .eq('subscription_id', subscriptionId);
+          .eq('user_id', user.id);
 
         if (error) {
           console.error('❌ Database error:', error);
+          return NextResponse.json({ error: 'Database error' }, { status: 500 });
         }
 
-        console.log(`⚠️  Payment failed for ${user.email}`);
+        console.log(`⚠️  Payment failed for ${user.email} (${user.id})`);
+        console.log(`💳 User account marked as past_due`);
         break;
       }
 
@@ -253,13 +314,15 @@ export async function POST(request: NextRequest) {
             lemon_squeezy_data: data,
             updated_at: new Date().toISOString()
           })
-          .eq('subscription_id', subscriptionId);
+          .eq('user_id', user.id);
 
         if (error) {
           console.error('❌ Database error:', error);
+          return NextResponse.json({ error: 'Database error' }, { status: 500 });
         }
 
-        console.log(`✅ Payment recovered for ${user.email}`);
+        console.log(`✅ Payment recovered for ${user.email} (${user.id})`);
+        console.log(`🎉 Subscription reactivated`);
         break;
       }
 
@@ -273,13 +336,14 @@ export async function POST(request: NextRequest) {
             lemon_squeezy_data: data,
             updated_at: new Date().toISOString()
           })
-          .eq('subscription_id', subscriptionId);
+          .eq('user_id', user.id);
 
         if (error) {
           console.error('❌ Database error:', error);
+          return NextResponse.json({ error: 'Database error' }, { status: 500 });
         }
 
-        console.log(`⏸️  Subscription paused for ${user.email}`);
+        console.log(`⏸️  Subscription paused for ${user.email} (${user.id})`);
         break;
       }
 
@@ -293,13 +357,14 @@ export async function POST(request: NextRequest) {
             lemon_squeezy_data: data,
             updated_at: new Date().toISOString()
           })
-          .eq('subscription_id', subscriptionId);
+          .eq('user_id', user.id);
 
         if (error) {
           console.error('❌ Database error:', error);
+          return NextResponse.json({ error: 'Database error' }, { status: 500 });
         }
 
-        console.log(`▶️  Subscription resumed for ${user.email}`);
+        console.log(`▶️  Subscription resumed for ${user.email} (${user.id})`);
         break;
       }
 
@@ -326,4 +391,3 @@ export async function GET() {
     configured: !!process.env.LEMONSQUEEZY_WEBHOOK_SECRET
   });
 }
-
