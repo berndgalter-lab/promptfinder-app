@@ -195,7 +195,11 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
         {/* Workflow Runner with Limit Guard */}
         <div className="mt-12">
           {workflow.steps && workflow.steps.length > 0 ? (
-            <WorkflowLimitGuard userId={user?.id || null}>
+            <WorkflowLimitGuard 
+              userId={user?.id || null}
+              workflowId={workflow.id}
+              workflowTitle={workflow.title}
+            >
               <WorkflowRunnerWrapper 
                 workflow={workflow}
                 userId={user?.id || null}

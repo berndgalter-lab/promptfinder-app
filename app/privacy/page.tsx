@@ -25,7 +25,7 @@ export default function PrivacyPage() {
               1. Data Controller
             </h2>
             <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-6 space-y-2 text-zinc-300">
-              <p className="font-semibold text-white">BG Online Media (haftungsbeschränkt)</p>
+              <p className="font-semibold text-white">BG Online Media UG (haftungsbeschränkt)</p>
               <p>Grünwiesenstraße 33</p>
               <p>74321 Bietigheim-Bissingen</p>
               <p>Germany</p>

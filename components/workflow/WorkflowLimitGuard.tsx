@@ -9,9 +9,11 @@ import { Lock, Loader2 } from 'lucide-react';
 interface WorkflowLimitGuardProps {
   userId: string | null;
   children: ReactNode;
+  workflowId?: string;
+  workflowTitle?: string;
 }
 
-export function WorkflowLimitGuard({ userId, children }: WorkflowLimitGuardProps) {
+export function WorkflowLimitGuard({ userId, children, workflowId, workflowTitle }: WorkflowLimitGuardProps) {
   const {
     canUse,
     showModal,
@@ -54,6 +56,8 @@ export function WorkflowLimitGuard({ userId, children }: WorkflowLimitGuardProps
           onClose={closeModal}
           type={modalType}
           remaining={remaining}
+          workflowId={workflowId}
+          workflowTitle={workflowTitle}
         />
       </>
     );
@@ -80,6 +84,8 @@ export function WorkflowLimitGuard({ userId, children }: WorkflowLimitGuardProps
           onClose={closeModal}
           type={modalType}
           remaining={remaining}
+          workflowId={workflowId}
+          workflowTitle={workflowTitle}
         />
       </>
     );
@@ -95,6 +101,8 @@ export function WorkflowLimitGuard({ userId, children }: WorkflowLimitGuardProps
           onClose={closeModal}
           type={modalType}
           remaining={remaining}
+          workflowId={workflowId}
+          workflowTitle={workflowTitle}
         />
       )}
     </>
