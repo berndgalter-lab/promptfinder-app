@@ -189,9 +189,11 @@ export async function getSubscriptionDetails(userId: string): Promise<Subscripti
   const isCanceled = subscription.status === 'canceled' || !!subscription.canceled_at;
   
   // Check if canceled but still active until period end
-  const isActiveUntilPeriodEnd = isCanceled && 
+  const isActiveUntilPeriodEnd = Boolean(
+    isCanceled && 
     subscription.current_period_end && 
-    new Date(subscription.current_period_end) > new Date();
+    new Date(subscription.current_period_end) > new Date()
+  );
   
   return {
     plan,
