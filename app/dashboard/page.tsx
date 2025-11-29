@@ -12,6 +12,10 @@ import { AccountSettings } from '@/components/dashboard/AccountSettings';
 import { UpgradeToPro } from '@/components/dashboard/UpgradeToPro';
 import { getUserPlan } from '@/lib/subscription';
 
+// Force dynamic rendering - no caching for subscription status
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function DashboardPage() {
   const user = await getUser();
 
