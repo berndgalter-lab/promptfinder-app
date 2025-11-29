@@ -32,11 +32,14 @@ export function LimitModal({ isOpen, onClose, type, remaining = 0 }: LimitModalP
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // SIGN_UP_SOFT: After 3 workflows (can close)
+  // SIGN_UP_SOFT: After 3 workflows (can close via button/X/ESC, but not by clicking outside)
   if (type === 'SIGN_UP_SOFT') {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="!bg-zinc-900 !border-zinc-800">
+        <DialogContent 
+          className="!bg-zinc-900 !border-zinc-800"
+          onPointerDownOutside={(e) => e.preventDefault()}
+        >
           <DialogHeader>
             <div className="flex items-center gap-3 mb-2">
               <div className="w-12 h-12 rounded-full bg-blue-600/20 border border-blue-600/50 flex items-center justify-center">
