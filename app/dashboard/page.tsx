@@ -156,14 +156,14 @@ export default async function DashboardPage() {
                     <div 
                       className="h-full bg-gradient-to-r from-blue-600 to-blue-500 transition-all duration-500"
                       style={{ 
-                        width: currentPlan === 'pro' 
+                        width: currentPlan !== 'free' 
                           ? '100%' 
                           : `${Math.min(100, (monthlyUsage || 0) / FREE_USER_LIMIT * 100)}%` 
                       }}
                     />
                   </div>
                   <span className="text-sm font-medium">
-                    {currentPlan === 'pro' ? (
+                    {currentPlan !== 'free' ? (
                       <span className="text-purple-400 font-semibold">∞ Unlimited</span>
                     ) : (
                       <>{monthlyUsage || 0}/{FREE_USER_LIMIT}</>
