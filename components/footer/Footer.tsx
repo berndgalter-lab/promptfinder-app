@@ -100,6 +100,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/widerruf" className="text-sm text-zinc-400 hover:text-white transition-colors">
+                  Widerruf
+                </Link>
+              </li>
+              <li>
                 <Link href="/refund" className="text-sm text-zinc-400 hover:text-white transition-colors">
                   Refund Policy
                 </Link>
