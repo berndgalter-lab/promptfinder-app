@@ -4,6 +4,7 @@ import { WorkflowRunner } from './WorkflowRunner';
 import { type Workflow } from '@/lib/types/workflow';
 import { useToast } from '@/components/ui/use-toast';
 import { createClient } from '@/lib/supabase/client';
+import { checkAchievements } from '@/lib/achievements';
 
 interface WorkflowRunnerWrapperProps {
   workflow: Workflow;
@@ -61,17 +62,52 @@ export function WorkflowRunnerWrapper({ workflow, userId }: WorkflowRunnerWrappe
         
         console.log('[GDPR-Safe] Usage tracked with safe values only:', Object.keys(safeValues));
 
-        // Check for achievements
+        // Update user stats (total_workflows counter)
         try {
-          const { data: achievements } = await supabase
-            .rpc('check_achievements', { check_user_id: userId });
+          // Get current stats
+          const { data: currentStats } = await supabase
+            .from('user_stats')
+            .select('total_workflows')
+            .eq('user_id', userId)
+            .single();
+
+          const currentTotal = currentStats?.total_workflows || 0;
+
+          // Increment total workflows
+          const { error: statsError } = await supabase
+            .from('user_stats')
+            .upsert(
+              {
+                user_id: userId,
+                total_workflows: currentTotal + 1,
+                last_used_at: new Date().toISOString(),
+              },
+              {
+                onConflict: 'user_id',
+              }
+            );
+
+          if (statsError) {
+            console.error('Error updating user stats:', statsError);
+          }
+
+          console.log(`📊 User stats updated: ${currentTotal + 1} total workflows`);
+        } catch (statsError) {
+          console.error('Error updating stats:', statsError);
+        }
+
+        // Check for achievements (using JavaScript function, not SQL RPC)
+        try {
+          const newAchievements = await checkAchievements(userId);
           
-          if (achievements && achievements.length > 0) {
+          if (newAchievements && newAchievements.length > 0) {
+            console.log(`🎉 ${newAchievements.length} new achievement(s) unlocked!`);
+            
             // Show achievement toasts
-            achievements.forEach((achievement: any) => {
+            newAchievements.forEach((achievement) => {
               toast({
                 title: `🏆 Achievement Unlocked!`,
-                description: achievement.title,
+                description: `${achievement.title} - ${achievement.description}`,
                 duration: 5000,
               });
             });
