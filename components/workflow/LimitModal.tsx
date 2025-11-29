@@ -94,7 +94,12 @@ export function LimitModal({ isOpen, onClose, type, remaining = 0, workflowId, w
     return (
       <>
         <Dialog open={isOpen} onOpenChange={() => {}}>
-          <DialogContent className="!bg-zinc-900 !border-zinc-800" onPointerDownOutside={(e) => e.preventDefault()}>
+          <DialogContent 
+            className="!bg-zinc-900 !border-zinc-800" 
+            onPointerDownOutside={(e) => e.preventDefault()}
+            onEscapeKeyDown={(e) => e.preventDefault()}
+            showCloseButton={false}
+          >
             <DialogHeader>
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
@@ -143,7 +148,12 @@ export function LimitModal({ isOpen, onClose, type, remaining = 0, workflowId, w
   if (type === 'UPGRADE_TO_PRO') {
     return (
       <Dialog open={isOpen} onOpenChange={() => {}}>
-        <DialogContent className="!bg-zinc-900 !border-zinc-800" onPointerDownOutside={(e) => e.preventDefault()}>
+        <DialogContent 
+          className="!bg-zinc-900 !border-zinc-800" 
+          onPointerDownOutside={(e) => e.preventDefault()}
+          onEscapeKeyDown={(e) => e.preventDefault()}
+          showCloseButton={false}
+        >
           <DialogHeader>
             <div className="flex items-center gap-3 mb-2">
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
@@ -189,7 +199,12 @@ export function LimitModal({ isOpen, onClose, type, remaining = 0, workflowId, w
     return (
       <>
         <Dialog open={isOpen} onOpenChange={() => {}}>
-          <DialogContent className="!bg-zinc-900 !border-zinc-800" onPointerDownOutside={(e) => e.preventDefault()}>
+          <DialogContent 
+            className="!bg-zinc-900 !border-zinc-800" 
+            onPointerDownOutside={(e) => e.preventDefault()}
+            onEscapeKeyDown={(e) => e.preventDefault()}
+            showCloseButton={false}
+          >
             <DialogHeader>
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
