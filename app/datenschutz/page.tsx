@@ -194,8 +194,8 @@ export default function DatenschutzPage() {
 
             <h3 className="text-xl font-medium text-white mt-6 mb-3">5.3 Keine Tracking-Cookies</h3>
             <p className="text-zinc-300 leading-relaxed">
-              Wir verwenden <strong>keine</strong> Marketing- oder Tracking-Cookies. Es findet kein 
-              Tracking durch Drittanbieter wie Google Analytics statt.
+              Wir verwenden <strong>keine</strong> Marketing- oder Tracking-Cookies. Wir nutzen kein Google Analytics. 
+              Wir verwenden Vercel Analytics, das ohne Cookies arbeitet und datenschutzfreundlich ist (siehe Abschnitt 6.5).
             </p>
           </section>
 
@@ -239,6 +239,16 @@ export default function DatenschutzPage() {
                   Datenschutz: <a href="https://www.lemonsqueezy.com/privacy" className="text-blue-400 hover:text-blue-300" target="_blank" rel="noopener noreferrer">lemonsqueezy.com/privacy</a>
                 </p>
               </div>
+
+              <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4">
+                <h4 className="font-semibold text-white">Hetzner Online GmbH</h4>
+                <p className="text-zinc-400 text-sm mt-1">E-Mail-Hosting</p>
+                <p className="text-zinc-300 text-sm mt-2">
+                  Serverstandort: <strong>Deutschland</strong><br />
+                  Zweck: Verarbeitung von E-Mail-Anfragen (support@prompt-finder.com)<br />
+                  Datenschutz: <a href="https://www.hetzner.com/de/legal/privacy-policy" className="text-blue-400 hover:text-blue-300" target="_blank" rel="noopener noreferrer">hetzner.com/de/legal/privacy-policy</a>
+                </p>
+              </div>
             </div>
 
             <h3 className="text-xl font-medium text-white mt-6 mb-3">6.4 Schriftarten</h3>
@@ -246,6 +256,33 @@ export default function DatenschutzPage() {
               Wir verwenden die Schriftarten &quot;Geist&quot; und &quot;Geist Mono&quot;. Diese werden 
               <strong> lokal von unserem Server</strong> ausgeliefert (Self-Hosting). Es findet keine 
               Verbindung zu Google-Servern statt und Ihre IP-Adresse wird nicht an Google übertragen.
+            </p>
+
+            <h3 className="text-xl font-medium text-white mt-6 mb-3">6.5 Analytics (Vercel Analytics)</h3>
+            <p className="text-zinc-300 leading-relaxed">
+              Wir nutzen <strong>Vercel Analytics</strong> von Vercel Inc., um die Performance, Stabilität 
+              und grundlegende Nutzung unserer Website zu überwachen. Vercel Analytics arbeitet ohne Cookies 
+              und erstellt keine Nutzerprofile.
+            </p>
+            <p className="text-zinc-300 leading-relaxed mt-2">
+              Im Rahmen dieses Dienstes können technische Informationen wie die angeforderte URL, Referrer-URL, 
+              Zeitstempel, User-Agent, ungefähre Region und Performance-Metriken in aggregierter Form verarbeitet 
+              werden. Diese Daten werden ausschließlich für statistische Auswertungen und zur Verbesserung der 
+              Stabilität und Sicherheit unseres Dienstes verwendet.
+            </p>
+            <p className="text-zinc-400 text-sm mt-2">
+              Rechtsgrundlage: Art. 6 (1) f DSGVO (Berechtigtes Interesse an einem sicheren und effizienten Betrieb unserer Website).
+            </p>
+            <p className="text-zinc-300 text-sm mt-2">
+              Weitere Informationen:{' '}
+              <a 
+                href="https://vercel.com/legal/privacy-policy"
+                className="text-blue-400 hover:text-blue-300"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                vercel.com/legal/privacy-policy
+              </a>
             </p>
           </section>
 
