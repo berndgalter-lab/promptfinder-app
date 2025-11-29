@@ -47,6 +47,7 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   const [inputValues, setInputValues] = useState<Record<number, string>>({});
   const [expandedSteps, setExpandedSteps] = useState<Set<number>>(new Set());
   const [isCompleted, setIsCompleted] = useState(false);
+  const [hasBeenUsed, setHasBeenUsed] = useState(false); // Track first usage
 
   // Auto-detect mode: Single (1 prompt) vs Multi-Step (everything else)
   const isSingleMode = workflow.steps.length === 1 && isPromptStep(workflow.steps[0]);
@@ -173,21 +174,34 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
     setCompletedSteps(prev => new Set([...prev, stepNumber]));
   };
 
-  // Handle Single Mode completion (triggered by Copy or Open)
-  const handleSingleModeComplete = () => {
-    if (!isCompleted) {
-      setIsCompleted(true);
+  // Track first usage (both Single and Multi-Step)
+  const trackFirstUsage = () => {
+    if (!hasBeenUsed) {
+      setHasBeenUsed(true);
       
       // Trigger onComplete for usage tracking
       if (onComplete) {
         onComplete({ fieldValues, inputValues });
       }
+      
+      console.log('📊 First usage tracked for workflow:', workflow.slug);
+    }
+  };
+
+  // Handle Single Mode completion (triggered by Copy or Open)
+  const handleSingleModeComplete = () => {
+    if (!isCompleted) {
+      setIsCompleted(true);
+      trackFirstUsage(); // Track usage on first interaction
     }
   };
 
   // Copy prompt to clipboard
   const handleCopyPrompt = (prompt: string) => {
     navigator.clipboard.writeText(prompt);
+    
+    // Track first usage (both Single and Multi-Step)
+    trackFirstUsage();
     
     // Different toast for Single vs Multi-Step
     if (isSingleMode) {
@@ -208,6 +222,9 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   const handleOpenChatGPT = (prompt: string) => {
     // Copy to clipboard as fallback
     navigator.clipboard.writeText(prompt);
+    
+    // Track first usage (both Single and Multi-Step)
+    trackFirstUsage();
     
     // Open ChatGPT with pre-filled prompt
     const encodedPrompt = encodeURIComponent(prompt);

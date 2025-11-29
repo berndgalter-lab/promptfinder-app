@@ -5,6 +5,7 @@ import { type Workflow } from '@/lib/types/workflow';
 import { useToast } from '@/components/ui/use-toast';
 import { createClient } from '@/lib/supabase/client';
 import { checkAchievements } from '@/lib/achievements';
+import { incrementAnonymousUsage } from '@/lib/usage-tracking';
 
 interface WorkflowRunnerWrapperProps {
   workflow: Workflow;
@@ -20,8 +21,8 @@ export function WorkflowRunnerWrapper({ workflow, userId }: WorkflowRunnerWrappe
     inputValues: Record<number, string>;
   }) => {
     try {
-      // Record usage if user is logged in
       if (userId) {
+        // Logged-in user: Record usage in Supabase
         // DSGVO-SAFE: Only collect non-personal data
         // - Select values: OK (no free-text input)
         // - Text/Textarea values: NOT stored (could be personal)
@@ -115,14 +116,18 @@ export function WorkflowRunnerWrapper({ workflow, userId }: WorkflowRunnerWrappe
         } catch (achievementError) {
           console.error('Error checking achievements:', achievementError);
         }
+      } else {
+        // Anonymous user: Track in localStorage
+        incrementAnonymousUsage();
+        console.log('📊 Anonymous usage tracked');
       }
 
-      // Show success message
-      toast({
-        title: '🎉 Workflow Completed!',
-        description: 'Great job! You\'ve completed all steps.',
-        duration: 3000,
-      });
+      // Show success message (optional - already shown by trackFirstUsage)
+      // toast({
+      //   title: '🎉 Workflow Completed!',
+      //   description: 'Great job! You\'ve completed all steps.',
+      //   duration: 3000,
+      // });
     } catch (error) {
       console.error('Error completing workflow:', error);
       toast({
