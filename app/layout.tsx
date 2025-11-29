@@ -8,6 +8,7 @@ import { NavLinks } from "@/components/nav/NavLinks";
 import { Footer } from "@/components/footer/Footer";
 import { getUser } from "@/lib/auth";
 import Link from "next/link";
+import { Analytics } from "@vercel/analytics/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -55,6 +56,7 @@ export default async function RootLayout({
         <Footer />
         <Toaster />
         <AchievementDebugger />
+        <Analytics />
       </body>
     </html>
   );
