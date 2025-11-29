@@ -5,6 +5,10 @@ import { FavoriteButton } from '@/components/workflow/FavoriteButton';
 import { WorkflowRunnerWrapper } from '@/components/workflow/WorkflowRunnerWrapper';
 import { WorkflowLimitGuard } from '@/components/workflow/WorkflowLimitGuard';
 import { notFound } from 'next/navigation';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { Lock, Zap } from 'lucide-react';
 import { type Workflow, type WorkflowStep } from '@/lib/types/workflow';
 
 interface PageProps {

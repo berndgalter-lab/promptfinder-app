@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { checkAnonymousLimit, checkUserLimit } from '@/lib/usage-tracking';
-import { hasActiveSubscription } from '@/lib/subscription';
+import { hasActiveSubscriptionClient } from '@/lib/subscription-client';
 import type { LimitModalType } from '@/components/workflow/LimitModal';
 
 export interface WorkflowLimitState {
@@ -38,7 +38,7 @@ export function useWorkflowLimit(userId: string | null) {
     try {
       if (userId) {
         // Check if Pro user
-        const isPro = await hasActiveSubscription(userId);
+        const isPro = await hasActiveSubscriptionClient(userId);
         
         if (isPro) {
           // Pro users: unlimited

@@ -33,7 +33,8 @@ export interface SubscriptionDetails {
 }
 
 /**
- * Check if user has active Pro subscription
+ * Check if user has active Pro subscription (Server-side only)
+ * For Client Components, use hasActiveSubscriptionClient from subscription-client.ts
  */
 export async function hasActiveSubscription(userId: string): Promise<boolean> {
   const supabase = await createClient();
