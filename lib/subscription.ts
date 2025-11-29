@@ -15,8 +15,21 @@ export interface Subscription {
   amount: number | null;
   currency: string | null;
   canceled_at: string | null;
+  customer_portal_url: string | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface SubscriptionDetails {
+  plan: 'free' | 'monthly' | 'annual';
+  status: SubscriptionStatus;
+  amount: number | null;
+  currency: string | null;
+  renewsAt: string | null;
+  canceledAt: string | null;
+  customerPortalUrl: string;
+  isActive: boolean;
+  isCanceled: boolean;
 }
 
 /**
@@ -147,5 +160,49 @@ export async function getRemainingFreeWorkflows(userId: string): Promise<number>
   const remaining = FREE_TIER_LIMIT - (count || 0);
   
   return Math.max(0, remaining);
+}
+
+/**
+ * Get detailed subscription information for display
+ */
+export async function getSubscriptionDetails(userId: string): Promise<SubscriptionDetails> {
+  const subscription = await getUserSubscription(userId);
+  const plan = await getUserPlan(userId);
+  
+  // Default for free users
+  if (!subscription || plan === 'free') {
+    return {
+      plan: 'free',
+      status: 'free',
+      amount: null,
+      currency: null,
+      renewsAt: null,
+      canceledAt: null,
+      customerPortalUrl: 'https://app.lemonsqueezy.com/my-orders',
+      isActive: false,
+      isCanceled: false,
+    };
+  }
+  
+  // Determine if subscription is still active
+  const isActive = subscription.status === 'active' || subscription.status === 'past_due';
+  const isCanceled = subscription.status === 'canceled' || !!subscription.canceled_at;
+  
+  // Check if canceled but still active until period end
+  const isActiveUntilPeriodEnd = isCanceled && 
+    subscription.current_period_end && 
+    new Date(subscription.current_period_end) > new Date();
+  
+  return {
+    plan,
+    status: subscription.status,
+    amount: subscription.amount,
+    currency: subscription.currency,
+    renewsAt: subscription.current_period_end,
+    canceledAt: subscription.canceled_at,
+    customerPortalUrl: subscription.customer_portal_url || 'https://app.lemonsqueezy.com/my-orders',
+    isActive: isActive || isActiveUntilPeriodEnd,
+    isCanceled,
+  };
 }
 

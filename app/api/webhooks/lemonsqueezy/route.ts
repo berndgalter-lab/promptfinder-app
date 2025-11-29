@@ -125,9 +125,11 @@ export async function POST(request: NextRequest) {
     const orderId = String(attributes.order_id || data.id);
     const status = attributes.status;
     const variantName = attributes.variant_name || attributes.first_order_item?.variant_name || '';
+    const customerPortalUrl = attributes.urls?.customer_portal || null;
 
     console.log('📧 Customer email:', customerEmail);
     console.log('🔑 Subscription ID:', subscriptionId);
+    console.log('🔗 Customer Portal URL:', customerPortalUrl);
 
     if (!customerEmail) {
       console.error('❌ No customer email in webhook payload');
@@ -195,6 +197,7 @@ export async function POST(request: NextRequest) {
             currency: attributes.currency || 'USD',
             current_period_start: attributes.created_at || new Date().toISOString(),
             current_period_end: attributes.renews_at || null,
+            customer_portal_url: customerPortalUrl,
             lemon_squeezy_data: data,
             updated_at: new Date().toISOString()
           }, {
@@ -230,6 +233,11 @@ export async function POST(request: NextRequest) {
         // Update renewal date if provided
         if (attributes.renews_at) {
           updateData.current_period_end = attributes.renews_at;
+        }
+
+        // Update customer portal URL if available
+        if (customerPortalUrl) {
+          updateData.customer_portal_url = customerPortalUrl;
         }
 
         // Update plan type if changed

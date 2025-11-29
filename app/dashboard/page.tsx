@@ -10,7 +10,8 @@ import { de } from 'date-fns/locale';
 import Link from 'next/link';
 import { AccountSettings } from '@/components/dashboard/AccountSettings';
 import { UpgradeToPro } from '@/components/dashboard/UpgradeToPro';
-import { getUserPlan } from '@/lib/subscription';
+import { SubscriptionManagement } from '@/components/dashboard/SubscriptionManagement';
+import { getUserPlan, getSubscriptionDetails } from '@/lib/subscription';
 
 // Force dynamic rendering - no caching for subscription status
 export const dynamic = 'force-dynamic';
@@ -28,6 +29,9 @@ export default async function DashboardPage() {
 
   // Fetch user subscription/plan
   const currentPlan = await getUserPlan(user.id);
+  
+  // Fetch detailed subscription info
+  const subscriptionDetails = await getSubscriptionDetails(user.id);
 
   // Fetch user stats
   const { data: userStats } = await supabase
@@ -119,9 +123,13 @@ export default async function DashboardPage() {
           </Card>
         ) : null}
 
-        {/* Upgrade to Pro Section */}
+        {/* Subscription Section */}
         <div className="mb-8">
-          <UpgradeToPro currentPlan={currentPlan} monthlyUsage={monthlyUsage || 0} />
+          {currentPlan === 'free' ? (
+            <UpgradeToPro currentPlan={currentPlan} monthlyUsage={monthlyUsage || 0} />
+          ) : (
+            <SubscriptionManagement details={subscriptionDetails} />
+          )}
         </div>
 
         {/* Stats Grid */}
