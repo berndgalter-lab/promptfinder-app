@@ -6,7 +6,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ACHIEVEMENTS, getAchievementIcon, type Achievement } from '@/lib/achievements';
 import { formatDistanceToNow } from 'date-fns';
-import { de } from 'date-fns/locale';
 import Link from 'next/link';
 import { AccountSettings } from '@/components/dashboard/AccountSettings';
 import { UpgradeToPro } from '@/components/dashboard/UpgradeToPro';
@@ -100,7 +99,7 @@ export default async function DashboardPage() {
         <div className="mb-8">
           <h1 className="text-4xl font-bold md:text-5xl">Dashboard</h1>
           <p className="mt-2 text-lg text-zinc-400">
-            Willkommen zurück, {user.email?.split('@')[0]}!
+            Welcome back, {user.email?.split('@')[0]}!
           </p>
         </div>
 
@@ -108,15 +107,15 @@ export default async function DashboardPage() {
         {totalWorkflows === 0 ? (
           <Card className="border-zinc-800 bg-zinc-900 mb-8">
             <CardHeader>
-              <CardTitle className="text-2xl">🎉 Willkommen bei PromptFinder!</CardTitle>
+              <CardTitle className="text-2xl">🎉 Welcome to PromptFinder!</CardTitle>
               <CardDescription>
-                Du hast noch keinen Workflow verwendet. Starte jetzt!
+                You haven't used any workflows yet. Start exploring now!
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Link href="/workflows">
                 <Button size="lg" className="!bg-blue-600 hover:!bg-blue-700 !text-white">
-                  Workflows durchsuchen
+                  Browse Workflows
                 </Button>
               </Link>
             </CardContent>
@@ -137,19 +136,19 @@ export default async function DashboardPage() {
           {/* Card 1: Usage Stats */}
           <Card className="border-zinc-800 bg-zinc-900">
             <CardHeader>
-              <CardTitle>Deine Stats</CardTitle>
-              <CardDescription>Deine Nutzungsstatistiken</CardDescription>
+              <CardTitle>Your Stats</CardTitle>
+              <CardDescription>Your usage statistics</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Total workflows */}
               <div>
-                <p className="text-sm text-zinc-400 mb-1">Gesamt verwendete Workflows</p>
+                <p className="text-sm text-zinc-400 mb-1">Total Workflows Used</p>
                 <p className="text-5xl font-bold text-white">{totalWorkflows}</p>
               </div>
 
               {/* Current month usage */}
               <div>
-                <p className="text-sm text-zinc-400 mb-2">Nutzung diesen Monat</p>
+                <p className="text-sm text-zinc-400 mb-2">This Month's Usage</p>
                 <div className="flex items-center gap-3">
                   {/* Simple progress bar without radix */}
                   <div className="flex-1 h-2 bg-zinc-800 rounded-full overflow-hidden">
@@ -183,11 +182,10 @@ export default async function DashboardPage() {
               {/* Last used */}
               {userStats?.last_used_at && (
                 <div>
-                  <p className="text-sm text-zinc-400">Zuletzt verwendet</p>
+                  <p className="text-sm text-zinc-400">Last Used</p>
                   <p className="text-base font-medium">
                     {formatDistanceToNow(new Date(userStats.last_used_at), { 
-                      addSuffix: true,
-                      locale: de 
+                      addSuffix: true
                     })}
                   </p>
                 </div>
@@ -195,21 +193,21 @@ export default async function DashboardPage() {
 
               {/* Favorites count */}
               <div className="pt-3 border-t border-zinc-800 mt-3">
-                <p className="text-sm text-zinc-400">Favoriten</p>
+                <p className="text-sm text-zinc-400">Favorites</p>
                 <p className="text-2xl font-bold">{favoritesCount || 0}</p>
               </div>
 
               {/* Current streak - ALWAYS show */}
               <div className="pt-3 border-t border-zinc-800 mt-3">
-                <p className="text-sm text-zinc-400">Aktuelle Serie 🔥</p>
+                <p className="text-sm text-zinc-400">Current Streak 🔥</p>
                 {userStats?.current_streak && userStats.current_streak > 0 ? (
                   <p className="text-2xl font-bold text-orange-400">
-                    {userStats.current_streak} {userStats.current_streak === 1 ? 'Tag' : 'Tage'}
+                    {userStats.current_streak} {userStats.current_streak === 1 ? 'day' : 'days'}
                   </p>
                 ) : (
                   <div>
-                    <p className="text-2xl font-bold text-zinc-600">0 Tage</p>
-                    <p className="text-xs text-zinc-500 mt-1">Nutze heute einen Workflow, um deine Serie zu starten!</p>
+                    <p className="text-2xl font-bold text-zinc-600">0 days</p>
+                    <p className="text-xs text-zinc-500 mt-1">Use a workflow today to start your streak!</p>
                   </div>
                 )}
               </div>
@@ -221,7 +219,7 @@ export default async function DashboardPage() {
             <CardHeader>
               <CardTitle>Achievements</CardTitle>
               <CardDescription>
-                {unlockedAchievementsList.length}/{ACHIEVEMENTS.length} freigeschaltet 
+                {unlockedAchievementsList.length}/{ACHIEVEMENTS.length} unlocked 
                 ({Math.round(achievementProgress)}%)
               </CardDescription>
             </CardHeader>
@@ -237,7 +235,7 @@ export default async function DashboardPage() {
               {/* Unlocked achievements */}
               {unlockedAchievementsList.length > 0 && (
                 <div className="space-y-3">
-                  <p className="text-sm font-semibold text-zinc-300">Freigeschaltet</p>
+                  <p className="text-sm font-semibold text-zinc-300">Unlocked</p>
                   <div className="max-h-64 overflow-y-auto space-y-2">
                     {unlockedAchievementsList.map((achievement) => (
                       <div 
@@ -254,8 +252,7 @@ export default async function DashboardPage() {
                           </p>
                           <p className="text-xs text-zinc-500 mt-1">
                             {formatDistanceToNow(new Date(achievement.unlockedAt), { 
-                              addSuffix: true,
-                              locale: de 
+                              addSuffix: true
                             })}
                           </p>
                         </div>
@@ -268,7 +265,7 @@ export default async function DashboardPage() {
               {/* Locked achievements */}
               {lockedAchievements.length > 0 && (
                 <div className="space-y-3">
-                  <p className="text-sm font-semibold text-zinc-500">Noch nicht freigeschaltet</p>
+                  <p className="text-sm font-semibold text-zinc-500">Locked</p>
                   <div className="space-y-2">
                     {lockedAchievements.slice(0, 3).map((achievement) => (
                       <div 
@@ -294,7 +291,7 @@ export default async function DashboardPage() {
                   </div>
                   {lockedAchievements.length > 3 && (
                     <p className="text-xs text-zinc-500 text-center">
-                      +{lockedAchievements.length - 3} weitere
+                      +{lockedAchievements.length - 3} more
                     </p>
                   )}
                 </div>
@@ -307,12 +304,12 @@ export default async function DashboardPage() {
             <Card className="border-zinc-800 bg-zinc-900 md:col-span-2">
               <CardHeader className="flex flex-row items-center justify-between">
                 <div>
-                  <CardTitle>Letzte Aktivität</CardTitle>
-                  <CardDescription>Deine zuletzt verwendeten Workflows</CardDescription>
+                  <CardTitle>Recent Activity</CardTitle>
+                  <CardDescription>Your recently used workflows</CardDescription>
                 </div>
                 <Link href="/history">
                   <Button variant="outline" size="sm" className="!text-white !border-zinc-700 hover:!bg-zinc-800">
-                    Alle anzeigen
+                    View All
                   </Button>
                 </Link>
               </CardHeader>
@@ -332,8 +329,7 @@ export default async function DashboardPage() {
                         </Link>
                         <p className="text-xs text-zinc-500 mt-1">
                           {formatDistanceToNow(new Date(usage.used_at), { 
-                            addSuffix: true,
-                            locale: de 
+                            addSuffix: true
                           })}
                         </p>
                       </div>
