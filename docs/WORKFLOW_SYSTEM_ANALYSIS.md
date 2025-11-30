@@ -1040,7 +1040,6 @@ CREATE TABLE workflows (
   title TEXT NOT NULL,
   description TEXT,
   slug TEXT UNIQUE NOT NULL,
-  tier TEXT CHECK (tier IN ('essential', 'advanced')),
   steps JSONB,
   created_at TIMESTAMP WITH TIME ZONE
 );
@@ -1296,11 +1295,10 @@ onCheckedChange={(checked) => {
 
 ### **Workflow erstellen:**
 ```sql
-INSERT INTO workflows (title, description, slug, tier, workflow_type, steps) VALUES (
+INSERT INTO workflows (title, description, slug, workflow_type, steps) VALUES (
   'Blog Post Writer',
   'Create SEO-optimized blog posts',
   'blog-post-writer',
-  'essential',
   'sequential',  -- ← Wichtig!
   '[
     {

@@ -7,7 +7,6 @@ CREATE TABLE IF NOT EXISTS workflows (
   title TEXT NOT NULL,
   description TEXT,
   slug TEXT UNIQUE NOT NULL,
-  tier TEXT CHECK (tier IN ('essential', 'advanced')) DEFAULT 'essential',
   steps JSONB DEFAULT '[]'::jsonb,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -21,11 +20,10 @@ CREATE POLICY "Anyone can view workflows"
 ON workflows FOR SELECT TO public USING (true);
 
 -- 4. Beispiel Workflow mit prompt_template
-INSERT INTO workflows (title, description, slug, tier, steps) VALUES (
+INSERT INTO workflows (title, description, slug, steps) VALUES (
   'SEO Blog Post Generator',
   'Generate SEO-optimized blog posts with AI',
   'seo-blog-post',
-  'essential',
   '[
     {
       "title": "Define Your Topic",
@@ -89,15 +87,13 @@ INSERT INTO workflows (title, description, slug, tier, steps) VALUES (
 ) ON CONFLICT (slug) DO UPDATE SET
   title = EXCLUDED.title,
   description = EXCLUDED.description,
-  tier = EXCLUDED.tier,
   steps = EXCLUDED.steps;
 
 -- 5. Weitere Beispiel-Workflows
-INSERT INTO workflows (title, description, slug, tier, steps) VALUES (
+INSERT INTO workflows (title, description, slug, steps) VALUES (
   'Email Marketing Campaign',
   'Create engaging email campaigns',
   'email-marketing',
-  'advanced',
   '[
     {
       "title": "Campaign Setup",
@@ -159,14 +155,12 @@ INSERT INTO workflows (title, description, slug, tier, steps) VALUES (
 ) ON CONFLICT (slug) DO UPDATE SET
   title = EXCLUDED.title,
   description = EXCLUDED.description,
-  tier = EXCLUDED.tier,
   steps = EXCLUDED.steps;
 
-INSERT INTO workflows (title, description, slug, tier, steps) VALUES (
+INSERT INTO workflows (title, description, slug, steps) VALUES (
   'Social Media Post Creator',
   'Generate engaging social media content',
   'social-media-post',
-  'essential',
   '[
     {
       "title": "Post Details",
@@ -207,7 +201,6 @@ INSERT INTO workflows (title, description, slug, tier, steps) VALUES (
 ) ON CONFLICT (slug) DO UPDATE SET
   title = EXCLUDED.title,
   description = EXCLUDED.description,
-  tier = EXCLUDED.tier,
   steps = EXCLUDED.steps;
 
 -- Fertig! Testen unter: /workflows/seo-blog-post

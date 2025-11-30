@@ -2,7 +2,6 @@ import { createClient } from '@/lib/supabase/server';
 import { getUser } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { FavoriteToggle } from '@/components/workflow/FavoriteToggle';
 import Link from 'next/link';
@@ -12,7 +11,6 @@ interface Workflow {
   title: string;
   description: string;
   slug: string;
-  tier: 'essential' | 'advanced';
 }
 
 interface Favorite {
@@ -43,8 +41,7 @@ export default async function FavoritesPage() {
         id,
         title,
         description,
-        slug,
-        tier
+        slug
       )
     `)
     .eq('user_id', user.id)
@@ -106,11 +103,6 @@ export default async function FavoritesPage() {
                       initialIsFavorited={true}
                       userId={user.id}
                     />
-                  </div>
-                  <div className="mb-2">
-                    <Badge variant={workflow.tier === 'essential' ? 'success' : 'default'}>
-                      {workflow.tier === 'essential' ? 'Essential' : 'Advanced'}
-                    </Badge>
                   </div>
                   <CardDescription>{workflow.description}</CardDescription>
                 </CardHeader>

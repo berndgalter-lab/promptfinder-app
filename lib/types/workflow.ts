@@ -80,7 +80,6 @@ export interface Workflow {
   slug: string;
   title: string;
   description: string;
-  tier: 'essential' | 'advanced';
   workflow_type: WorkflowType;
   steps: WorkflowStep[];
   created_at: string;

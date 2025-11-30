@@ -17,7 +17,6 @@ const newWorkflow = {
   title: 'My Workflow Title',            // ⚠️ User-visible name
   description: 'Short description',      // ⚠️ One sentence
   workflow_type: 'combined',             // 'combined' or 'sequential'
-  tier: 'essential',                     // 'essential' or 'advanced'
 
   // === ORGANIZATION & DISCOVERY ===
   category_id: 1,                        // ⚠️ 1=Writing, 2=Marketing, 3=Business, 4=Productivity, 5=Career, 6=Development
@@ -117,7 +116,6 @@ INSERT INTO workflows (
   title, 
   description, 
   workflow_type, 
-  tier,
   category_id, 
   tags, 
   icon,
@@ -136,7 +134,6 @@ VALUES (
   '${newWorkflow.title}',
   '${newWorkflow.description}',
   '${newWorkflow.workflow_type}',
-  '${newWorkflow.tier}',
   ${newWorkflow.category_id},
   ARRAY[${newWorkflow.tags.map(t => `'${t}'`).join(', ')}],
   '${newWorkflow.icon}',

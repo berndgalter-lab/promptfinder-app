@@ -43,7 +43,6 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
     slug: rawWorkflow.slug,
     title: rawWorkflow.title,
     description: rawWorkflow.description || '',
-    tier: rawWorkflow.tier || 'essential',
     workflow_type: rawWorkflow.workflow_type || 'combined', // Default to combined for old workflows
     steps: (rawWorkflow.steps || []).map((step: any, index: number) => ({
       number: index + 1,

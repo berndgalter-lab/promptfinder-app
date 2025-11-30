@@ -2,7 +2,6 @@ import { createClient } from '@/lib/supabase/server';
 import { getUser } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { HistoryItem } from '@/components/history/HistoryItem';
 import Link from 'next/link';
@@ -11,7 +10,6 @@ interface Workflow {
   id: string;
   title: string;
   slug: string;
-  tier: 'essential' | 'advanced';
 }
 
 interface UsageRecord {
@@ -43,8 +41,7 @@ export default async function HistoryPage() {
       workflows:workflow_id (
         id,
         title,
-        slug,
-        tier
+        slug
       )
     `)
     .eq('user_id', user.id)

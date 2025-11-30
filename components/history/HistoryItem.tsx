@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -22,7 +21,6 @@ interface Workflow {
   id: string;
   title: string;
   slug: string;
-  tier: 'essential' | 'advanced';
 }
 
 interface HistoryItemProps {
@@ -114,9 +112,6 @@ export function HistoryItem({
             <div className="flex-1">
               <div className="mb-2 flex items-center gap-2">
                 <CardTitle className="text-xl">{workflow.title}</CardTitle>
-                <Badge variant={workflow.tier === 'essential' ? 'success' : 'default'}>
-                  {workflow.tier === 'essential' ? 'Essential' : 'Advanced'}
-                </Badge>
               </div>
               <p className="text-sm text-zinc-500">Used {relativeTime}</p>
             </div>

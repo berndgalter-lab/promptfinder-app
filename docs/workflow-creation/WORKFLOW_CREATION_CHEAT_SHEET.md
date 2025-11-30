@@ -16,7 +16,6 @@ Dieses Dokument zeigt dir **alle Felder** die du beim Erstellen eines Workflows 
   title: "Quick Email Reply",          // Anzeige-Name
   description: "Generate a professional email reply", // Kurzbeschreibung
   workflow_type: "combined",           // "combined" oder "sequential"
-  tier: "essential",                   // "essential" oder "advanced"
   steps: [...],                        // Array von Step-Objekten
 }
 ```
@@ -305,7 +304,6 @@ workflow_type: "sequential"  // Multi-Step, mit Navigation
   title: "My Awesome Workflow",
   description: "One-sentence description of what this does",
   workflow_type: "combined",
-  tier: "essential",
   
   // Discovery
   category_id: 1,  // Writing
@@ -424,7 +422,7 @@ Bevor du einen Workflow veröffentlichst:
 
 ### Workflow in Supabase erstellen:
 ```sql
-INSERT INTO workflows (slug, title, description, category_id, tool, difficulty, estimated_minutes, icon, tags, workflow_type, tier, status, steps)
+INSERT INTO workflows (slug, title, description, category_id, tool, difficulty, estimated_minutes, icon, tags, workflow_type, status, steps)
 VALUES (
   'email-reply',
   'Quick Email Reply',
@@ -436,7 +434,6 @@ VALUES (
   '📧',
   ARRAY['email', 'communication', 'business'],
   'combined',
-  'essential',
   'published',
   '[{"number": 1, "type": "prompt", "title": "Email Details", ...}]'::jsonb
 );
