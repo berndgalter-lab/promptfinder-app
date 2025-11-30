@@ -14,6 +14,9 @@ import {
 } from '@/components/ui/select';
 import { Copy, ExternalLink } from 'lucide-react';
 import { type PromptStep } from '@/lib/types/workflow';
+import { WorkflowSectionLabel } from '@/components/workflow/WorkflowSectionLabel';
+import { PromptReadyBanner } from '@/components/workflow/PromptReadyBanner';
+import { ProTip } from '@/components/workflow/ProTip';
 
 interface PromptStepProps {
   step: PromptStep;
@@ -22,6 +25,7 @@ interface PromptStepProps {
   onCopyPrompt: () => void;
   onOpenChatGPT: () => void;
   generatedPrompt: string;
+  tool?: 'chatgpt' | 'claude' | 'cursor' | 'any';
 }
 
 export function PromptStepComponent({
@@ -31,21 +35,32 @@ export function PromptStepComponent({
   onCopyPrompt,
   onOpenChatGPT,
   generatedPrompt,
+  tool = 'chatgpt',
 }: PromptStepProps) {
   // Check if all required fields are filled
   const areRequiredFieldsFilled = step.fields
     .filter(field => field.required)
     .every(field => fieldValues[field.name]?.trim());
 
+  // Tool-specific button labels
+  const openButtonLabels = {
+    chatgpt: 'Open ChatGPT',
+    claude: 'Open Claude',
+    cursor: 'Open Cursor',
+    any: 'Open AI Assistant'
+  };
+
   return (
     <div className="space-y-6">
-      {/* Fields Section */}
-      <Card className="border-zinc-800 bg-zinc-900">
-        <CardHeader>
-          <CardTitle className="text-xl">{step.title}</CardTitle>
-          <CardDescription>{step.description}</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      {/* Fields Section with Label */}
+      <div>
+        <WorkflowSectionLabel 
+          step={1} 
+          title="Your Details" 
+          subtitle="Fill in the fields to personalize your prompt"
+        />
+        <Card className="border-zinc-800 bg-zinc-900">
+          <CardContent className="space-y-4 pt-6">
           {step.fields.map((field) => (
             <div key={field.name} className="space-y-2">
               <Label htmlFor={field.name} className="text-white">
@@ -103,55 +118,51 @@ export function PromptStepComponent({
               )}
             </div>
           ))}
-        </CardContent>
-      </Card>
-
-      {/* Generated Prompt Preview */}
-      {generatedPrompt && (
-        <Card className="border-blue-500/30 bg-gradient-to-br from-blue-500/5 to-purple-500/5">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <span className="text-blue-400">✨</span>
-              Generated Prompt
-            </CardTitle>
-            <CardDescription>
-              This is your final prompt ready to use in ChatGPT
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="rounded-lg bg-zinc-950 border border-zinc-800 p-4">
-              <pre className="whitespace-pre-wrap text-sm text-zinc-300 font-mono">
-                {generatedPrompt}
-              </pre>
-            </div>
-
-            <div className="flex gap-3">
-              <Button
-                onClick={onCopyPrompt}
-                disabled={!areRequiredFieldsFilled}
-                variant="outline"
-                className="flex-1 !text-white !border-zinc-700 hover:!bg-zinc-800"
-              >
-                <Copy className="w-4 h-4 mr-2" />
-                Copy Prompt
-              </Button>
-              <Button
-                onClick={onOpenChatGPT}
-                disabled={!areRequiredFieldsFilled}
-                className="flex-1 !bg-blue-600 hover:!bg-blue-700 !text-white"
-              >
-                <ExternalLink className="w-4 h-4 mr-2" />
-                Use in ChatGPT
-              </Button>
-            </div>
-
-            {!areRequiredFieldsFilled && (
-              <p className="text-sm text-zinc-500 text-center">
-                Fill in all required fields to enable buttons
-              </p>
-            )}
           </CardContent>
         </Card>
+      </div>
+
+      {/* Generated Prompt Preview with Section Label */}
+      {generatedPrompt && (
+        <div>
+          <WorkflowSectionLabel 
+            step={2} 
+            title="Your Prompt" 
+          />
+          <PromptReadyBanner isReady={areRequiredFieldsFilled} />
+          
+          <Card className="border-blue-500/30 bg-gradient-to-br from-blue-500/5 to-purple-500/5">
+            <CardContent className="space-y-4 pt-6">
+              <div className="rounded-lg bg-zinc-950 border border-zinc-800 p-4">
+                <pre className="whitespace-pre-wrap text-sm text-zinc-300 font-mono">
+                  {generatedPrompt}
+                </pre>
+              </div>
+
+              <div className="flex gap-3">
+                <Button
+                  onClick={onCopyPrompt}
+                  disabled={!areRequiredFieldsFilled}
+                  variant="outline"
+                  className="flex-1 !text-white !border-zinc-700 hover:!bg-zinc-800"
+                >
+                  <Copy className="w-4 h-4 mr-2" />
+                  Copy to Clipboard
+                </Button>
+                <Button
+                  onClick={onOpenChatGPT}
+                  disabled={!areRequiredFieldsFilled}
+                  className="flex-1 !bg-blue-600 hover:!bg-blue-700 !text-white"
+                >
+                  <ExternalLink className="w-4 h-4 mr-2" />
+                  {openButtonLabels[tool]}
+                </Button>
+              </div>
+
+              <ProTip tool={tool} />
+            </CardContent>
+          </Card>
+        </div>
       )}
     </div>
   );

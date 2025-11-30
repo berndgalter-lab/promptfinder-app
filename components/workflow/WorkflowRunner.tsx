@@ -556,6 +556,7 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
               onCopyPrompt={() => handleCopyPrompt(buildPrompt(currentStepObj))}
               onOpenChatGPT={() => handleOpenChatGPT(buildPrompt(currentStepObj))}
               generatedPrompt={buildPrompt(currentStepObj)}
+              tool={workflow.tool}
             />
           )}
 

@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { FavoriteButton } from '@/components/workflow/FavoriteButton';
 import { WorkflowRunnerWrapper } from '@/components/workflow/WorkflowRunnerWrapper';
 import { WorkflowLimitGuard } from '@/components/workflow/WorkflowLimitGuard';
+import { HowItWorksBox } from '@/components/workflow/HowItWorksBox';
 import { notFound } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -209,6 +210,15 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
             initialIsFavorited={isFavorited}
             userId={user?.id || null}
             workflowTitle={workflow.title}
+          />
+        </div>
+
+        {/* How It Works - Dismissable for Power Users */}
+        <div className="mt-8">
+          <HowItWorksBox 
+            estimatedMinutes={workflow.estimated_minutes}
+            difficulty={workflow.difficulty}
+            tool={workflow.tool}
           />
         </div>
 
