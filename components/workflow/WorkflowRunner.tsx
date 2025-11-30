@@ -117,8 +117,12 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
     // 3. Merge both (inputValues can override fieldValues if same name)
     const allValues = { ...allFieldValues, ...allInputValues };
     
-    // 4. Replace all variables in prompt
-    let prompt = step.prompt_template;
+    // 4. Start from prompt_template and normalize escaped newlines
+    // Some templates in the database store literal "\n" sequences instead of real line breaks.
+    // Replace those with actual newline characters so the preview is readable.
+    let prompt = step.prompt_template.replace(/\\n/g, '\n');
+
+    // 5. Replace all variables in prompt
     Object.entries(allValues).forEach(([key, value]) => {
       prompt = prompt.replace(new RegExp(`{{${key}}}`, 'g'), value);
     });
