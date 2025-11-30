@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -41,6 +42,12 @@ export function PromptStepComponent({
   const areRequiredFieldsFilled = step.fields
     .filter(field => field.required)
     .every(field => fieldValues[field.name]?.trim());
+
+  // Ensure that literal "\n" sequences from the database are rendered as real line breaks
+  const displayPrompt = useMemo(
+    () => generatedPrompt.replace(/\\n/g, '\n'),
+    [generatedPrompt]
+  );
 
   // Tool-specific button labels
   const openButtonLabels = {
@@ -135,7 +142,7 @@ export function PromptStepComponent({
             <CardContent className="space-y-4 pt-6">
               <div className="rounded-lg bg-zinc-950 border border-zinc-800 p-4">
                 <pre className="whitespace-pre-wrap text-sm text-zinc-300 font-mono">
-                  {generatedPrompt}
+                  {displayPrompt}
                 </pre>
               </div>
 
