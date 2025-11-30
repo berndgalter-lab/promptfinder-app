@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Lock, Zap } from 'lucide-react';
+import { CategoryBadge } from '@/components/ui/CategoryBadge';
 import { type Workflow, type WorkflowStep } from '@/lib/types/workflow';
 
 interface PageProps {
@@ -21,10 +22,13 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const supabase = await createClient();
   
-  // Fetch workflow
+  // Fetch workflow with category
   const { data: rawWorkflow, error: workflowError } = await supabase
     .from('workflows')
-    .select('*')
+    .select(`
+      *,
+      category:categories(id, slug, name, icon)
+    `)
     .eq('slug', slug)
     .single();
 
@@ -33,7 +37,7 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
   }
 
   // Transform to new Workflow type with backward compatibility
-  const workflow: Workflow = {
+  const workflow: Workflow & { category?: { id: number; slug: string; name: string; icon: string } | null } = {
     id: rawWorkflow.id,  // UUID string from Supabase
     slug: rawWorkflow.slug,
     title: rawWorkflow.title,
@@ -83,6 +87,8 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
     usage_count: rawWorkflow.usage_count ?? 0,
     status: rawWorkflow.status ?? 'published',
     sort_order: rawWorkflow.sort_order ?? 0,
+    // Category from join
+    category: rawWorkflow.category ?? null,
   };
 
   // Fetch current user
@@ -101,9 +107,6 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
     
     isFavorited = !!favorite;
   }
-
-  const tierVariant = workflow.tier === 'essential' ? 'success' : 'default';
-  const tierLabel = workflow.tier === 'essential' ? 'Essential' : 'Advanced';
 
   // Remove old limit check - now handled by WorkflowLimitGuard
   if (false) {
@@ -187,9 +190,13 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
               <h1 className="text-4xl font-bold md:text-5xl">
                 {workflow.title}
               </h1>
-              <Badge variant={tierVariant}>
-                {tierLabel}
-              </Badge>
+              {workflow.category && (
+                <CategoryBadge 
+                  slug={workflow.category.slug}
+                  name={workflow.category.name}
+                  icon={workflow.category.icon}
+                />
+              )}
             </div>
             <p className="text-lg text-zinc-400">
               {workflow.description}

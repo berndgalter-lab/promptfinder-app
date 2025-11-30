@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { CategoryBadge } from '@/components/ui/CategoryBadge';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -9,7 +9,12 @@ interface Workflow {
   title: string;
   description: string;
   slug: string;
-  tier: 'essential' | 'advanced';
+  category?: {
+    id: number;
+    slug: string;
+    name: string;
+    icon: string;
+  } | null;
 }
 
 export default async function WorkflowsPage() {
@@ -24,7 +29,10 @@ export default async function WorkflowsPage() {
     const supabase = await createClient();
     const { data, error: fetchError } = await supabase
       .from('workflows')
-      .select('*');
+      .select(`
+        *,
+        category:categories(id, slug, name, icon)
+      `);
     
     console.log('📦 Supabase response:', { data, fetchError });
     
@@ -102,9 +110,14 @@ export default async function WorkflowsPage() {
               <CardHeader>
                 <div className="mb-2 flex items-center justify-between">
                   <CardTitle className="text-xl">{workflow.title}</CardTitle>
-                  <Badge variant={workflow.tier === 'essential' ? 'success' : 'default'}>
-                    {workflow.tier === 'essential' ? 'Essential' : 'Advanced'}
-                  </Badge>
+                  {workflow.category && (
+                    <CategoryBadge 
+                      slug={workflow.category.slug}
+                      name={workflow.category.name}
+                      icon={workflow.category.icon}
+                      clickable={false}
+                    />
+                  )}
                 </div>
                 <CardDescription>{workflow.description}</CardDescription>
               </CardHeader>
