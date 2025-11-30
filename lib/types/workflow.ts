@@ -1,7 +1,28 @@
 // PromptFinder Workflow Type Definitions
 
+// Category Type
+export interface Category {
+  id: number;
+  created_at: string;
+  slug: string;
+  name: string;
+  description: string | null;
+  icon: string;
+  sort_order: number;
+  workflow_count: number;
+}
+
 // Step Types
 export type StepType = 'prompt' | 'instruction' | 'input';
+
+// Tool Types
+export type ToolType = 'chatgpt' | 'claude' | 'cursor' | 'any';
+
+// Difficulty Types
+export type DifficultyType = 'beginner' | 'intermediate' | 'advanced';
+
+// Status Types
+export type WorkflowStatus = 'draft' | 'published';
 
 // Field Types (for prompt steps)
 export type FieldType = 'text' | 'textarea' | 'select';
@@ -63,6 +84,19 @@ export interface Workflow {
   workflow_type: WorkflowType;
   steps: WorkflowStep[];
   created_at: string;
+  // NEW: Extended fields for SEO, discovery, and organization
+  category_id: number | null;
+  tags: string[];
+  tool: ToolType;
+  difficulty: DifficultyType;
+  estimated_minutes: number;
+  icon: string;
+  meta_title: string | null;
+  meta_description: string | null;
+  featured: boolean;
+  usage_count: number;
+  status: WorkflowStatus;
+  sort_order: number;
 }
 
 // User's progress through a workflow

@@ -70,6 +70,19 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
       }),
     })) as WorkflowStep[],
     created_at: rawWorkflow.created_at,
+    // New fields with backward-compatible defaults
+    category_id: rawWorkflow.category_id ?? null,
+    tags: rawWorkflow.tags ?? [],
+    tool: rawWorkflow.tool ?? 'any',
+    difficulty: rawWorkflow.difficulty ?? 'beginner',
+    estimated_minutes: rawWorkflow.estimated_minutes ?? 5,
+    icon: rawWorkflow.icon ?? '📝',
+    meta_title: rawWorkflow.meta_title ?? null,
+    meta_description: rawWorkflow.meta_description ?? null,
+    featured: rawWorkflow.featured ?? false,
+    usage_count: rawWorkflow.usage_count ?? 0,
+    status: rawWorkflow.status ?? 'published',
+    sort_order: rawWorkflow.sort_order ?? 0,
   };
 
   // Fetch current user
