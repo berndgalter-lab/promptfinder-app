@@ -49,9 +49,15 @@ promptfinder/
 │   └── supabase-usage-tracking.sql # Usage tracking tables
 │
 └── docs/
+    ├── workflow-creation/         # 📝 Workflow creation guides
+    │   ├── README.md              # Guide overview
+    │   ├── WORKFLOW_CREATION_CHEAT_SHEET.md # Complete field reference
+    │   ├── WORKFLOW_TEMPLATE.ts   # Copy-paste template
+    │   └── WORKFLOW_VISUAL_GUIDE.md # UI field mapping
     ├── ENV_SETUP.md              # Environment setup guide
     ├── WORKFLOW_SYSTEM_ANALYSIS.md # Technical documentation
-    └── ACHIEVEMENTS.md           # Achievement system docs
+    ├── ACHIEVEMENTS.md           # Achievement system docs
+    └── GDPR_COMPLIANCE.md        # Privacy & data handling
 ```
 
 ---
@@ -112,9 +118,17 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ## 📚 Documentation
 
+### General Documentation
 - **[ENV_SETUP.md](./docs/ENV_SETUP.md)** - Complete environment setup guide
 - **[WORKFLOW_SYSTEM_ANALYSIS.md](./docs/WORKFLOW_SYSTEM_ANALYSIS.md)** - Technical workflow system documentation
 - **[ACHIEVEMENTS.md](./docs/ACHIEVEMENTS.md)** - Achievement system implementation
+- **[GDPR_COMPLIANCE.md](./docs/GDPR_COMPLIANCE.md)** - Privacy & data handling
+
+### Workflow Creation Guides
+- **[Workflow Creation Overview](./docs/workflow-creation/README.md)** - Start here!
+- **[Cheat Sheet](./docs/workflow-creation/WORKFLOW_CREATION_CHEAT_SHEET.md)** - Quick reference for all fields
+- **[Template](./docs/workflow-creation/WORKFLOW_TEMPLATE.ts)** - Copy-paste template with validator
+- **[Visual Guide](./docs/workflow-creation/WORKFLOW_VISUAL_GUIDE.md)** - Field → UI mapping
 
 ---
 
