@@ -44,9 +44,12 @@ export default async function RootLayout({
                 PromptFinder
               </h1>
             </Link>
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4 md:gap-6">
               <NavLinks isLoggedIn={!!user} />
-              <AuthButton />
+              {/* AuthButton nur auf Desktop im Header, auf Mobile im Sheet */}
+              <div className="hidden md:block">
+                <AuthButton />
+              </div>
             </div>
           </div>
         </header>

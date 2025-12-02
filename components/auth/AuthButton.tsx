@@ -88,19 +88,20 @@ export function AuthButton() {
     }
 
     return (
-      <form onSubmit={signInWithMagicLink} className="flex items-center gap-2">
+      <form onSubmit={signInWithMagicLink} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
         <input
           type="email"
           placeholder="your@email.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="h-9 rounded-md border border-zinc-700 bg-zinc-900 px-3 text-sm text-white placeholder:text-zinc-500 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
+          className="h-9 w-full sm:w-auto rounded-md border border-zinc-700 bg-zinc-900 px-3 text-sm text-white placeholder:text-zinc-500 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
         />
         <Button 
           type="submit" 
           disabled={isSubmitting || !email}
           size="sm"
+          className="w-full sm:w-auto"
         >
           {isSubmitting ? 'Sending...' : 'Sign In'}
         </Button>
@@ -109,11 +110,11 @@ export function AuthButton() {
   }
 
   return (
-    <div className="flex items-center gap-3">
-      <span className="text-sm text-zinc-400">
+    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
+      <span className="text-sm text-zinc-400 truncate max-w-[200px]">
         {user.email}
       </span>
-      <Button onClick={signOut} variant="outline" size="sm">
+      <Button onClick={signOut} variant="outline" size="sm" className="w-full sm:w-auto">
         Sign Out
       </Button>
     </div>
