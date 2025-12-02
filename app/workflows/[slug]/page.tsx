@@ -5,6 +5,7 @@ import { FavoriteButton } from '@/components/workflow/FavoriteButton';
 import { WorkflowRunnerWrapper } from '@/components/workflow/WorkflowRunnerWrapper';
 import { WorkflowLimitGuard } from '@/components/workflow/WorkflowLimitGuard';
 import { HowItWorksBox } from '@/components/workflow/HowItWorksBox';
+import { OnboardingOverlay } from '@/components/workflow/OnboardingOverlay';
 import { notFound } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -182,6 +183,9 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-zinc-950 px-4 py-12 text-white">
+      {/* First-time user onboarding */}
+      <OnboardingOverlay />
+      
       <div className="mx-auto max-w-4xl">
         {/* Header with title and favorite button */}
         <div className="mb-8 flex items-start justify-between gap-4">
