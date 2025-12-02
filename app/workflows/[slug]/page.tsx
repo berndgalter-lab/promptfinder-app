@@ -184,7 +184,7 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-zinc-950 px-4 py-12 text-white">
       {/* First-time user onboarding */}
-      <OnboardingOverlay />
+      <OnboardingOverlay workflowTitle={workflow.title} />
       
       <div className="mx-auto max-w-4xl">
         {/* Header with title and favorite button */}

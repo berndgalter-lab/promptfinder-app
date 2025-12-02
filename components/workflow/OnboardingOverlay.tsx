@@ -1,12 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { X, Sparkles, ArrowRight, Zap } from 'lucide-react';
+import { X, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const STORAGE_KEY = 'pf_onboarding_complete';
 
-export function OnboardingOverlay() {
+interface OnboardingOverlayProps {
+  workflowTitle: string;
+}
+
+export function OnboardingOverlay({ workflowTitle }: OnboardingOverlayProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -66,17 +70,26 @@ export function OnboardingOverlay() {
 
           <div className="p-8 pt-10">
             
+            {/* Context label */}
+            <p className="text-xs text-zinc-500 text-center mb-4 uppercase tracking-wider">
+              New to PromptFinder workflows? Here's how they work
+            </p>
+
             {/* Header */}
             <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-blue-500/30">
-                <Sparkles className="w-8 h-8 text-blue-400" />
-              </div>
-              <h2 className="text-2xl font-bold text-white mb-2">
-                Welcome to PromptFinder! 👋
+              <h2 className="text-2xl font-bold text-white mb-3">
+                Welcome to PromptFinder 👋
               </h2>
-              <p className="text-zinc-400">
-                Create amazing AI content in seconds – no prompt engineering needed.
+              <p className="text-zinc-400 leading-relaxed">
+                Reusable AI workflows: you fill in a form,<br />
+                we build the prompt – ready to copy & run.
               </p>
+            </div>
+
+            {/* Current workflow context */}
+            <div className="mb-8 p-3 rounded-lg bg-zinc-800/50 border border-zinc-700/50 text-center">
+              <p className="text-xs text-zinc-500 mb-1">You've opened:</p>
+              <p className="text-sm font-medium text-white">{workflowTitle}</p>
             </div>
 
             {/* Steps - Visual Flow */}
@@ -87,43 +100,31 @@ export function OnboardingOverlay() {
               <div className="grid grid-cols-3 gap-2 sm:gap-4">
                 {/* Step 1 */}
                 <div className="relative text-center">
-                  <div className="relative z-10 w-16 h-16 mx-auto mb-3 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center">
-                    <span className="text-2xl">📝</span>
+                  <div className="relative z-10 w-14 h-14 mx-auto mb-3 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center">
+                    <span className="text-xl">📝</span>
                   </div>
                   <p className="text-sm font-medium text-white">Fill in</p>
-                  <p className="text-xs text-zinc-500 mt-0.5">a few fields</p>
+                  <p className="text-xs text-zinc-500 mt-1 leading-tight">Answer a few questions about your task</p>
                 </div>
 
                 {/* Step 2 */}
                 <div className="relative text-center">
-                  <div className="relative z-10 w-16 h-16 mx-auto mb-3 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center">
-                    <span className="text-2xl">🤖</span>
+                  <div className="relative z-10 w-14 h-14 mx-auto mb-3 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center">
+                    <span className="text-xl">⚡</span>
                   </div>
                   <p className="text-sm font-medium text-white">We build</p>
-                  <p className="text-xs text-zinc-500 mt-0.5">the perfect prompt</p>
+                  <p className="text-xs text-zinc-500 mt-1 leading-tight">PromptFinder creates a best-practice prompt</p>
                 </div>
 
                 {/* Step 3 */}
                 <div className="relative text-center">
-                  <div className="relative z-10 w-16 h-16 mx-auto mb-3 rounded-xl bg-green-500/10 border border-green-500/30 flex items-center justify-center">
-                    <span className="text-2xl">✨</span>
+                  <div className="relative z-10 w-14 h-14 mx-auto mb-3 rounded-xl bg-green-500/10 border border-green-500/30 flex items-center justify-center">
+                    <span className="text-xl">🚀</span>
                   </div>
-                  <p className="text-sm font-medium text-white">Get results</p>
-                  <p className="text-xs text-zinc-500 mt-0.5">from ChatGPT & Co</p>
+                  <p className="text-sm font-medium text-white">Copy & run</p>
+                  <p className="text-xs text-zinc-500 mt-1 leading-tight">Paste into ChatGPT & Co for instant results</p>
                 </div>
               </div>
-            </div>
-
-            {/* Value Props */}
-            <div className="flex flex-wrap justify-center gap-3 mb-8 text-sm">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-800/80 text-zinc-300">
-                <Zap className="w-3.5 h-3.5 text-yellow-400" />
-                Takes 2-3 minutes
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-800/80 text-zinc-300">
-                <span className="text-green-400">✓</span>
-                No AI expertise needed
-              </span>
             </div>
 
             {/* CTA */}
@@ -132,12 +133,12 @@ export function OnboardingOverlay() {
               size="lg"
               className="w-full !bg-gradient-to-r !from-blue-600 !to-purple-600 hover:!from-blue-500 hover:!to-purple-500 !text-white font-medium h-12 text-base"
             >
-              Let's try it!
+              Start this workflow
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
 
             <p className="text-center text-xs text-zinc-500 mt-4">
-              You can always revisit workflows – they're saved automatically.
+              No signup required. Your workflows are saved automatically.
             </p>
           </div>
         </div>
@@ -145,4 +146,3 @@ export function OnboardingOverlay() {
     </div>
   );
 }
-
