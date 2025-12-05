@@ -350,34 +350,6 @@ export function CleanWorkflowRunner({ workflow, userId, onComplete }: CleanWorkf
           </Card>
         )}
       </div>
-
-      {/* Sticky Footer - only visible when prompt is generated */}
-      {promptGenerated && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-zinc-800 bg-zinc-950/90 backdrop-blur-lg">
-          <div className="mx-auto max-w-4xl px-4 py-3">
-            <div className="flex gap-3">
-              <Button
-                onClick={handleCopyPrompt}
-                variant="outline"
-                className="flex-1 !border-zinc-700 !text-white hover:!bg-zinc-800 h-11"
-              >
-                <Copy className="w-4 h-4 mr-2" />
-                Copy Prompt
-              </Button>
-              <Button
-                onClick={handleOpenChatGPT}
-                className="flex-1 !bg-blue-600 hover:!bg-blue-700 !text-white h-11"
-              >
-                <ExternalLink className="w-4 h-4 mr-2" />
-                Use in ChatGPT
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Spacer for sticky footer */}
-      {promptGenerated && <div className="h-20" />}
     </>
   );
 }
