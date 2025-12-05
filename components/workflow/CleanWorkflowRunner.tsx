@@ -131,6 +131,26 @@ export function CleanWorkflowRunner({ workflow, userId, onComplete }: CleanWorkf
     setGeneratedPrompt('');
   };
 
+  // Handle click on disabled button - scroll to first empty required field
+  const handleDisabledClick = () => {
+    if (areAllFieldsFilled) return;
+    
+    const firstEmptyField = promptStep.fields.find(
+      field => field.required && !fieldValues[field.name]?.trim()
+    );
+    
+    if (firstEmptyField) {
+      const element = document.getElementById(`field-${firstEmptyField.name}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        element.classList.add('ring-2', 'ring-red-500');
+        setTimeout(() => {
+          element.classList.remove('ring-2', 'ring-red-500');
+        }, 2000);
+      }
+    }
+  };
+
   // Share URL
   const shareUrl = `https://prompt-finder.com/workflows/${workflow.slug}`;
   const timeSavedText = workflow.time_saved_minutes ? `${workflow.time_saved_minutes}+` : 'tons of';
@@ -202,56 +222,66 @@ export function CleanWorkflowRunner({ workflow, userId, onComplete }: CleanWorkf
                 
                 {field.type === 'text' && (
                   <Input
+                    id={`field-${field.name}`}
                     placeholder={field.placeholder}
                     value={fieldValues[field.name] || ''}
                     onChange={(e) => handleFieldChange(field.name, e.target.value)}
-                    className="bg-zinc-800/50 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-blue-500 focus:ring-blue-500/20"
+                    className="bg-zinc-800/50 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-200"
                   />
                 )}
                 
                 {field.type === 'textarea' && (
                   <Textarea
+                    id={`field-${field.name}`}
                     placeholder={field.placeholder}
                     value={fieldValues[field.name] || ''}
                     onChange={(e) => handleFieldChange(field.name, e.target.value)}
-                    className="bg-zinc-800/50 border-zinc-700 text-white placeholder:text-zinc-500 min-h-[100px] focus:border-blue-500 focus:ring-blue-500/20"
+                    className="bg-zinc-800/50 border-zinc-700 text-white placeholder:text-zinc-500 min-h-[100px] focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-200"
                   />
                 )}
                 
                 {field.type === 'select' && field.options && (
-                  <Select
-                    value={fieldValues[field.name] || ''}
-                    onValueChange={(value) => handleFieldChange(field.name, value)}
-                  >
-                    <SelectTrigger className="bg-zinc-800/50 border-zinc-700 text-white focus:border-blue-500 focus:ring-blue-500/20">
-                      <SelectValue placeholder={field.placeholder || `Select ${field.label.toLowerCase()}`} />
-                    </SelectTrigger>
-                    <SelectContent className="bg-zinc-800 border-zinc-700">
-                      {field.options.map(option => (
-                        <SelectItem 
-                          key={option} 
-                          value={option} 
-                          className="text-white hover:bg-zinc-700 focus:bg-zinc-700"
-                        >
-                          {option}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <div id={`field-${field.name}`} className="transition-all duration-200">
+                    <Select
+                      value={fieldValues[field.name] || ''}
+                      onValueChange={(value) => handleFieldChange(field.name, value)}
+                    >
+                      <SelectTrigger className="bg-zinc-800/50 border-zinc-700 text-white focus:border-blue-500 focus:ring-blue-500/20">
+                        <SelectValue placeholder={field.placeholder || `Select ${field.label.toLowerCase()}`} />
+                      </SelectTrigger>
+                      <SelectContent className="bg-zinc-800 border-zinc-700">
+                        {field.options.map(option => (
+                          <SelectItem 
+                            key={option} 
+                            value={option} 
+                            className="text-white hover:bg-zinc-700 focus:bg-zinc-700"
+                          >
+                            {option}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 )}
               </div>
             ))}
 
             {/* Generate Button */}
             <div className="pt-4">
-              <Button
-                onClick={generatePrompt}
-                disabled={!areAllFieldsFilled}
-                className="w-full !bg-blue-600 hover:!bg-blue-700 !text-white disabled:opacity-50 disabled:cursor-not-allowed h-12 text-base font-medium"
+              {/* Wrapper div to capture clicks on "disabled" button */}
+              <div 
+                onClick={!areAllFieldsFilled ? handleDisabledClick : undefined}
+                className={!areAllFieldsFilled ? 'cursor-pointer' : ''}
               >
-                <Sparkles className="w-5 h-5 mr-2" />
-                Generate Prompt
-              </Button>
+                <Button
+                  onClick={areAllFieldsFilled ? generatePrompt : undefined}
+                  disabled={!areAllFieldsFilled}
+                  className="w-full !bg-blue-600 hover:!bg-blue-700 !text-white disabled:!bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed h-12 text-base font-medium pointer-events-auto"
+                >
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  Generate Prompt
+                </Button>
+              </div>
               
               {!areAllFieldsFilled && (
                 <p className="text-xs text-zinc-500 text-center mt-2">
