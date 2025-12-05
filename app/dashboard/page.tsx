@@ -11,6 +11,7 @@ import { AccountSettings } from '@/components/dashboard/AccountSettings';
 import { UpgradeToPro } from '@/components/dashboard/UpgradeToPro';
 import { SubscriptionManagement } from '@/components/dashboard/SubscriptionManagement';
 import { getUserPlan, getSubscriptionDetails } from '@/lib/subscription';
+import { Star, Clock, ArrowRight, Play } from 'lucide-react';
 
 // Force dynamic rendering - no caching for subscription status
 export const dynamic = 'force-dynamic';
@@ -55,11 +56,27 @@ export default async function DashboardPage() {
     .eq('user_id', user.id)
     .gte('used_at', firstDayOfMonth.toISOString());
 
-  // Fetch favorites count
-  const { count: favoritesCount } = await supabase
+  // Fetch favorites with workflow data (for Quick Access)
+  const { data: favoritesData, count: favoritesCount } = await supabase
     .from('user_favorites')
-    .select('*', { count: 'exact', head: true })
-    .eq('user_id', user.id);
+    .select(`
+      id,
+      workflow_id,
+      created_at,
+      workflows:workflow_id (
+        id,
+        title,
+        slug,
+        description,
+        icon
+      )
+    `, { count: 'exact' })
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
+    .limit(6);
+
+  // Extract favorite workflows
+  const favoriteWorkflows = favoritesData?.map((fav: any) => fav.workflows).filter(Boolean) || [];
 
   // Fetch recent activity
   const { data: recentUsage } = await supabase
@@ -102,6 +119,97 @@ export default async function DashboardPage() {
             Welcome back, {user.email?.split('@')[0]}!
           </p>
         </div>
+
+        {/* ============================================ */}
+        {/* QUICK ACCESS: Favorites */}
+        {/* ============================================ */}
+        {favoriteWorkflows.length > 0 && (
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Star className="h-5 w-5 text-yellow-400 fill-yellow-400" />
+                <h2 className="text-xl font-semibold">Your Favorites</h2>
+              </div>
+              <Link href="/favorites">
+                <Button variant="ghost" size="sm" className="!text-zinc-400 hover:!text-white gap-1">
+                  View all <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {favoriteWorkflows.slice(0, 3).map((workflow: any) => (
+                <Link 
+                  key={workflow.id} 
+                  href={`/workflows/${workflow.slug}`}
+                  className="group"
+                >
+                  <div className="relative p-4 rounded-xl border border-zinc-800 bg-zinc-900/50 hover:border-zinc-700 hover:bg-zinc-900 transition-all">
+                    <div className="flex items-start gap-3">
+                      <span className="text-2xl">{workflow.icon || '📝'}</span>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-medium text-white group-hover:text-blue-400 transition-colors truncate">
+                          {workflow.title}
+                        </h3>
+                        <p className="text-xs text-zinc-500 mt-1 line-clamp-2">
+                          {workflow.description}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="mt-3 flex justify-end">
+                      <span className="inline-flex items-center gap-1 text-xs text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Play className="h-3 w-3" /> Start workflow
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ============================================ */}
+        {/* QUICK ACCESS: Continue Where You Left Off */}
+        {/* ============================================ */}
+        {recentUsage && recentUsage.length > 0 && totalWorkflows > 0 && (
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Clock className="h-5 w-5 text-zinc-400" />
+                <h2 className="text-xl font-semibold">Continue Where You Left Off</h2>
+              </div>
+              <Link href="/history">
+                <Button variant="ghost" size="sm" className="!text-zinc-400 hover:!text-white gap-1">
+                  View history <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {recentUsage.slice(0, 3).map((usage: any) => (
+                <Link 
+                  key={usage.id} 
+                  href={`/workflows/${usage.workflows?.slug}`}
+                  className="group"
+                >
+                  <div className="relative p-4 rounded-xl border border-zinc-800 bg-zinc-900/50 hover:border-zinc-700 hover:bg-zinc-900 transition-all">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-medium text-white group-hover:text-blue-400 transition-colors truncate">
+                          {usage.workflows?.title || 'Workflow'}
+                        </h3>
+                        <p className="text-xs text-zinc-500 mt-1">
+                          {formatDistanceToNow(new Date(usage.used_at), { addSuffix: true })}
+                        </p>
+                      </div>
+                      <span className="inline-flex items-center gap-1 text-xs text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                        <Play className="h-3 w-3" /> Continue
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Show onboarding if no workflows used */}
         {totalWorkflows === 0 ? (
@@ -191,11 +299,15 @@ export default async function DashboardPage() {
                 </div>
               )}
 
-              {/* Favorites count */}
-              <div className="pt-3 border-t border-zinc-800 mt-3">
-                <p className="text-sm text-zinc-400">Favorites</p>
-                <p className="text-2xl font-bold">{favoritesCount || 0}</p>
-              </div>
+              {/* Favorites count - clickable */}
+              <Link href="/favorites" className="block pt-3 border-t border-zinc-800 mt-3 group">
+                <p className="text-sm text-zinc-400 group-hover:text-zinc-300 transition-colors flex items-center gap-1">
+                  <Star className="h-3.5 w-3.5" /> Favorites
+                </p>
+                <p className="text-2xl font-bold group-hover:text-blue-400 transition-colors">
+                  {favoritesCount || 0}
+                </p>
+              </Link>
 
               {/* Current streak - ALWAYS show */}
               <div className="pt-3 border-t border-zinc-800 mt-3">
@@ -299,46 +411,6 @@ export default async function DashboardPage() {
             </CardContent>
           </Card>
 
-          {/* Card 3: Recent Activity */}
-          {recentUsage && recentUsage.length > 0 && (
-            <Card className="border-zinc-800 bg-zinc-900 md:col-span-2">
-              <CardHeader className="flex flex-row items-center justify-between">
-                <div>
-                  <CardTitle>Recent Activity</CardTitle>
-                  <CardDescription>Your recently used workflows</CardDescription>
-                </div>
-                <Link href="/history">
-                  <Button variant="outline" size="sm" className="!text-white !border-zinc-700 hover:!bg-zinc-800">
-                    View All
-                  </Button>
-                </Link>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {recentUsage.map((usage: any) => (
-                    <div 
-                      key={usage.id}
-                      className="flex items-center justify-between rounded-lg border border-zinc-800 bg-zinc-950 p-3 hover:border-zinc-700 transition-colors"
-                    >
-                      <div className="flex-1 min-w-0">
-                        <Link 
-                          href={`/workflows/${usage.workflows?.slug}`}
-                          className="font-medium text-white hover:text-blue-400 transition-colors"
-                        >
-                          {usage.workflows?.title || 'Workflow'}
-                        </Link>
-                        <p className="text-xs text-zinc-500 mt-1">
-                          {formatDistanceToNow(new Date(usage.used_at), { 
-                            addSuffix: true
-                          })}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
         </div>
 
         {/* Account Settings Section */}
