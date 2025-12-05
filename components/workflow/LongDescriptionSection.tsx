@@ -27,7 +27,7 @@ export function LongDescriptionSection({ longDescription }: LongDescriptionSecti
         >
           <div className="flex items-center gap-2 text-left">
             <BookOpen className="h-4 w-4 text-zinc-400" />
-            <span className="font-medium text-zinc-400">📖 Mehr erfahren</span>
+            <span className="font-medium text-zinc-400">📖 Learn more</span>
           </div>
           <ChevronDown 
             className={cn(

@@ -24,7 +24,7 @@ export function ExampleOutputSection({ exampleOutput }: ExampleOutputSectionProp
         >
           <div className="flex items-center gap-2 text-left">
             <FileText className="h-4 w-4 text-blue-400" />
-            <span className="font-medium text-zinc-200">📋 Beispiel-Ergebnis ansehen</span>
+            <span className="font-medium text-zinc-200">📋 See example output</span>
           </div>
           <ChevronDown 
             className={cn(

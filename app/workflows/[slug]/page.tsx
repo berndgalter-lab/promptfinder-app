@@ -25,9 +25,9 @@ interface PageProps {
 // Helper to format difficulty
 function formatDifficulty(difficulty: string): string {
   const map: Record<string, string> = {
-    beginner: 'Einfach',
-    intermediate: 'Mittel',
-    advanced: 'Fortgeschritten',
+    beginner: 'Beginner',
+    intermediate: 'Intermediate',
+    advanced: 'Advanced',
   };
   return map[difficulty] || difficulty;
 }
@@ -177,11 +177,11 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
               <span>{formatDifficulty(workflow.difficulty)}</span>
             </Badge>
             
-            {/* Time Saved (nur wenn vorhanden) */}
+            {/* Time Saved (only if available) */}
             {workflow.time_saved_minutes && workflow.time_saved_minutes > 0 && (
               <Badge variant="secondary" className="bg-green-950/50 text-green-400 border-green-800/50 gap-1.5 py-1 px-2.5">
                 <Sparkles className="h-3.5 w-3.5" />
-                <span>Spart {workflow.time_saved_minutes} Min Arbeit</span>
+                <span>Saves {workflow.time_saved_minutes} min of work</span>
               </Badge>
             )}
           </div>
@@ -192,7 +192,7 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
         {/* ============================================ */}
         {workflow.use_cases && workflow.use_cases.length > 0 && (
           <div className="mb-8 p-4 rounded-lg bg-zinc-900/50 border border-zinc-800">
-            <p className="text-sm text-zinc-500 mb-2">Perfekt für:</p>
+            <p className="text-sm text-zinc-500 mb-2">Perfect for:</p>
             <div className="flex flex-wrap gap-2">
               {workflow.use_cases.map((useCase, index) => (
                 <span 
