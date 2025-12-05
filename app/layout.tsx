@@ -6,7 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { AchievementDebugger } from "@/components/debug/AchievementDebugger";
 import { NavLinks } from "@/components/nav/NavLinks";
 import { Footer } from "@/components/footer/Footer";
-import { getUser } from "@/lib/auth";
+import { getUserWithAdminStatus } from "@/lib/auth";
 import Link from "next/link";
 import { Analytics } from "@vercel/analytics/react";
 
@@ -30,7 +30,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await getUser();
+  const { user, isAdmin } = await getUserWithAdminStatus();
 
   return (
     <html lang="en">
@@ -45,7 +45,7 @@ export default async function RootLayout({
               </h1>
             </Link>
             <div className="flex items-center gap-4 md:gap-6">
-              <NavLinks isLoggedIn={!!user} />
+              <NavLinks isLoggedIn={!!user} isAdmin={isAdmin} />
               {/* AuthButton nur auf Desktop im Header, auf Mobile im Sheet */}
               <div className="hidden md:block">
                 <AuthButton />

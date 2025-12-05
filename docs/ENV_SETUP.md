@@ -34,6 +34,13 @@ LEMONSQUEEZY_API_KEY=your_lemon_squeezy_api_key
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
+### Admin Dashboard
+```bash
+# Email address(es) that have access to /admin dashboard
+# This should be your email used for login
+ADMIN_EMAIL=your-email@example.com
+```
+
 ---
 
 ## Setup Instructions
