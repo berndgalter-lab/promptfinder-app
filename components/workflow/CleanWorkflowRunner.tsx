@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Copy, ExternalLink, Sparkles, Check, RotateCcw } from 'lucide-react';
+import { Copy, ExternalLink, Sparkles, Check, RotateCcw, Twitter, Linkedin, Link } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import {
   type Workflow,
@@ -129,6 +129,54 @@ export function CleanWorkflowRunner({ workflow, userId, onComplete }: CleanWorkf
     setFieldValues({});
     setPromptGenerated(false);
     setGeneratedPrompt('');
+  };
+
+  // Share URL
+  const shareUrl = `https://prompt-finder.com/workflows/${workflow.slug}`;
+  const timeSavedText = workflow.time_saved_minutes ? `${workflow.time_saved_minutes}+` : 'tons of';
+
+  // Share on Twitter/X
+  const shareOnTwitter = () => {
+    const text = `Just used this free ${workflow.title} - saved me ${timeSavedText} minutes of work. Check it out:`;
+    window.open(
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`,
+      '_blank'
+    );
+  };
+
+  // Share on LinkedIn
+  const shareOnLinkedIn = () => {
+    window.open(
+      `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
+      '_blank'
+    );
+  };
+
+  // Copy share link
+  const copyShareLink = async () => {
+    await navigator.clipboard.writeText(shareUrl);
+    toast({
+      title: '🔗 Link copied!',
+      description: 'Share this workflow with others.',
+    });
+  };
+
+  // Native share (mobile)
+  const handleNativeShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: workflow.title,
+          text: `Check out this ${workflow.title} - saves ${timeSavedText} min of work`,
+          url: shareUrl,
+        });
+      } catch {
+        // User cancelled or error - fallback to copy
+        copyShareLink();
+      }
+    } else {
+      copyShareLink();
+    }
   };
 
   return (
@@ -259,6 +307,44 @@ export function CleanWorkflowRunner({ workflow, userId, onComplete }: CleanWorkf
                   <ExternalLink className="w-4 h-4 mr-2" />
                   Use in ChatGPT
                 </Button>
+              </div>
+
+              {/* Share Section */}
+              <div className="mt-6 pt-6 border-t border-zinc-800">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  {workflow.time_saved_minutes && workflow.time_saved_minutes > 0 && (
+                    <p className="text-sm text-zinc-400">
+                      💡 This workflow saves ~{workflow.time_saved_minutes} min of work
+                    </p>
+                  )}
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-zinc-500">Share:</span>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      onClick={shareOnTwitter}
+                      className="h-8 w-8 !text-zinc-400 hover:!text-white hover:!bg-zinc-800"
+                    >
+                      <Twitter className="w-4 h-4" />
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      onClick={shareOnLinkedIn}
+                      className="h-8 w-8 !text-zinc-400 hover:!text-white hover:!bg-zinc-800"
+                    >
+                      <Linkedin className="w-4 h-4" />
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      onClick={handleNativeShare}
+                      className="h-8 w-8 !text-zinc-400 hover:!text-white hover:!bg-zinc-800"
+                    >
+                      <Link className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
