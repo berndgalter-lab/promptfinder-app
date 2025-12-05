@@ -6,6 +6,7 @@ import { CleanWorkflowRunnerWrapper } from '@/components/workflow/CleanWorkflowR
 import { WorkflowRunnerWrapper } from '@/components/workflow/WorkflowRunnerWrapper';
 import { WorkflowLimitGuard } from '@/components/workflow/WorkflowLimitGuard';
 import { OnboardingOverlay } from '@/components/workflow/OnboardingOverlay';
+import { HowItWorksBox } from '@/components/workflow/HowItWorksBox';
 import { notFound } from 'next/navigation';
 import { Clock, Target, Sparkles } from 'lucide-react';
 import { CategoryBadge } from '@/components/ui/CategoryBadge';
@@ -221,12 +222,23 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
         )}
 
         {/* ============================================ */}
-        {/* 5. DIVIDER */}
+        {/* 5. HOW IT WORKS BOX (Dismissable) */}
+        {/* ============================================ */}
+        <div className="mt-8">
+          <HowItWorksBox 
+            estimatedMinutes={workflow.estimated_minutes}
+            difficulty={workflow.difficulty}
+            tool={workflow.tool}
+          />
+        </div>
+
+        {/* ============================================ */}
+        {/* 6. DIVIDER */}
         {/* ============================================ */}
         <div className="my-10 border-t border-zinc-800" />
 
         {/* ============================================ */}
-        {/* 6. WORKFLOW RUNNER */}
+        {/* 7. WORKFLOW RUNNER */}
         {/* ============================================ */}
         <div id="workflow-runner">
           {workflow.steps && workflow.steps.length > 0 ? (
