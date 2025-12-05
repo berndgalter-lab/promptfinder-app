@@ -3,6 +3,13 @@ import { WorkflowsPageClient } from '@/components/workflow/WorkflowsPageClient';
 import type { WorkflowCardData } from '@/components/workflow/WorkflowCard';
 import type { Category } from '@/components/workflow/WorkflowFilters';
 
+interface CategoryData {
+  id: number;
+  slug: string;
+  name: string;
+  icon: string;
+}
+
 interface RawWorkflow {
   id: string;
   slug: string;
@@ -14,12 +21,8 @@ interface RawWorkflow {
   sort_order: number;
   status: string;
   tags: string[] | null;
-  category: {
-    id: number;
-    slug: string;
-    name: string;
-    icon: string;
-  } | null;
+  // Supabase returns joined data as array
+  category: CategoryData | CategoryData[] | null;
 }
 
 interface RawCategory {
@@ -77,17 +80,22 @@ export default async function WorkflowsPage() {
   }
 
   // Transform workflows to card data format
-  const workflows: WorkflowCardData[] = (rawWorkflows || []).map((w: RawWorkflow) => ({
-    id: w.id,
-    slug: w.slug,
-    title: w.title,
-    description: w.description || '',
-    icon: w.icon,
-    time_saved_minutes: w.time_saved_minutes,
-    featured: w.featured || false,
-    tags: w.tags,
-    category: w.category,
-  }));
+  const workflows: WorkflowCardData[] = (rawWorkflows || []).map((w: RawWorkflow) => {
+    // Supabase can return category as array or single object depending on the join
+    const category = Array.isArray(w.category) ? w.category[0] : w.category;
+    
+    return {
+      id: w.id,
+      slug: w.slug,
+      title: w.title,
+      description: w.description || '',
+      icon: w.icon,
+      time_saved_minutes: w.time_saved_minutes,
+      featured: w.featured || false,
+      tags: w.tags,
+      category: category || null,
+    };
+  });
 
   // Calculate category counts
   const categoryCounts: Record<string, number> = {};
