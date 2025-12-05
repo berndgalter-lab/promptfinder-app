@@ -1,54 +1,74 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronDown, FileText } from 'lucide-react';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { ChevronDown, ChevronUp, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface ExampleOutputSectionProps {
   exampleOutput: string;
 }
 
+const MAX_HEIGHT = 300; // px
+
 export function ExampleOutputSection({ exampleOutput }: ExampleOutputSectionProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [needsExpansion, setNeedsExpansion] = useState(false);
+
+  // Check if content exceeds max height
+  const handleContentRef = (el: HTMLPreElement | null) => {
+    if (el) {
+      setNeedsExpansion(el.scrollHeight > MAX_HEIGHT);
+    }
+  };
 
   return (
-    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="mb-6">
-      <CollapsibleTrigger asChild>
-        <button
+    <div className="mb-6">
+      {/* Header */}
+      <div className="flex items-center gap-2 mb-3">
+        <FileText className="h-4 w-4 text-blue-400" />
+        <span className="font-medium text-zinc-200">📋 Example Result</span>
+      </div>
+      
+      {/* Content Box */}
+      <div className="rounded-lg border border-zinc-800 bg-zinc-950/80 overflow-hidden">
+        <div 
           className={cn(
-            "w-full flex items-center justify-between p-4 rounded-lg transition-all",
-            "bg-zinc-900/50 border border-zinc-800 hover:bg-zinc-900 hover:border-zinc-700",
-            isOpen && "rounded-b-none border-b-0"
+            "relative transition-all duration-300",
+            !isExpanded && needsExpansion && "max-h-[300px] overflow-hidden"
           )}
         >
-          <div className="flex items-center gap-2 text-left">
-            <FileText className="h-4 w-4 text-blue-400" />
-            <span className="font-medium text-zinc-200">📋 See example output</span>
-          </div>
-          <ChevronDown 
-            className={cn(
-              "h-5 w-5 text-zinc-400 transition-transform duration-200",
-              isOpen && "rotate-180"
-            )} 
-          />
-        </button>
-      </CollapsibleTrigger>
-      
-      <CollapsibleContent>
-        <div className={cn(
-          "p-4 rounded-b-lg border border-t-0 border-zinc-800",
-          "bg-zinc-950/80"
-        )}>
-          <pre className={cn(
-            "text-sm text-zinc-300 whitespace-pre-wrap font-mono",
-            "leading-relaxed overflow-x-auto"
-          )}>
+          <pre 
+            ref={handleContentRef}
+            className="p-4 text-sm text-zinc-300 whitespace-pre-wrap font-mono leading-relaxed"
+          >
             {exampleOutput}
           </pre>
+          
+          {/* Gradient overlay when collapsed */}
+          {!isExpanded && needsExpansion && (
+            <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-zinc-950 to-transparent pointer-events-none" />
+          )}
         </div>
-      </CollapsibleContent>
-    </Collapsible>
+        
+        {/* Show more/less button */}
+        {needsExpansion && (
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="w-full py-2 px-4 text-sm text-zinc-400 hover:text-zinc-200 transition-colors flex items-center justify-center gap-1 border-t border-zinc-800 bg-zinc-900/50"
+          >
+            {isExpanded ? (
+              <>
+                Show less <ChevronUp className="h-4 w-4" />
+              </>
+            ) : (
+              <>
+                Show full example <ChevronDown className="h-4 w-4" />
+              </>
+            )}
+          </button>
+        )}
+      </div>
+    </div>
   );
 }
 

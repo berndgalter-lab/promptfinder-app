@@ -2,17 +2,14 @@ import { createClient } from '@/lib/supabase/server';
 import { getUser } from '@/lib/auth';
 import { Badge } from '@/components/ui/badge';
 import { FavoriteButton } from '@/components/workflow/FavoriteButton';
+import { CleanWorkflowRunnerWrapper } from '@/components/workflow/CleanWorkflowRunnerWrapper';
 import { WorkflowRunnerWrapper } from '@/components/workflow/WorkflowRunnerWrapper';
 import { WorkflowLimitGuard } from '@/components/workflow/WorkflowLimitGuard';
-import { HowItWorksBox } from '@/components/workflow/HowItWorksBox';
 import { OnboardingOverlay } from '@/components/workflow/OnboardingOverlay';
 import { notFound } from 'next/navigation';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { Lock, Zap, Clock, Target, Sparkles, ChevronDown, FileText, BookOpen } from 'lucide-react';
+import { Clock, Target, Sparkles } from 'lucide-react';
 import { CategoryBadge } from '@/components/ui/CategoryBadge';
-import { type Workflow, type WorkflowStep } from '@/lib/types/workflow';
+import { type Workflow, type WorkflowStep, isPromptStep } from '@/lib/types/workflow';
 import { ExampleOutputSection } from '@/components/workflow/ExampleOutputSection';
 import { LongDescriptionSection } from '@/components/workflow/LongDescriptionSection';
 
@@ -36,7 +33,7 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const supabase = await createClient();
   
-  // Fetch workflow with category (including new fields)
+  // Fetch workflow with category
   const { data: rawWorkflow, error: workflowError } = await supabase
     .from('workflows')
     .select(`
@@ -97,7 +94,7 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
     usage_count: rawWorkflow.usage_count ?? 0,
     status: rawWorkflow.status ?? 'published',
     sort_order: rawWorkflow.sort_order ?? 0,
-    // NEW content fields
+    // Content fields
     time_saved_minutes: rawWorkflow.time_saved_minutes ?? null,
     use_cases: rawWorkflow.use_cases ?? null,
     example_output: rawWorkflow.example_output ?? null,
@@ -122,6 +119,9 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
     
     isFavorited = !!favorite;
   }
+
+  // Determine if this is a single-prompt workflow (use clean runner) or multi-step
+  const isSinglePromptWorkflow = workflow.steps.length === 1 && isPromptStep(workflow.steps[0]);
 
   return (
     <div className="min-h-screen bg-zinc-950 px-4 py-12 text-white">
@@ -168,7 +168,7 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
             {/* Estimated Time */}
             <Badge variant="secondary" className="bg-zinc-800/80 text-zinc-300 border-zinc-700 gap-1.5 py-1 px-2.5">
               <Clock className="h-3.5 w-3.5" />
-              <span>{workflow.estimated_minutes} Min</span>
+              <span>{workflow.estimated_minutes} min</span>
             </Badge>
             
             {/* Difficulty */}
@@ -177,7 +177,7 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
               <span>{formatDifficulty(workflow.difficulty)}</span>
             </Badge>
             
-            {/* Time Saved (only if available) */}
+            {/* Time Saved */}
             {workflow.time_saved_minutes && workflow.time_saved_minutes > 0 && (
               <Badge variant="secondary" className="bg-green-950/50 text-green-400 border-green-800/50 gap-1.5 py-1 px-2.5">
                 <Sparkles className="h-3.5 w-3.5" />
@@ -191,7 +191,7 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
         {/* 2. USE CASES SECTION */}
         {/* ============================================ */}
         {workflow.use_cases && workflow.use_cases.length > 0 && (
-          <div className="mb-8 p-4 rounded-lg bg-zinc-900/50 border border-zinc-800">
+          <div className="mb-6 p-4 rounded-lg bg-zinc-900/50 border border-zinc-800">
             <p className="text-sm text-zinc-500 mb-2">Perfect for:</p>
             <div className="flex flex-wrap gap-2">
               {workflow.use_cases.map((useCase, index) => (
@@ -207,44 +207,47 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
         )}
 
         {/* ============================================ */}
-        {/* 3. EXAMPLE OUTPUT SECTION (Collapsible) */}
+        {/* 3. EXAMPLE OUTPUT SECTION (Open by default) */}
         {/* ============================================ */}
         {workflow.example_output && (
           <ExampleOutputSection exampleOutput={workflow.example_output} />
         )}
 
         {/* ============================================ */}
-        {/* 4. HOW IT WORKS (existing) */}
-        {/* ============================================ */}
-        <div className="mt-6">
-          <HowItWorksBox 
-            estimatedMinutes={workflow.estimated_minutes}
-            difficulty={workflow.difficulty}
-            tool={workflow.tool}
-          />
-        </div>
-
-        {/* ============================================ */}
-        {/* 5. LONG DESCRIPTION SECTION (Collapsible) */}
+        {/* 4. LONG DESCRIPTION SECTION (Closed by default) */}
         {/* ============================================ */}
         {workflow.long_description && (
           <LongDescriptionSection longDescription={workflow.long_description} />
         )}
 
         {/* ============================================ */}
+        {/* 5. DIVIDER */}
+        {/* ============================================ */}
+        <div className="my-10 border-t border-zinc-800" />
+
+        {/* ============================================ */}
         {/* 6. WORKFLOW RUNNER */}
         {/* ============================================ */}
-        <div className="mt-12" id="workflow-runner">
+        <div id="workflow-runner">
           {workflow.steps && workflow.steps.length > 0 ? (
             <WorkflowLimitGuard 
               userId={user?.id || null}
               workflowId={workflow.id}
               workflowTitle={workflow.title}
             >
-              <WorkflowRunnerWrapper 
-                workflow={workflow}
-                userId={user?.id || null}
-              />
+              {isSinglePromptWorkflow ? (
+                // New clean runner for single-prompt workflows
+                <CleanWorkflowRunnerWrapper 
+                  workflow={workflow}
+                  userId={user?.id || null}
+                />
+              ) : (
+                // Original runner for multi-step workflows
+                <WorkflowRunnerWrapper 
+                  workflow={workflow}
+                  userId={user?.id || null}
+                />
+              )}
             </WorkflowLimitGuard>
           ) : (
             <div className="rounded-lg border border-zinc-800 bg-zinc-900 p-12 text-center">

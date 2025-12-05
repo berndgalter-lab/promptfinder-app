@@ -1,0 +1,298 @@
+'use client';
+
+import { useState, useMemo } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Copy, ExternalLink, Sparkles, Check, RotateCcw } from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
+import {
+  type Workflow,
+  type PromptStep,
+  isPromptStep,
+} from '@/lib/types/workflow';
+
+interface CleanWorkflowRunnerProps {
+  workflow: Workflow;
+  userId: string | null;
+  onComplete?: (data: {
+    fieldValues: Record<number, Record<string, string>>;
+    inputValues: Record<number, string>;
+  }) => void;
+}
+
+export function CleanWorkflowRunner({ workflow, userId, onComplete }: CleanWorkflowRunnerProps) {
+  const { toast } = useToast();
+  const [fieldValues, setFieldValues] = useState<Record<string, string>>({});
+  const [promptGenerated, setPromptGenerated] = useState(false);
+  const [generatedPrompt, setGeneratedPrompt] = useState('');
+  const [hasBeenUsed, setHasBeenUsed] = useState(false);
+
+  // Get the first prompt step (for single-mode workflows)
+  const promptStep = workflow.steps.find(isPromptStep) as PromptStep | undefined;
+
+  if (!promptStep) {
+    return (
+      <div className="text-center text-zinc-500 py-8">
+        No prompt step found in this workflow.
+      </div>
+    );
+  }
+
+  // Check if all required fields are filled
+  const areAllFieldsFilled = useMemo(() => {
+    return promptStep.fields
+      .filter(f => f.required)
+      .every(f => fieldValues[f.name]?.trim());
+  }, [promptStep.fields, fieldValues]);
+
+  // Handle field change
+  const handleFieldChange = (fieldName: string, value: string) => {
+    setFieldValues(prev => ({
+      ...prev,
+      [fieldName]: value,
+    }));
+    // Reset generated state when user changes input
+    if (promptGenerated) {
+      setPromptGenerated(false);
+      setGeneratedPrompt('');
+    }
+  };
+
+  // Generate prompt by replacing {{variables}} with values
+  const generatePrompt = () => {
+    let prompt = promptStep.prompt_template.replace(/\\n/g, '\n');
+    
+    Object.entries(fieldValues).forEach(([key, value]) => {
+      prompt = prompt.replace(new RegExp(`{{${key}}}`, 'g'), value || '');
+    });
+    
+    setGeneratedPrompt(prompt);
+    setPromptGenerated(true);
+    
+    // Scroll to result
+    setTimeout(() => {
+      document.getElementById('prompt-result')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+  };
+
+  // Track first usage
+  const trackFirstUsage = () => {
+    if (!hasBeenUsed) {
+      setHasBeenUsed(true);
+      
+      if (onComplete) {
+        onComplete({ 
+          fieldValues: { [promptStep.number]: fieldValues }, 
+          inputValues: {} 
+        });
+      }
+    }
+  };
+
+  // Copy prompt to clipboard
+  const handleCopyPrompt = () => {
+    navigator.clipboard.writeText(generatedPrompt);
+    trackFirstUsage();
+    
+    toast({
+      title: '✅ Prompt copied!',
+      description: 'Paste it in ChatGPT to get your result.',
+    });
+  };
+
+  // Open in ChatGPT
+  const handleOpenChatGPT = () => {
+    navigator.clipboard.writeText(generatedPrompt);
+    trackFirstUsage();
+    
+    const encodedPrompt = encodeURIComponent(generatedPrompt);
+    window.open(`https://chat.openai.com/?q=${encodedPrompt}`, '_blank');
+    
+    toast({
+      title: '✅ Opening ChatGPT',
+      description: 'Your prompt is ready to use.',
+    });
+  };
+
+  // Reset form
+  const handleReset = () => {
+    setFieldValues({});
+    setPromptGenerated(false);
+    setGeneratedPrompt('');
+  };
+
+  return (
+    <>
+      <div className="space-y-6">
+        {/* Input Section */}
+        <Card className="border-zinc-800 bg-zinc-900/50">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-xl text-white">
+              Create Your {workflow.title.replace(/Generator|Creator|Builder/gi, '').trim()}
+            </CardTitle>
+            {promptStep.description && (
+              <p className="text-sm text-zinc-400 mt-1">{promptStep.description}</p>
+            )}
+          </CardHeader>
+          <CardContent className="space-y-5">
+            {promptStep.fields.map((field, index) => (
+              <div key={field.name} className="space-y-2">
+                <Label className="text-white text-sm font-medium">
+                  {field.label}
+                  {field.required && <span className="text-red-400 ml-1">*</span>}
+                </Label>
+                
+                {field.type === 'text' && (
+                  <Input
+                    placeholder={field.placeholder}
+                    value={fieldValues[field.name] || ''}
+                    onChange={(e) => handleFieldChange(field.name, e.target.value)}
+                    className="bg-zinc-800/50 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-blue-500 focus:ring-blue-500/20"
+                  />
+                )}
+                
+                {field.type === 'textarea' && (
+                  <Textarea
+                    placeholder={field.placeholder}
+                    value={fieldValues[field.name] || ''}
+                    onChange={(e) => handleFieldChange(field.name, e.target.value)}
+                    className="bg-zinc-800/50 border-zinc-700 text-white placeholder:text-zinc-500 min-h-[100px] focus:border-blue-500 focus:ring-blue-500/20"
+                  />
+                )}
+                
+                {field.type === 'select' && field.options && (
+                  <Select
+                    value={fieldValues[field.name] || ''}
+                    onValueChange={(value) => handleFieldChange(field.name, value)}
+                  >
+                    <SelectTrigger className="bg-zinc-800/50 border-zinc-700 text-white focus:border-blue-500 focus:ring-blue-500/20">
+                      <SelectValue placeholder={field.placeholder || `Select ${field.label.toLowerCase()}`} />
+                    </SelectTrigger>
+                    <SelectContent className="bg-zinc-800 border-zinc-700">
+                      {field.options.map(option => (
+                        <SelectItem 
+                          key={option} 
+                          value={option} 
+                          className="text-white hover:bg-zinc-700 focus:bg-zinc-700"
+                        >
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              </div>
+            ))}
+
+            {/* Generate Button */}
+            <div className="pt-4">
+              <Button
+                onClick={generatePrompt}
+                disabled={!areAllFieldsFilled}
+                className="w-full !bg-blue-600 hover:!bg-blue-700 !text-white disabled:opacity-50 disabled:cursor-not-allowed h-12 text-base font-medium"
+              >
+                <Sparkles className="w-5 h-5 mr-2" />
+                Generate Prompt
+              </Button>
+              
+              {!areAllFieldsFilled && (
+                <p className="text-xs text-zinc-500 text-center mt-2">
+                  Fill in all required fields to generate your prompt
+                </p>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Generated Prompt Result */}
+        {promptGenerated && (
+          <Card id="prompt-result" className="border-green-500/30 bg-zinc-900/50 animate-in fade-in slide-in-from-bottom-4 duration-300">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg text-white flex items-center gap-2">
+                  <Check className="w-5 h-5 text-green-500" />
+                  Your Prompt is Ready
+                </CardTitle>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleReset}
+                  className="!text-zinc-400 hover:!text-white"
+                >
+                  <RotateCcw className="w-4 h-4 mr-1" />
+                  Start Over
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              {/* Prompt Display */}
+              <div className="rounded-lg bg-zinc-950 border border-zinc-800 p-4 mb-4 max-h-[400px] overflow-y-auto">
+                <pre className="text-sm text-zinc-300 whitespace-pre-wrap font-sans leading-relaxed">
+                  {generatedPrompt}
+                </pre>
+              </div>
+              
+              {/* Action Buttons (visible inline) */}
+              <div className="flex gap-3">
+                <Button
+                  onClick={handleCopyPrompt}
+                  variant="outline"
+                  className="flex-1 !border-zinc-700 !text-white hover:!bg-zinc-800 h-11"
+                >
+                  <Copy className="w-4 h-4 mr-2" />
+                  Copy Prompt
+                </Button>
+                <Button
+                  onClick={handleOpenChatGPT}
+                  className="flex-1 !bg-blue-600 hover:!bg-blue-700 !text-white h-11"
+                >
+                  <ExternalLink className="w-4 h-4 mr-2" />
+                  Use in ChatGPT
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+
+      {/* Sticky Footer - only visible when prompt is generated */}
+      {promptGenerated && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-zinc-800 bg-zinc-950/90 backdrop-blur-lg">
+          <div className="mx-auto max-w-4xl px-4 py-3">
+            <div className="flex gap-3">
+              <Button
+                onClick={handleCopyPrompt}
+                variant="outline"
+                className="flex-1 !border-zinc-700 !text-white hover:!bg-zinc-800 h-11"
+              >
+                <Copy className="w-4 h-4 mr-2" />
+                Copy Prompt
+              </Button>
+              <Button
+                onClick={handleOpenChatGPT}
+                className="flex-1 !bg-blue-600 hover:!bg-blue-700 !text-white h-11"
+              >
+                <ExternalLink className="w-4 h-4 mr-2" />
+                Use in ChatGPT
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Spacer for sticky footer */}
+      {promptGenerated && <div className="h-20" />}
+    </>
+  );
+}
+
