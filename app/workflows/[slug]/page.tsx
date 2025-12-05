@@ -10,9 +10,11 @@ import { notFound } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Lock, Zap } from 'lucide-react';
+import { Lock, Zap, Clock, Target, Sparkles, ChevronDown, FileText, BookOpen } from 'lucide-react';
 import { CategoryBadge } from '@/components/ui/CategoryBadge';
 import { type Workflow, type WorkflowStep } from '@/lib/types/workflow';
+import { ExampleOutputSection } from '@/components/workflow/ExampleOutputSection';
+import { LongDescriptionSection } from '@/components/workflow/LongDescriptionSection';
 
 interface PageProps {
   params: Promise<{
@@ -20,11 +22,21 @@ interface PageProps {
   }>;
 }
 
+// Helper to format difficulty
+function formatDifficulty(difficulty: string): string {
+  const map: Record<string, string> = {
+    beginner: 'Einfach',
+    intermediate: 'Mittel',
+    advanced: 'Fortgeschritten',
+  };
+  return map[difficulty] || difficulty;
+}
+
 export default async function WorkflowDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const supabase = await createClient();
   
-  // Fetch workflow with category
+  // Fetch workflow with category (including new fields)
   const { data: rawWorkflow, error: workflowError } = await supabase
     .from('workflows')
     .select(`
@@ -38,36 +50,33 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  // Transform to new Workflow type with backward compatibility
+  // Transform to Workflow type with all fields
   const workflow: Workflow & { category?: { id: number; slug: string; name: string; icon: string } | null } = {
-    id: rawWorkflow.id,  // UUID string from Supabase
+    id: rawWorkflow.id,
     slug: rawWorkflow.slug,
     title: rawWorkflow.title,
     description: rawWorkflow.description || '',
-    workflow_type: rawWorkflow.workflow_type || 'combined', // Default to combined for old workflows
+    workflow_type: rawWorkflow.workflow_type || 'combined',
     steps: (rawWorkflow.steps || []).map((step: any, index: number) => ({
       number: index + 1,
-      type: step.type || 'prompt', // Default to prompt for old workflows
+      type: step.type || 'prompt',
       title: step.title,
       description: step.description,
-      // PromptStep fields
       ...((!step.type || step.type === 'prompt') && {
         prompt_template: step.prompt_template || '',
         fields: (step.fields || []).map((field: any) => ({
           name: field.name,
           label: field.label,
           type: field.type || 'text',
-          required: field.required !== false, // Default to true
+          required: field.required !== false,
           placeholder: field.placeholder,
           options: field.options,
         })),
       }),
-      // InstructionStep fields
       ...(step.type === 'instruction' && {
         instruction_text: step.instruction_text || '',
         instruction_icon: step.instruction_icon,
       }),
-      // InputStep fields
       ...(step.type === 'input' && {
         input_label: step.input_label || '',
         input_placeholder: step.input_placeholder,
@@ -75,7 +84,7 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
       }),
     })) as WorkflowStep[],
     created_at: rawWorkflow.created_at,
-    // New fields with backward-compatible defaults
+    // Extended fields
     category_id: rawWorkflow.category_id ?? null,
     tags: rawWorkflow.tags ?? [],
     tool: rawWorkflow.tool ?? 'any',
@@ -88,6 +97,11 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
     usage_count: rawWorkflow.usage_count ?? 0,
     status: rawWorkflow.status ?? 'published',
     sort_order: rawWorkflow.sort_order ?? 0,
+    // NEW content fields
+    time_saved_minutes: rawWorkflow.time_saved_minutes ?? null,
+    use_cases: rawWorkflow.use_cases ?? null,
+    example_output: rawWorkflow.example_output ?? null,
+    long_description: rawWorkflow.long_description ?? null,
     // Category from join
     category: rawWorkflow.category ?? null,
   };
@@ -95,7 +109,7 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
   // Fetch current user
   const user = await getUser();
 
-  // Check if workflow is favorited (only if user is logged in)
+  // Check if workflow is favorited
   let isFavorited = false;
   
   if (user) {
@@ -109,115 +123,100 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
     isFavorited = !!favorite;
   }
 
-  // Remove old limit check - now handled by WorkflowLimitGuard
-  if (false) {
-    return (
-      <div className="min-h-screen bg-zinc-950 px-4 py-12 text-white">
-        <div className="mx-auto max-w-2xl">
-          <Card className="border-2 border-yellow-500/50 bg-gradient-to-br from-yellow-500/10 to-orange-500/10">
-            <CardHeader className="text-center">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-yellow-500/20">
-                <Lock className="h-8 w-8 text-yellow-500" />
-              </div>
-              <CardTitle className="text-3xl">Free Limit Reached</CardTitle>
-              <CardDescription className="text-base mt-2">
-                You've used all 5 free workflows this month. Upgrade to Pro for unlimited access!
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Features */}
-              <div className="space-y-3 border-t border-zinc-800 pt-6">
-                <p className="font-semibold text-white">With Pro you get:</p>
-                <ul className="space-y-2 text-sm text-zinc-400">
-                  <li className="flex items-center gap-2">
-                    <Zap className="h-4 w-4 text-blue-400" />
-                    <span>Unlimited workflows per month</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Zap className="h-4 w-4 text-blue-400" />
-                    <span>Custom templates</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Zap className="h-4 w-4 text-blue-400" />
-                    <span>Priority support</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Zap className="h-4 w-4 text-blue-400" />
-                    <span>Early access to new features</span>
-                  </li>
-                </ul>
-              </div>
-
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button 
-                  size="lg" 
-                  className="flex-1 !bg-blue-600 hover:!bg-blue-700 !text-white"
-                  asChild
-                >
-                  <Link href="/dashboard">
-                    Upgrade to Pro
-                  </Link>
-                </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline"
-                  className="flex-1 !text-white !border-zinc-700 hover:!bg-zinc-800"
-                  asChild
-                >
-                  <Link href="/workflows">
-                    Browse Workflows
-                  </Link>
-                </Button>
-              </div>
-
-              <p className="text-center text-xs text-zinc-500">
-                Starting at just $19/month • Cancel anytime
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-zinc-950 px-4 py-12 text-white">
       {/* First-time user onboarding */}
       <OnboardingOverlay workflowTitle={workflow.title} />
       
       <div className="mx-auto max-w-4xl">
-        {/* Header with title and favorite button */}
-        <div className="mb-8 flex items-start justify-between gap-4">
-          <div className="flex-1">
-            <div className="mb-3 flex items-center gap-3">
-              <h1 className="text-4xl font-bold md:text-5xl">
-                {workflow.title}
-              </h1>
-              {workflow.category && (
-                <CategoryBadge 
-                  slug={workflow.category.slug}
-                  name={workflow.category.name}
-                  icon={workflow.category.icon}
-                />
-              )}
+        
+        {/* ============================================ */}
+        {/* 1. HERO SECTION */}
+        {/* ============================================ */}
+        <div className="mb-6">
+          {/* Title Row */}
+          <div className="flex items-start justify-between gap-4 mb-4">
+            <div className="flex-1">
+              <div className="flex flex-wrap items-center gap-3 mb-3">
+                <h1 className="text-3xl font-bold md:text-4xl lg:text-5xl">
+                  {workflow.title}
+                </h1>
+                {workflow.category && (
+                  <CategoryBadge 
+                    slug={workflow.category.slug}
+                    name={workflow.category.name}
+                    icon={workflow.category.icon}
+                  />
+                )}
+              </div>
+              <p className="text-lg text-zinc-400">
+                {workflow.description}
+              </p>
             </div>
-            <p className="text-lg text-zinc-400">
-              {workflow.description}
-            </p>
+            
+            {/* Favorite button */}
+            <FavoriteButton
+              workflowId={workflow.id}
+              initialIsFavorited={isFavorited}
+              userId={user?.id || null}
+              workflowTitle={workflow.title}
+            />
           </div>
-          
-          {/* Favorite button */}
-          <FavoriteButton
-            workflowId={workflow.id}
-            initialIsFavorited={isFavorited}
-            userId={user?.id || null}
-            workflowTitle={workflow.title}
-          />
+
+          {/* Meta Badges Row */}
+          <div className="flex flex-wrap items-center gap-2 mt-4">
+            {/* Estimated Time */}
+            <Badge variant="secondary" className="bg-zinc-800/80 text-zinc-300 border-zinc-700 gap-1.5 py-1 px-2.5">
+              <Clock className="h-3.5 w-3.5" />
+              <span>{workflow.estimated_minutes} Min</span>
+            </Badge>
+            
+            {/* Difficulty */}
+            <Badge variant="secondary" className="bg-zinc-800/80 text-zinc-300 border-zinc-700 gap-1.5 py-1 px-2.5">
+              <Target className="h-3.5 w-3.5" />
+              <span>{formatDifficulty(workflow.difficulty)}</span>
+            </Badge>
+            
+            {/* Time Saved (nur wenn vorhanden) */}
+            {workflow.time_saved_minutes && workflow.time_saved_minutes > 0 && (
+              <Badge variant="secondary" className="bg-green-950/50 text-green-400 border-green-800/50 gap-1.5 py-1 px-2.5">
+                <Sparkles className="h-3.5 w-3.5" />
+                <span>Spart {workflow.time_saved_minutes} Min Arbeit</span>
+              </Badge>
+            )}
+          </div>
         </div>
 
-        {/* How It Works - Dismissable for Power Users */}
-        <div className="mt-8">
+        {/* ============================================ */}
+        {/* 2. USE CASES SECTION */}
+        {/* ============================================ */}
+        {workflow.use_cases && workflow.use_cases.length > 0 && (
+          <div className="mb-8 p-4 rounded-lg bg-zinc-900/50 border border-zinc-800">
+            <p className="text-sm text-zinc-500 mb-2">Perfekt für:</p>
+            <div className="flex flex-wrap gap-2">
+              {workflow.use_cases.map((useCase, index) => (
+                <span 
+                  key={index}
+                  className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-zinc-800 text-zinc-300 border border-zinc-700"
+                >
+                  {useCase}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ============================================ */}
+        {/* 3. EXAMPLE OUTPUT SECTION (Collapsible) */}
+        {/* ============================================ */}
+        {workflow.example_output && (
+          <ExampleOutputSection exampleOutput={workflow.example_output} />
+        )}
+
+        {/* ============================================ */}
+        {/* 4. HOW IT WORKS (existing) */}
+        {/* ============================================ */}
+        <div className="mt-6">
           <HowItWorksBox 
             estimatedMinutes={workflow.estimated_minutes}
             difficulty={workflow.difficulty}
@@ -225,8 +224,17 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
           />
         </div>
 
-        {/* Workflow Runner with Limit Guard */}
-        <div className="mt-12">
+        {/* ============================================ */}
+        {/* 5. LONG DESCRIPTION SECTION (Collapsible) */}
+        {/* ============================================ */}
+        {workflow.long_description && (
+          <LongDescriptionSection longDescription={workflow.long_description} />
+        )}
+
+        {/* ============================================ */}
+        {/* 6. WORKFLOW RUNNER */}
+        {/* ============================================ */}
+        <div className="mt-12" id="workflow-runner">
           {workflow.steps && workflow.steps.length > 0 ? (
             <WorkflowLimitGuard 
               userId={user?.id || null}
@@ -250,4 +258,3 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
     </div>
   );
 }
-

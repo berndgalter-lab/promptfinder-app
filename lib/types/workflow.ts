@@ -96,6 +96,11 @@ export interface Workflow {
   usage_count: number;
   status: WorkflowStatus;
   sort_order: number;
+  // NEW: Additional content fields
+  time_saved_minutes: number | null;
+  use_cases: string[] | null;
+  example_output: string | null;
+  long_description: string | null;
 }
 
 // User's progress through a workflow
