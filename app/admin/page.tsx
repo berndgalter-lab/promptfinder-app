@@ -154,7 +154,8 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
 
   const topWorkflows: TopWorkflow[] = topWorkflowIds.map(id => ({
     id,
-    title: workflowDetails?.find(w => w.id === id)?.title || 'Unknown',
+    // Compare as strings to handle type mismatches (string vs number)
+    title: workflowDetails?.find(w => String(w.id) === String(id))?.title || 'Unknown',
     usage_count: workflowCounts[id] || 0,
   }));
 

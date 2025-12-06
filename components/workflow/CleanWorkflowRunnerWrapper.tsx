@@ -106,11 +106,16 @@ export function CleanWorkflowRunnerWrapper({ workflow, userId }: CleanWorkflowRu
         // DSGVO-KONFORM: Also track aggregated stats (no personal data)
         // Only sends workflow_id + date, no IP, no cookies, no user data
         try {
-          await fetch('/api/track-anonymous', {
+          const response = await fetch('/api/track-anonymous', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ workflowId: workflow.id }),
+            body: JSON.stringify({ workflowId: String(workflow.id) }),
           });
+          
+          if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Anonymous tracking failed:', errorData);
+          }
         } catch (trackError) {
           // Silent fail - analytics shouldn't break the user experience
           console.error('Error tracking anonymous usage:', trackError);
