@@ -51,7 +51,7 @@ export function RelatedWorkflows({ workflows, currentCategory }: RelatedWorkflow
             {/* Time Badge */}
             <div className="flex items-center gap-1 text-xs text-zinc-500">
               <Clock className="h-3 w-3" />
-              <span>{workflow.estimated_minutes} min</span>
+              <span>~{workflow.estimated_minutes} min to complete</span>
             </div>
           </Link>
         ))}
