@@ -8,7 +8,7 @@ const BASE_URL = 'https://prompt-finder.com';
 
 interface Workflow {
   slug: string;
-  updated_at: string | null;
+  created_at: string | null;
 }
 
 async function getWorkflows(): Promise<Workflow[]> {
@@ -23,7 +23,7 @@ async function getWorkflows(): Promise<Workflow[]> {
   try {
     // Use REST API directly - more reliable than the JS client
     const response = await fetch(
-      `${supabaseUrl}/rest/v1/workflows?status=eq.published&select=slug,updated_at`,
+      `${supabaseUrl}/rest/v1/workflows?status=eq.published&select=slug,created_at`,
       {
         headers: {
           'apikey': supabaseKey,
@@ -139,7 +139,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   
   const workflowPages: MetadataRoute.Sitemap = workflows.map((workflow) => ({
     url: `${BASE_URL}/workflows/${workflow.slug}`,
-    lastModified: workflow.updated_at ? new Date(workflow.updated_at) : new Date(),
+    lastModified: workflow.created_at ? new Date(workflow.created_at) : new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));
