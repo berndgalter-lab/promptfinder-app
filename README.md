@@ -44,9 +44,7 @@ promptfinder/
 │   └── achievements.ts           # Achievement system
 │
 ├── supabase/
-│   ├── migrations/               # Database migrations
-│   ├── supabase-setup.sql        # Initial database setup
-│   └── supabase-usage-tracking.sql # Usage tracking tables
+│   └── schema_reference.sql      # Database schema documentation
 │
 └── docs/
     ├── workflow-creation/         # 📝 Workflow creation guides
@@ -100,11 +98,9 @@ NEXT_PUBLIC_SITE_URL=
 
 ### 4. Database Setup
 
-Run the SQL files in your Supabase SQL Editor in this order:
+Das Datenbank-Schema ist in `supabase/schema_reference.sql` dokumentiert.
 
-1. `supabase-setup.sql` - Core tables (workflows, users, favorites)
-2. `supabase-usage-tracking.sql` - Usage tracking & achievements
-3. `supabase/migrations/005_subscriptions.sql` - Subscription management
+**Hinweis:** Die Tabellen existieren bereits in Supabase. Die Datei dient nur als Referenz.
 
 ### 5. Run Development Server
 

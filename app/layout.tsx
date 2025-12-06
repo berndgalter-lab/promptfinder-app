@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthButton } from "@/components/auth/AuthButton";
 import { Toaster } from "@/components/ui/toaster";
-import { AchievementDebugger } from "@/components/debug/AchievementDebugger";
 import { NavLinks } from "@/components/nav/NavLinks";
 import { Footer } from "@/components/footer/Footer";
 import { getUserWithAdminStatus } from "@/lib/auth";
@@ -58,7 +57,6 @@ export default async function RootLayout({
         </main>
         <Footer />
         <Toaster />
-        <AchievementDebugger />
         <Analytics />
       </body>
     </html>
