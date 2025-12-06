@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import { getUser } from '@/lib/auth';
 import { Badge } from '@/components/ui/badge';
@@ -27,6 +28,34 @@ function formatDifficulty(difficulty: string): string {
     advanced: 'Advanced',
   };
   return map[difficulty] || difficulty;
+}
+
+// Generate dynamic metadata for SEO
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const supabase = await createClient();
+
+  const { data: workflow } = await supabase
+    .from('workflows')
+    .select('title, description, meta_title, meta_description')
+    .eq('slug', slug)
+    .single();
+
+  if (!workflow) {
+    return {
+      title: 'Workflow Not Found | PromptFinder',
+    };
+  }
+
+  return {
+    title: workflow.meta_title || `${workflow.title} | PromptFinder`,
+    description: workflow.meta_description || workflow.description,
+    openGraph: {
+      title: workflow.meta_title || workflow.title,
+      description: workflow.meta_description || workflow.description,
+      type: 'website',
+    },
+  };
 }
 
 export default async function WorkflowDetailPage({ params }: PageProps) {
