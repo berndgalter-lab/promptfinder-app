@@ -14,6 +14,7 @@ import { type Workflow, type WorkflowStep, isPromptStep } from '@/lib/types/work
 import { ExampleOutputSection } from '@/components/workflow/ExampleOutputSection';
 import { LongDescriptionSection } from '@/components/workflow/LongDescriptionSection';
 import { RelatedWorkflows } from '@/components/workflow/RelatedWorkflows';
+import { WorkflowRating } from '@/components/workflow/WorkflowRating';
 
 interface PageProps {
   params: Promise<{
@@ -179,6 +180,17 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
     }
   }
 
+  // Fetch ratings for Schema Markup
+  const { data: ratings } = await supabase
+    .from('workflow_ratings')
+    .select('rating')
+    .eq('workflow_id', workflow.id);
+
+  const ratingCount = ratings?.length || 0;
+  const ratingAverage = ratingCount > 0
+    ? ratings!.reduce((sum, r) => sum + r.rating, 0) / ratingCount
+    : 0;
+
   // Build JSON-LD structured data
   const jsonLd = {
     "@context": "https://schema.org",
@@ -193,11 +205,14 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
       "price": "0",
       "priceCurrency": "USD"
     },
-    ...(workflow.usage_count > 10 && {
+    // Only include rating if we have at least 10 reviews
+    ...(ratingCount >= 10 && {
       "aggregateRating": {
         "@type": "AggregateRating",
-        "ratingValue": "4.8",
-        "ratingCount": workflow.usage_count
+        "ratingValue": ratingAverage.toFixed(1),
+        "ratingCount": ratingCount,
+        "bestRating": "5",
+        "worstRating": "1"
       }
     })
   };
@@ -344,7 +359,17 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
         </div>
 
         {/* ============================================ */}
-        {/* 7. RELATED WORKFLOWS */}
+        {/* 7. RATING SECTION */}
+        {/* ============================================ */}
+        <div className="mt-8 flex justify-center border-t border-zinc-800 pt-8">
+          <WorkflowRating 
+            workflowId={workflow.id} 
+            userId={user?.id || null}
+          />
+        </div>
+
+        {/* ============================================ */}
+        {/* 8. RELATED WORKFLOWS */}
         {/* ============================================ */}
         {workflow.category && relatedWorkflows.length > 0 && (
           <RelatedWorkflows 
