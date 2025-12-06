@@ -3,13 +3,14 @@ import { createClient } from '@supabase/supabase-js';
 
 const BASE_URL = 'https://prompt-finder.com';
 
-// Create a simple Supabase client for public data (no auth needed)
+// Create Supabase client with Service Role Key to bypass RLS
 function getSupabaseClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  // Use Service Role Key to bypass RLS (only on server)
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   
   if (!url || !key) {
-    console.error('Supabase env vars missing for sitemap');
+    console.error('[Sitemap] Missing Supabase env vars');
     return null;
   }
   
@@ -108,6 +109,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const supabase = getSupabaseClient();
     
     if (supabase) {
+      console.log('[Sitemap] Fetching workflows from Supabase...');
+      
       const { data: workflows, error } = await supabase
         .from('workflows')
         .select('slug, updated_at')
@@ -115,23 +118,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         .order('updated_at', { ascending: false });
 
       if (error) {
-        console.error('Supabase error in sitemap:', error.message);
-      }
-
-      if (workflows && workflows.length > 0) {
-        console.log(`Sitemap: Found ${workflows.length} workflows`);
+        console.error('[Sitemap] Supabase error:', error.message);
+      } else if (workflows && workflows.length > 0) {
+        console.log(`[Sitemap] Found ${workflows.length} workflows`);
         workflowPages = workflows.map((workflow) => ({
           url: `${BASE_URL}/workflows/${workflow.slug}`,
           lastModified: workflow.updated_at ? new Date(workflow.updated_at) : new Date(),
           changeFrequency: 'weekly' as const,
           priority: 0.8,
         }));
+      } else {
+        console.log('[Sitemap] No workflows found');
       }
+    } else {
+      console.error('[Sitemap] Could not create Supabase client');
     }
   } catch (error) {
-    console.error('Error fetching workflows for sitemap:', error);
+    console.error('[Sitemap] Error:', error);
   }
 
+  console.log(`[Sitemap] Total URLs: ${staticPages.length + workflowPages.length}`);
   return [...staticPages, ...workflowPages];
 }
-
