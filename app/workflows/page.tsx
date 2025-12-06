@@ -1,7 +1,28 @@
+import { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import { WorkflowsPageClient } from '@/components/workflow/WorkflowsPageClient';
 import type { WorkflowCardData } from '@/components/workflow/WorkflowCard';
 import type { Category } from '@/components/workflow/WorkflowFilters';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const supabase = await createClient();
+  const { count } = await supabase
+    .from('workflows')
+    .select('*', { count: 'exact', head: true })
+    .eq('status', 'published');
+
+  const workflowCount = count || 40;
+
+  return {
+    title: `${workflowCount}+ Free AI Prompt Templates | PromptFinder`,
+    description: `Browse ${workflowCount} ready-to-use AI workflows for email, marketing, business & career. Structured prompts for ChatGPT & Claude that deliver results. Free.`,
+    openGraph: {
+      title: `${workflowCount}+ Free AI Prompt Templates`,
+      description: 'Curated AI workflows for professionals. Email, marketing, business & more.',
+      type: 'website',
+    },
+  };
+}
 
 interface CategoryData {
   id: number;
