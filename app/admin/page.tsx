@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server';
+import { createClient, createAdminClient } from '@/lib/supabase/server';
 import { getUserWithAdminStatus } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
@@ -100,7 +100,8 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
   const period = (resolvedParams.period as TimePeriod) || '30days';
   const { start: periodStart, label: periodLabel } = getDateRange(period);
 
-  const supabase = await createClient();
+  // Use admin client to bypass RLS and see all user data
+  const supabase = createAdminClient();
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
