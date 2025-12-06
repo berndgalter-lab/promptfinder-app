@@ -1,6 +1,10 @@
 import { MetadataRoute } from 'next';
 import { createClient } from '@supabase/supabase-js';
 
+// Force dynamic generation (no caching)
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 const BASE_URL = 'https://prompt-finder.com';
 
 // Create Supabase client with Service Role Key to bypass RLS
@@ -111,6 +115,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     if (supabase) {
       console.log('[Sitemap] Fetching workflows from Supabase...');
       
+      // First, check what workflows exist
+      const { data: allWorkflows } = await supabase
+        .from('workflows')
+        .select('slug, status, updated_at');
+      
+      console.log('[Sitemap] All workflows in DB:', allWorkflows?.map(w => ({ slug: w.slug, status: w.status })));
+
       const { data: workflows, error } = await supabase
         .from('workflows')
         .select('slug, updated_at')
