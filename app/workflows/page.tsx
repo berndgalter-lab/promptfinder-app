@@ -16,6 +16,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: `${workflowCount}+ Free AI Prompt Templates | PromptFinder`,
     description: `Browse ${workflowCount} ready-to-use AI workflows for email, marketing, business & career. Structured prompts for ChatGPT & Claude that deliver results. Free.`,
+    alternates: {
+      canonical: 'https://prompt-finder.com/workflows',
+    },
     openGraph: {
       title: `${workflowCount}+ Free AI Prompt Templates`,
       description: 'Curated AI workflows for professionals. Email, marketing, business & more.',

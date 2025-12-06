@@ -52,6 +52,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: workflow.meta_title || `${workflow.title} | PromptFinder`,
     description: workflow.meta_description || workflow.description,
+    alternates: {
+      canonical: `https://prompt-finder.com/workflows/${slug}`,
+    },
     openGraph: {
       title: workflow.meta_title || workflow.title,
       description: workflow.meta_description || workflow.description,
