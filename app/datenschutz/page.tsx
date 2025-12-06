@@ -158,6 +158,33 @@ export default function DatenschutzPage() {
             <p className="text-zinc-400 text-sm mt-2">
               Rechtsgrundlage: Art. 6 (1) f DSGVO (Berechtigte Interessen – Sicherheit, Stabilität)
             </p>
+
+            <h3 className="text-xl font-medium text-white mt-6 mb-3">4.4 Anonyme Nutzungsstatistiken</h3>
+            <p className="text-zinc-300 leading-relaxed">
+              Für nicht eingeloggte Besucher erfassen wir vollständig anonyme Nutzungsstatistiken:
+            </p>
+            <p className="text-zinc-300 leading-relaxed mt-2">
+              <strong className="text-white">Was wir speichern:</strong>
+            </p>
+            <ul className="list-disc list-inside space-y-1 ml-4 mt-2 text-zinc-300">
+              <li>Welcher Workflow genutzt wurde (nur die Workflow-ID)</li>
+              <li>Datum der Nutzung</li>
+              <li>Aggregierter Zähler (+1 pro Nutzung)</li>
+            </ul>
+            <div className="mt-3 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg">
+              <p className="text-zinc-400 text-sm">
+                <strong>Wir speichern dabei NICHT:</strong> IP-Adressen, Geräteinformationen (Browser, Betriebssystem), 
+                Cookies oder Session-IDs, persönliche Daten oder individuelle Nutzungsverläufe. 
+                Es ist technisch nicht möglich, diese Daten einer Person zuzuordnen.
+              </p>
+            </div>
+            <p className="text-zinc-300 leading-relaxed mt-3">
+              <strong className="text-white">Zweck:</strong> Verbesserung unseres Angebots, Erkennung beliebter Workflows und interne Statistiken.
+            </p>
+            <p className="text-zinc-400 text-sm mt-2">
+              Rechtsgrundlage: Art. 6 (1) f DSGVO (Berechtigtes Interesse). Da keine personenbezogenen Daten 
+              verarbeitet werden, ist keine Einwilligung erforderlich.
+            </p>
           </section>
 
           {/* 5. Cookies und LocalStorage */}

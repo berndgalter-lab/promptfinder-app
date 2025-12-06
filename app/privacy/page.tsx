@@ -157,6 +157,33 @@ export default function PrivacyPage() {
             <p className="text-zinc-400 text-sm mt-2">
               Legal basis: Art. 6(1)(f) GDPR (Legitimate interests – security, stability)
             </p>
+
+            <h3 className="text-xl font-medium text-white mt-6 mb-3">4.4 Anonymous Usage Statistics</h3>
+            <p className="text-zinc-300 leading-relaxed">
+              For visitors who are not logged in, we collect fully anonymous usage statistics:
+            </p>
+            <p className="text-zinc-300 leading-relaxed mt-2">
+              <strong className="text-white">What we store:</strong>
+            </p>
+            <ul className="list-disc list-inside space-y-1 ml-4 mt-2 text-zinc-300">
+              <li>Which workflow was used (workflow ID only)</li>
+              <li>Date of usage</li>
+              <li>Aggregated counter (+1 per usage)</li>
+            </ul>
+            <div className="mt-3 p-3 bg-zinc-900/50 border border-zinc-800 rounded-lg">
+              <p className="text-zinc-400 text-sm">
+                <strong>We do NOT store:</strong> IP addresses, device information (browser, operating system), 
+                cookies or session IDs, personal data, or individual usage histories. 
+                It is technically impossible to associate this data with any individual.
+              </p>
+            </div>
+            <p className="text-zinc-300 leading-relaxed mt-3">
+              <strong className="text-white">Purpose:</strong> Improving our service, identifying popular workflows, and internal statistics.
+            </p>
+            <p className="text-zinc-400 text-sm mt-2">
+              Legal basis: Art. 6(1)(f) GDPR (Legitimate interests). As no personal data is processed, 
+              no consent is required.
+            </p>
           </section>
 
           {/* 5. Cookies and LocalStorage */}
