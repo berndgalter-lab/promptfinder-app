@@ -140,6 +140,9 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
     .from('user_usage')
     .select('*', { count: 'exact', head: true });
 
+  // Define weekStart early (needed for anonymous stats)
+  const weekStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
   // ============================================
   // ANONYMOUS AGGREGATED STATS (DSGVO-konform)
   // ============================================
@@ -200,8 +203,7 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
   const workflowsToday = todayUsageData?.length || 0;
   const uniqueUsersToday = new Set(todayUsageData?.map(d => d.user_id)).size;
 
-  // This week stats
-  const weekStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+  // This week stats (weekStart already defined above)
   const { data: weekUsageData } = await supabase
     .from('user_usage')
     .select('id, user_id')
