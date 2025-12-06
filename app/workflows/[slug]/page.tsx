@@ -59,6 +59,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: workflow.meta_title || workflow.title,
       description: workflow.meta_description || workflow.description,
       type: 'website',
+      images: [
+        {
+          url: `https://prompt-finder.com/api/og/${slug}`,
+          width: 1200,
+          height: 630,
+          alt: workflow.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: workflow.meta_title || workflow.title,
+      description: workflow.meta_description || workflow.description,
+      images: [`https://prompt-finder.com/api/og/${slug}`],
     },
   };
 }
