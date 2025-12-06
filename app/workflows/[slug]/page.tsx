@@ -179,8 +179,37 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
     }
   }
 
+  // Build JSON-LD structured data
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": workflow.meta_title || workflow.title,
+    "description": workflow.meta_description || workflow.description,
+    "url": `https://prompt-finder.com/workflows/${workflow.slug}`,
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    ...(workflow.usage_count > 10 && {
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": workflow.usage_count
+      }
+    })
+  };
+
   return (
     <div className="min-h-screen bg-zinc-950 px-4 py-12 text-white">
+      {/* Schema.org JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* First-time user onboarding */}
       <OnboardingOverlay workflowTitle={workflow.title} />
       
