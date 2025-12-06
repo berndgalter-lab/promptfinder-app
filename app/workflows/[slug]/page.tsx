@@ -13,6 +13,7 @@ import { CategoryBadge } from '@/components/ui/CategoryBadge';
 import { type Workflow, type WorkflowStep, isPromptStep } from '@/lib/types/workflow';
 import { ExampleOutputSection } from '@/components/workflow/ExampleOutputSection';
 import { LongDescriptionSection } from '@/components/workflow/LongDescriptionSection';
+import { RelatedWorkflows } from '@/components/workflow/RelatedWorkflows';
 
 interface PageProps {
   params: Promise<{
@@ -152,6 +153,32 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
   // Determine if this is a single-prompt workflow (use clean runner) or multi-step
   const isSinglePromptWorkflow = workflow.steps.length === 1 && isPromptStep(workflow.steps[0]);
 
+  // Fetch related workflows from the same category
+  let relatedWorkflows: Array<{
+    id: number;
+    slug: string;
+    title: string;
+    description: string;
+    icon: string;
+    estimated_minutes: number;
+  }> = [];
+
+  if (workflow.category_id) {
+    const { data: related } = await supabase
+      .from('workflows')
+      .select('id, slug, title, description, icon, estimated_minutes')
+      .eq('category_id', workflow.category_id)
+      .eq('status', 'published')
+      .neq('slug', slug)
+      .order('featured', { ascending: false })
+      .order('sort_order', { ascending: true })
+      .limit(4);
+
+    if (related) {
+      relatedWorkflows = related;
+    }
+  }
+
   return (
     <div className="min-h-screen bg-zinc-950 px-4 py-12 text-white">
       {/* First-time user onboarding */}
@@ -286,6 +313,16 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
             </div>
           )}
         </div>
+
+        {/* ============================================ */}
+        {/* 7. RELATED WORKFLOWS */}
+        {/* ============================================ */}
+        {workflow.category && relatedWorkflows.length > 0 && (
+          <RelatedWorkflows 
+            workflows={relatedWorkflows}
+            currentCategory={workflow.category.name}
+          />
+        )}
       </div>
     </div>
   );
