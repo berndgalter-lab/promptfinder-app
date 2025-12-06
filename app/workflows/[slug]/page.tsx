@@ -15,6 +15,8 @@ import { ExampleOutputSection } from '@/components/workflow/ExampleOutputSection
 import { LongDescriptionSection } from '@/components/workflow/LongDescriptionSection';
 import { RelatedWorkflows } from '@/components/workflow/RelatedWorkflows';
 import { WorkflowRating } from '@/components/workflow/WorkflowRating';
+import { Breadcrumbs } from '@/components/workflow/Breadcrumbs';
+import { BreadcrumbSchema } from '@/components/workflow/BreadcrumbSchema';
 
 interface PageProps {
   params: Promise<{
@@ -241,12 +243,20 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      
+      {/* BreadcrumbList Schema */}
+      <BreadcrumbSchema workflowTitle={workflow.title} workflowSlug={slug} />
 
       {/* First-time user onboarding */}
       <OnboardingOverlay workflowTitle={workflow.title} />
       
       <div className="mx-auto max-w-4xl">
         
+        {/* ============================================ */}
+        {/* BREADCRUMBS */}
+        {/* ============================================ */}
+        <Breadcrumbs workflowTitle={workflow.title} />
+
         {/* ============================================ */}
         {/* 1. HERO SECTION */}
         {/* ============================================ */}
