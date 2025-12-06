@@ -1,5 +1,4 @@
 import { MetadataRoute } from 'next';
-import { createClient } from '@supabase/supabase-js';
 
 // Force dynamic generation (no caching)
 export const dynamic = 'force-dynamic';
@@ -7,18 +6,47 @@ export const revalidate = 0;
 
 const BASE_URL = 'https://prompt-finder.com';
 
-// Create Supabase client with Service Role Key to bypass RLS
-function getSupabaseClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  // Use Service Role Key to bypass RLS (only on server)
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  
-  if (!url || !key) {
-    console.error('[Sitemap] Missing Supabase env vars');
-    return null;
+interface Workflow {
+  slug: string;
+  updated_at: string | null;
+}
+
+async function getWorkflows(): Promise<Workflow[]> {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    console.error('[Sitemap] Missing Supabase credentials');
+    return [];
   }
-  
-  return createClient(url, key);
+
+  try {
+    // Use REST API directly - more reliable than the JS client
+    const response = await fetch(
+      `${supabaseUrl}/rest/v1/workflows?status=eq.published&select=slug,updated_at`,
+      {
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json',
+        },
+        cache: 'no-store',
+      }
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('[Sitemap] Supabase API error:', response.status, errorText);
+      return [];
+    }
+
+    const workflows = await response.json();
+    console.log(`[Sitemap] Found ${workflows.length} published workflows`);
+    return workflows;
+  } catch (error) {
+    console.error('[Sitemap] Fetch error:', error);
+    return [];
+  }
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -107,46 +135,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   // Dynamic workflow pages from Supabase
-  let workflowPages: MetadataRoute.Sitemap = [];
-
-  try {
-    const supabase = getSupabaseClient();
-    
-    if (supabase) {
-      console.log('[Sitemap] Fetching workflows from Supabase...');
-      
-      // First, check what workflows exist
-      const { data: allWorkflows } = await supabase
-        .from('workflows')
-        .select('slug, status, updated_at');
-      
-      console.log('[Sitemap] All workflows in DB:', allWorkflows?.map(w => ({ slug: w.slug, status: w.status })));
-
-      const { data: workflows, error } = await supabase
-        .from('workflows')
-        .select('slug, updated_at')
-        .eq('status', 'published')
-        .order('updated_at', { ascending: false });
-
-      if (error) {
-        console.error('[Sitemap] Supabase error:', error.message);
-      } else if (workflows && workflows.length > 0) {
-        console.log(`[Sitemap] Found ${workflows.length} workflows`);
-        workflowPages = workflows.map((workflow) => ({
-          url: `${BASE_URL}/workflows/${workflow.slug}`,
-          lastModified: workflow.updated_at ? new Date(workflow.updated_at) : new Date(),
-          changeFrequency: 'weekly' as const,
-          priority: 0.8,
-        }));
-      } else {
-        console.log('[Sitemap] No workflows found');
-      }
-    } else {
-      console.error('[Sitemap] Could not create Supabase client');
-    }
-  } catch (error) {
-    console.error('[Sitemap] Error:', error);
-  }
+  const workflows = await getWorkflows();
+  
+  const workflowPages: MetadataRoute.Sitemap = workflows.map((workflow) => ({
+    url: `${BASE_URL}/workflows/${workflow.slug}`,
+    lastModified: workflow.updated_at ? new Date(workflow.updated_at) : new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.8,
+  }));
 
   console.log(`[Sitemap] Total URLs: ${staticPages.length + workflowPages.length}`);
   return [...staticPages, ...workflowPages];
