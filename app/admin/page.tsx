@@ -137,27 +137,47 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
   const totalAnonymousUsage = allAnonymous?.reduce((sum, d) => sum + (d.total_anonymous || 0), 0) || 0;
   const totalUsageAllTime = (totalRegisteredUsage || 0) + totalAnonymousUsage;
 
-  // Top workflows in period
-  const workflowCounts: Record<string, number> = {};
+  // Top workflows in period (registered + anonymous)
+  const workflowCounts: Record<string, { registered: number; anonymous: number }> = {};
+  
+  // Add registered user counts
   periodUsage?.forEach(u => {
-    workflowCounts[u.workflow_id] = (workflowCounts[u.workflow_id] || 0) + 1;
+    const id = String(u.workflow_id);
+    if (!workflowCounts[id]) workflowCounts[id] = { registered: 0, anonymous: 0 };
+    workflowCounts[id].registered++;
   });
 
+  // Add anonymous counts from workflow_daily_stats
+  const { data: periodWorkflowStats } = await supabase
+    .from('workflow_daily_stats')
+    .select('workflow_id, anonymous_count')
+    .gte('date', periodStart.toISOString().split('T')[0]);
+
+  periodWorkflowStats?.forEach(s => {
+    const id = String(s.workflow_id);
+    if (!workflowCounts[id]) workflowCounts[id] = { registered: 0, anonymous: 0 };
+    workflowCounts[id].anonymous += s.anonymous_count || 0;
+  });
+
+  // Sort by total (registered + anonymous)
   const topWorkflowIds = Object.entries(workflowCounts)
-    .sort((a, b) => b[1] - a[1])
+    .map(([id, counts]) => ({ id, total: counts.registered + counts.anonymous }))
+    .sort((a, b) => b.total - a.total)
     .slice(0, 5)
-    .map(([id]) => id);
+    .map(item => item.id);
 
   const { data: workflowDetails } = topWorkflowIds.length > 0
     ? await supabase.from('workflows').select('id, title').in('id', topWorkflowIds)
     : { data: [] };
 
-  const topWorkflows: TopWorkflow[] = topWorkflowIds.map(id => ({
-    id,
-    // Compare as strings to handle type mismatches (string vs number)
-    title: workflowDetails?.find(w => String(w.id) === String(id))?.title || 'Unknown',
-    usage_count: workflowCounts[id] || 0,
-  }));
+  const topWorkflows: TopWorkflow[] = topWorkflowIds.map(id => {
+    const counts = workflowCounts[id] || { registered: 0, anonymous: 0 };
+    return {
+      id,
+      title: workflowDetails?.find(w => String(w.id) === String(id))?.title || 'Unknown',
+      usage_count: counts.registered + counts.anonymous,
+    };
+  });
 
   // Recent activity (last 10)
   const { data: recentRaw } = await supabase
@@ -408,7 +428,7 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
                 <Clock className="h-4 w-4 text-cyan-500" />
                 Recent Activity
               </CardTitle>
-              <CardDescription>Latest workflow usage</CardDescription>
+              <CardDescription>Registered users only (guests are anonymous)</CardDescription>
             </CardHeader>
             <CardContent>
               {recentActivity.length === 0 ? (
