@@ -100,8 +100,21 @@ export function CleanWorkflowRunnerWrapper({ workflow, userId }: CleanWorkflowRu
           console.error('Error checking achievements:', achievementError);
         }
       } else {
-        // Anonymous user: Track in localStorage
+        // Anonymous user: Track in localStorage (for limit enforcement)
         incrementAnonymousUsage();
+        
+        // DSGVO-KONFORM: Also track aggregated stats (no personal data)
+        // Only sends workflow_id + date, no IP, no cookies, no user data
+        try {
+          await fetch('/api/track-anonymous', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ workflowId: workflow.id }),
+          });
+        } catch (trackError) {
+          // Silent fail - analytics shouldn't break the user experience
+          console.error('Error tracking anonymous usage:', trackError);
+        }
       }
     } catch (error) {
       console.error('Error completing workflow:', error);

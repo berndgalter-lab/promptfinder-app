@@ -32,6 +32,8 @@ interface DailyUsage {
   date: string;
   workflows: number;
   unique_users: number;
+  anonymous: number;
+  logged_in: number;
 }
 
 interface TopWorkflow {
@@ -133,10 +135,47 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
     return acc;
   }, 0) || 0;
 
-  // Total workflows all time
+  // Total workflows all time (logged-in users only)
   const { count: totalWorkflowsAllTime } = await supabase
     .from('user_usage')
     .select('*', { count: 'exact', head: true });
+
+  // ============================================
+  // ANONYMOUS AGGREGATED STATS (DSGVO-konform)
+  // ============================================
+  
+  // Global anonymous stats (all time)
+  const { data: globalAnonymousStats } = await supabase
+    .from('global_daily_stats')
+    .select('total_anonymous, total_logged_in');
+  
+  const totalAnonymousAllTime = globalAnonymousStats?.reduce((acc, s) => acc + (s.total_anonymous || 0), 0) || 0;
+  
+  // Anonymous stats for today
+  const todayStr = today.toISOString().split('T')[0];
+  const { data: todayAnonymousData } = await supabase
+    .from('global_daily_stats')
+    .select('total_anonymous')
+    .eq('date', todayStr)
+    .single();
+  
+  const anonymousToday = todayAnonymousData?.total_anonymous || 0;
+  
+  // Anonymous stats for this week
+  const { data: weekAnonymousData } = await supabase
+    .from('global_daily_stats')
+    .select('total_anonymous, date')
+    .gte('date', weekStart.toISOString().split('T')[0]);
+  
+  const anonymousThisWeek = weekAnonymousData?.reduce((acc, s) => acc + (s.total_anonymous || 0), 0) || 0;
+  
+  // Anonymous stats for selected period
+  const { data: periodAnonymousData } = await supabase
+    .from('global_daily_stats')
+    .select('total_anonymous, date')
+    .gte('date', periodStart.toISOString().split('T')[0]);
+  
+  const anonymousInPeriod = periodAnonymousData?.reduce((acc, s) => acc + (s.total_anonymous || 0), 0) || 0;
 
   // ============================================
   // PERIOD-SPECIFIC METRICS
@@ -251,38 +290,59 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
     .slice(0, 10);
 
   // ============================================
-  // DAILY CHART DATA (last 14 days)
+  // DAILY CHART DATA (last 14 days) - inkl. anonym
   // ============================================
 
   const fourteenDaysAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+  const fourteenDaysAgoStr = fourteenDaysAgo.toISOString().split('T')[0];
+  
+  // Logged-in user data
   const { data: dailyUsageRaw } = await supabase
     .from('user_usage')
     .select('used_at, user_id')
     .gte('used_at', fourteenDaysAgo.toISOString())
     .order('used_at', { ascending: true });
 
-  const dailyUsageMap: Record<string, { workflows: number; users: Set<string> }> = {};
+  // Anonymous aggregated data (DSGVO-konform)
+  const { data: dailyAnonymousRaw } = await supabase
+    .from('global_daily_stats')
+    .select('date, total_anonymous, total_logged_in')
+    .gte('date', fourteenDaysAgoStr)
+    .order('date', { ascending: true });
+
+  const dailyUsageMap: Record<string, { workflows: number; users: Set<string>; anonymous: number; logged_in: number }> = {};
   
   // Initialize all 14 days
   for (let i = 13; i >= 0; i--) {
     const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
     const dateStr = date.toISOString().split('T')[0];
-    dailyUsageMap[dateStr] = { workflows: 0, users: new Set() };
+    dailyUsageMap[dateStr] = { workflows: 0, users: new Set(), anonymous: 0, logged_in: 0 };
   }
   
+  // Add logged-in user data
   dailyUsageRaw?.forEach(u => {
     const date = new Date(u.used_at).toISOString().split('T')[0];
     if (dailyUsageMap[date]) {
       dailyUsageMap[date].workflows++;
       dailyUsageMap[date].users.add(u.user_id);
+      dailyUsageMap[date].logged_in++;
+    }
+  });
+
+  // Add anonymous data from aggregated stats
+  dailyAnonymousRaw?.forEach(d => {
+    if (dailyUsageMap[d.date]) {
+      dailyUsageMap[d.date].anonymous = d.total_anonymous || 0;
     }
   });
 
   const dailyUsage: DailyUsage[] = Object.entries(dailyUsageMap)
     .map(([date, data]) => ({
       date,
-      workflows: data.workflows,
-      unique_users: data.users.size
+      workflows: data.logged_in + data.anonymous, // Total = logged-in + anonymous
+      unique_users: data.users.size,
+      anonymous: data.anonymous,
+      logged_in: data.logged_in
     }))
     .sort((a, b) => a.date.localeCompare(b.date));
 
@@ -378,20 +438,22 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
         {/* Quick Stats Bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8 p-4 bg-zinc-900/50 rounded-xl border border-zinc-800">
           <div className="text-center">
-            <p className="text-2xl md:text-3xl font-bold text-blue-400">{workflowsToday}</p>
+            <p className="text-2xl md:text-3xl font-bold text-blue-400">{workflowsToday + anonymousToday}</p>
             <p className="text-xs text-zinc-500">Workflows heute</p>
+            <p className="text-xs text-zinc-600">{workflowsToday} 👤 + {anonymousToday} 👻</p>
           </div>
           <div className="text-center">
             <p className="text-2xl md:text-3xl font-bold text-cyan-400">{uniqueUsersToday}</p>
-            <p className="text-xs text-zinc-500">User heute</p>
+            <p className="text-xs text-zinc-500">Eingeloggte User</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl md:text-3xl font-bold text-purple-400">{workflowsThisWeek}</p>
+            <p className="text-2xl md:text-3xl font-bold text-purple-400">{workflowsThisWeek + anonymousThisWeek}</p>
             <p className="text-xs text-zinc-500">Workflows diese Woche</p>
+            <p className="text-xs text-zinc-600">{workflowsThisWeek} 👤 + {anonymousThisWeek} 👻</p>
           </div>
           <div className="text-center">
             <p className="text-2xl md:text-3xl font-bold text-green-400">{uniqueUsersThisWeek}</p>
-            <p className="text-xs text-zinc-500">User diese Woche</p>
+            <p className="text-xs text-zinc-500">Eingeloggte User</p>
           </div>
         </div>
 
@@ -419,8 +481,8 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-xs text-zinc-400 mb-1 uppercase tracking-wide">Workflows ({periodLabel})</p>
-                  <p className="text-2xl md:text-3xl font-bold text-blue-400">{workflowsInPeriod}</p>
-                  <p className="text-xs text-zinc-500 mt-1">{uniqueUsersInPeriod} aktive User</p>
+                  <p className="text-2xl md:text-3xl font-bold text-blue-400">{workflowsInPeriod + anonymousInPeriod}</p>
+                  <p className="text-xs text-zinc-500 mt-1">{workflowsInPeriod} 👤 + {anonymousInPeriod} 👻</p>
                 </div>
                 <Zap className="h-6 w-6 text-blue-500/40" />
               </div>
@@ -447,17 +509,8 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-xs text-zinc-400 mb-1 uppercase tracking-wide">Total Workflows</p>
-                  <p className="text-2xl md:text-3xl font-bold text-amber-400">{totalWorkflowsAllTime || 0}</p>
-                  <div className="flex items-center gap-1 mt-1">
-                    {monthGrowth >= 0 ? (
-                      <ArrowUpRight className="h-3 w-3 text-green-400" />
-                    ) : (
-                      <ArrowDownRight className="h-3 w-3 text-red-400" />
-                    )}
-                    <p className={`text-xs ${monthGrowth >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {monthGrowth}% vs. letzter Monat
-                    </p>
-                  </div>
+                  <p className="text-2xl md:text-3xl font-bold text-amber-400">{(totalWorkflowsAllTime || 0) + totalAnonymousAllTime}</p>
+                  <p className="text-xs text-zinc-500 mt-1">{totalWorkflowsAllTime || 0} 👤 + {totalAnonymousAllTime} 👻</p>
                 </div>
                 <TrendingUp className="h-6 w-6 text-amber-500/40" />
               </div>
@@ -514,7 +567,10 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
                 <Calendar className="h-5 w-5 text-blue-500" />
                 Tägliche Nutzung
               </CardTitle>
-              <CardDescription>Letzte 14 Tage</CardDescription>
+              <CardDescription className="flex items-center gap-4">
+                <span>Letzte 14 Tage</span>
+                <span className="text-xs">👤 = Eingeloggt | 👻 = Anonym (DSGVO-konform)</span>
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-1.5">
@@ -544,8 +600,8 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
                       <span className={`text-sm font-medium w-8 text-right ${isToday ? 'text-blue-400' : ''}`}>
                         {day.workflows}
                       </span>
-                      <span className="text-xs text-zinc-500 w-14 text-right">
-                        {day.unique_users} User
+                      <span className="text-xs text-zinc-500 w-20 text-right" title="👤 Eingeloggt + 👻 Anonym">
+                        {day.logged_in}👤 {day.anonymous}👻
                       </span>
                     </div>
                   );
