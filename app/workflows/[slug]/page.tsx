@@ -313,14 +313,14 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
         {/* 3. EXAMPLE OUTPUT SECTION (Open by default) */}
         {/* ============================================ */}
         {workflow.example_output && (
-          <ExampleOutputSection exampleOutput={workflow.example_output} />
+          <ExampleOutputSection exampleOutput={workflow.example_output} workflowTitle={workflow.title} />
         )}
 
         {/* ============================================ */}
         {/* 4. LONG DESCRIPTION SECTION (Closed by default) */}
         {/* ============================================ */}
         {workflow.long_description && (
-          <LongDescriptionSection longDescription={workflow.long_description} />
+          <LongDescriptionSection longDescription={workflow.long_description} workflowTitle={workflow.title} />
         )}
 
         {/* ============================================ */}

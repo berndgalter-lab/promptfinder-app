@@ -1,16 +1,17 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, FileText } from 'lucide-react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface ExampleOutputSectionProps {
   exampleOutput: string;
+  workflowTitle: string;
 }
 
 const MAX_HEIGHT = 300; // px
 
-export function ExampleOutputSection({ exampleOutput }: ExampleOutputSectionProps) {
+export function ExampleOutputSection({ exampleOutput, workflowTitle }: ExampleOutputSectionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [needsExpansion, setNeedsExpansion] = useState(false);
 
@@ -25,8 +26,8 @@ export function ExampleOutputSection({ exampleOutput }: ExampleOutputSectionProp
     <div className="mb-6">
       {/* Header */}
       <div className="flex items-center gap-2 mb-3">
-        <FileText className="h-4 w-4 text-blue-400" />
-        <span className="font-medium text-zinc-200">📋 Example Result</span>
+        <span className="text-blue-400">📋</span>
+        <h2 className="font-medium text-zinc-200">Example {workflowTitle} Output</h2>
       </div>
       
       {/* Content Box */}

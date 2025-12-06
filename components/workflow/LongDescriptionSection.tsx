@@ -1,14 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronDown, BookOpen } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface LongDescriptionSectionProps {
   longDescription: string;
+  workflowTitle: string;
 }
 
-export function LongDescriptionSection({ longDescription }: LongDescriptionSectionProps) {
+export function LongDescriptionSection({ longDescription, workflowTitle }: LongDescriptionSectionProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   // Split by double newlines to create paragraphs
@@ -27,8 +28,8 @@ export function LongDescriptionSection({ longDescription }: LongDescriptionSecti
         aria-expanded={isOpen}
       >
         <div className="flex items-center gap-2 text-left">
-          <BookOpen className="h-4 w-4 text-zinc-400" />
-          <span className="font-medium text-zinc-400">📖 Learn more</span>
+          <span className="text-zinc-400">📖</span>
+          <h2 className="font-medium text-zinc-400 text-base">How This {workflowTitle} Works</h2>
         </div>
         <ChevronDown 
           className={cn(
