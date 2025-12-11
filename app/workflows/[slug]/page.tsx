@@ -17,11 +17,7 @@ import { RelatedWorkflows } from '@/components/workflow/RelatedWorkflows';
 import { WorkflowRating } from '@/components/workflow/WorkflowRating';
 import { Breadcrumbs } from '@/components/workflow/Breadcrumbs';
 import { BreadcrumbSchema } from '@/components/workflow/BreadcrumbSchema';
-import { 
-  getCompatibleToolsDisplay, 
-  getSchemaToolRequirements,
-  getMetaDescriptionTools 
-} from '@/lib/constants/ai-tools';
+import { getCompatibleToolsDisplay } from '@/lib/constants/ai-tools';
 
 interface PageProps {
   params: Promise<{
@@ -40,27 +36,28 @@ function formatDifficulty(difficulty: string): string {
 }
 
 // Helper to enhance meta description with AI tool names
-function enhanceMetaDescription(description: string, tool: string = 'any'): string {
-  const toolNames = getMetaDescriptionTools(tool);
+function enhanceMetaDescription(description: string): string {
+  const toolNames = 'ChatGPT, Claude or Gemini';
   
   // If description already contains tool names, return as-is
   if (description.toLowerCase().includes('chatgpt') || 
       description.toLowerCase().includes('claude') ||
       description.toLowerCase().includes('gemini')) {
-    return description;
+    return description.substring(0, 160);
   }
   
-  // Find the first sentence/phrase to inject tool names after the action verb
-  // Pattern: "Create X" -> "Create X with ChatGPT, Claude or Gemini."
-  const firstSentenceEnd = description.indexOf('. ');
-  if (firstSentenceEnd > 0 && firstSentenceEnd < 80) {
-    const firstSentence = description.substring(0, firstSentenceEnd);
-    const rest = description.substring(firstSentenceEnd + 2);
-    return `${firstSentence} with ${toolNames}. ${rest}`;
+  // Find the first period to inject tool names
+  const firstPeriod = description.indexOf('.');
+  
+  if (firstPeriod > 0 && firstPeriod < 80) {
+    // Insert tools after first sentence (replacing the period)
+    const firstSentence = description.substring(0, firstPeriod);
+    const rest = description.substring(firstPeriod + 1).trim();
+    return `${firstSentence} with ${toolNames}. ${rest}`.substring(0, 160);
   }
   
   // Fallback: prepend tool info
-  return `Use ${toolNames} to ${description.charAt(0).toLowerCase()}${description.slice(1)}`;
+  return `Use ${toolNames} to ${description.charAt(0).toLowerCase()}${description.slice(1)}`.substring(0, 160);
 }
 
 // Generate dynamic metadata for SEO
@@ -82,16 +79,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   // Enhance description with AI tool names for SEO
   const baseDescription = workflow.meta_description || workflow.description;
-  const enhancedDescription = enhanceMetaDescription(baseDescription, workflow.tool || 'any');
+  const enhancedDescription = enhanceMetaDescription(baseDescription);
+
+  // New title format: "{Title} for ChatGPT & Claude | Free AI Prompt"
+  const seoTitle = `${workflow.title} for ChatGPT & Claude | Free AI Prompt`;
 
   return {
-    title: workflow.meta_title || `${workflow.title} | PromptFinder`,
+    title: seoTitle,
     description: enhancedDescription,
     alternates: {
       canonical: `https://prompt-finder.com/workflows/${slug}`,
     },
     openGraph: {
-      title: workflow.meta_title || workflow.title,
+      title: seoTitle,
       description: enhancedDescription,
       type: 'website',
       images: [
@@ -105,7 +105,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     twitter: {
       card: 'summary_large_image',
-      title: workflow.meta_title || workflow.title,
+      title: seoTitle,
       description: enhancedDescription,
       images: [`https://prompt-finder.com/api/og/${slug}`],
     },
@@ -243,31 +243,26 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
     ? ratings!.reduce((sum, r) => sum + r.rating, 0) / ratingCount
     : 0;
 
-  // Build JSON-LD structured data
+  // Build JSON-LD structured data (Article schema for better SEO)
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": workflow.meta_title || workflow.title,
+    "@type": "Article",
+    "headline": `${workflow.title} - AI Prompt for ChatGPT & Claude`,
     "description": workflow.meta_description || workflow.description,
-    "url": `https://prompt-finder.com/workflows/${workflow.slug}`,
-    "applicationCategory": "BusinessApplication",
-    "operatingSystem": "Web",
-    "softwareRequirements": getSchemaToolRequirements(workflow.tool),
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
+    "author": {
+      "@type": "Organization",
+      "name": "PromptFinder"
     },
-    // Only include rating if we have at least 10 reviews
-    ...(ratingCount >= 10 && {
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": ratingAverage.toFixed(1),
-        "ratingCount": ratingCount,
-        "bestRating": "5",
-        "worstRating": "1"
-      }
-    })
+    "publisher": {
+      "@type": "Organization",
+      "name": "PromptFinder",
+      "url": "https://prompt-finder.com"
+    },
+    "datePublished": workflow.created_at,
+    "dateModified": rawWorkflow.updated_at || workflow.created_at,
+    "keywords": ["ChatGPT", "Claude", "Gemini", "Copilot", ...(workflow.tags || [])],
+    "articleSection": workflow.category?.name || "AI Prompts",
+    "url": `https://prompt-finder.com/workflows/${workflow.slug}`
   };
 
   return (
@@ -350,7 +345,7 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
           {/* Works with AI Tools */}
           <p className="mt-3 text-sm text-zinc-500">
             <span>Works with: </span>
-            <span className="text-zinc-400">{getCompatibleToolsDisplay(workflow.tool)}</span>
+            <span className="text-zinc-300">{getCompatibleToolsDisplay(workflow.tool)}</span>
           </p>
         </div>
 
