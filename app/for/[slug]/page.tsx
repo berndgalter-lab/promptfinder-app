@@ -217,7 +217,7 @@ export default async function JobProfilePage({ params }: PageProps) {
         {/* Hero Section */}
         <section className="mb-12">
           <h1 className="text-3xl font-bold md:text-4xl lg:text-5xl mb-4">
-            {profile.hero_headline || `${totalCount} AI Workflows for ${profile.title}`}
+            {totalCount} AI Workflows for {profile.title}
           </h1>
           <p className="text-lg text-zinc-400 max-w-3xl mb-4">
             {profile.hero_subheadline || profile.description}
@@ -282,7 +282,7 @@ export default async function JobProfilePage({ params }: PageProps) {
         {profile.seo_text && (
           <section className="mt-16 pt-8 border-t border-zinc-800">
             <div 
-              className="prose prose-invert prose-zinc max-w-none prose-a:text-blue-400 hover:prose-a:text-blue-300 prose-p:text-zinc-400"
+              className="prose prose-invert prose-zinc max-w-none prose-a:text-blue-400 hover:prose-a:text-blue-300 prose-p:text-zinc-400 prose-p:leading-relaxed"
               dangerouslySetInnerHTML={{ __html: profile.seo_text }}
             />
           </section>
@@ -308,11 +308,11 @@ function ProfileWorkflowCard({
       <div 
         className={cn(
           "relative h-full p-5 rounded-xl border transition-all duration-200",
-          "hover:border-zinc-600 hover:bg-zinc-900 hover:scale-[1.02]",
+          "hover:bg-zinc-900 hover:scale-[1.02]",
           "hover:shadow-lg hover:shadow-zinc-950/50",
           featured 
-            ? "bg-zinc-900/80 border-yellow-500/30" 
-            : "bg-zinc-900/50 border-zinc-800"
+            ? "bg-zinc-900/80 border-yellow-500/20 hover:border-yellow-500/40" 
+            : "bg-zinc-900/50 border-zinc-800 hover:border-zinc-600"
         )}
       >
         {/* Icon + Title */}
