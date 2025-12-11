@@ -249,6 +249,7 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
     "@type": "Article",
     "headline": `${workflow.title} - AI Prompt for ChatGPT & Claude`,
     "description": workflow.meta_description || workflow.description,
+    "image": `https://prompt-finder.com/api/og/${workflow.slug}`,
     "author": {
       "@type": "Organization",
       "name": "PromptFinder"
