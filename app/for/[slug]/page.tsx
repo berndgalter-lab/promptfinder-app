@@ -282,7 +282,7 @@ export default async function JobProfilePage({ params }: PageProps) {
         {profile.seo_text && (
           <section className="mt-16 pt-8 border-t border-zinc-800">
             <div 
-              className="prose prose-invert prose-zinc max-w-none prose-a:text-blue-400 hover:prose-a:text-blue-300 prose-p:text-zinc-400 prose-p:leading-relaxed"
+              className="prose prose-invert prose-zinc max-w-none [&_a]:text-blue-400 [&_a]:underline [&_a]:hover:text-blue-300 [&_p]:text-zinc-400 [&_p]:leading-relaxed [&_p]:mb-4"
               dangerouslySetInnerHTML={{ __html: profile.seo_text }}
             />
           </section>
