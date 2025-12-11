@@ -118,12 +118,12 @@ Should return:
 
 ### Monthly Plan ($19/month)
 ```
-https://promptfinder.lemonsqueezy.com/buy/c534f3ab-80c2-4a53-86ff-69c05e62a79a
+https://promptfinder.lemonsqueezy.com/buy/8339284b-2d45-4b97-98d5-139de33d6425
 ```
 
 ### Annual Plan ($190/year)
 ```
-https://promptfinder.lemonsqueezy.com/buy/f7107575-9075-4e57-8440-7f511102db70
+https://promptfinder.lemonsqueezy.com/buy/5f3367e2-a69e-47f7-a33f-1071be208b58
 ```
 
 ---

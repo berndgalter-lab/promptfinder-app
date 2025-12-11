@@ -10,8 +10,8 @@ interface UpgradeToProProps {
   monthlyUsage: number;
 }
 
-const MONTHLY_CHECKOUT = 'https://promptfinder.lemonsqueezy.com/buy/c534f3ab-80c2-4a53-86ff-69c05e62a79a';
-const ANNUAL_CHECKOUT = 'https://promptfinder.lemonsqueezy.com/buy/f7107575-9075-4e57-8440-7f511102db70';
+const MONTHLY_CHECKOUT = 'https://promptfinder.lemonsqueezy.com/buy/8339284b-2d45-4b97-98d5-139de33d6425';
+const ANNUAL_CHECKOUT = 'https://promptfinder.lemonsqueezy.com/buy/5f3367e2-a69e-47f7-a33f-1071be208b58';
 
 export function UpgradeToPro({ currentPlan, monthlyUsage }: UpgradeToProProps) {
   // Show Pro status if already subscribed
