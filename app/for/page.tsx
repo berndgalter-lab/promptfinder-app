@@ -2,7 +2,6 @@ import { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 export const revalidate = 3600; // ISR: revalidate every hour
 
@@ -168,35 +167,28 @@ function ProfileCard({
   return (
     <Link 
       href={`/for/${profile.slug}`}
-      className="group block"
+      className="group block h-full"
     >
       <div 
-        className={cn(
-          "relative h-full p-5 rounded-xl border transition-all duration-200",
-          "bg-zinc-900/50 border-zinc-800",
-          "hover:border-zinc-600 hover:bg-zinc-900 hover:scale-[1.02]",
-          "hover:shadow-lg hover:shadow-zinc-950/50"
-        )}
+        className="h-full min-h-[200px] p-6 rounded-xl bg-zinc-900/50 border border-zinc-800 hover:border-zinc-600 hover:-translate-y-1 transition-all duration-200 flex flex-col items-center text-center"
       >
         {/* Icon */}
-        <div className="text-3xl mb-3 text-center">
+        <div className="text-3xl mb-3">
           {profile.icon || '💼'}
         </div>
 
         {/* Title */}
-        <h2 className="font-semibold text-white text-center group-hover:text-blue-400 transition-colors mb-2">
+        <h2 className="font-semibold text-white group-hover:text-blue-400 transition-colors mb-2">
           {profile.title}
         </h2>
 
         {/* Description */}
-        {profile.description && (
-          <p className="text-sm text-zinc-400 text-center line-clamp-2 mb-4">
-            {profile.description}
-          </p>
-        )}
+        <p className="text-sm text-zinc-400 line-clamp-2 mb-4 flex-grow">
+          {profile.description || 'AI workflows for this role'}
+        </p>
 
         {/* Workflow Count Badge */}
-        <div className="flex justify-center">
+        <div className="mt-auto">
           <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs bg-zinc-800 text-zinc-400 border border-zinc-700">
             {profile.workflowCount} workflows
           </span>
