@@ -17,6 +17,11 @@ import { RelatedWorkflows } from '@/components/workflow/RelatedWorkflows';
 import { WorkflowRating } from '@/components/workflow/WorkflowRating';
 import { Breadcrumbs } from '@/components/workflow/Breadcrumbs';
 import { BreadcrumbSchema } from '@/components/workflow/BreadcrumbSchema';
+import { 
+  getCompatibleToolsDisplay, 
+  getSchemaToolRequirements,
+  getMetaDescriptionTools 
+} from '@/lib/constants/ai-tools';
 
 interface PageProps {
   params: Promise<{
@@ -34,6 +39,30 @@ function formatDifficulty(difficulty: string): string {
   return map[difficulty] || difficulty;
 }
 
+// Helper to enhance meta description with AI tool names
+function enhanceMetaDescription(description: string, tool: string = 'any'): string {
+  const toolNames = getMetaDescriptionTools(tool);
+  
+  // If description already contains tool names, return as-is
+  if (description.toLowerCase().includes('chatgpt') || 
+      description.toLowerCase().includes('claude') ||
+      description.toLowerCase().includes('gemini')) {
+    return description;
+  }
+  
+  // Find the first sentence/phrase to inject tool names after the action verb
+  // Pattern: "Create X" -> "Create X with ChatGPT, Claude or Gemini."
+  const firstSentenceEnd = description.indexOf('. ');
+  if (firstSentenceEnd > 0 && firstSentenceEnd < 80) {
+    const firstSentence = description.substring(0, firstSentenceEnd);
+    const rest = description.substring(firstSentenceEnd + 2);
+    return `${firstSentence} with ${toolNames}. ${rest}`;
+  }
+  
+  // Fallback: prepend tool info
+  return `Use ${toolNames} to ${description.charAt(0).toLowerCase()}${description.slice(1)}`;
+}
+
 // Generate dynamic metadata for SEO
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
@@ -41,7 +70,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const { data: workflow } = await supabase
     .from('workflows')
-    .select('title, description, meta_title, meta_description')
+    .select('title, description, meta_title, meta_description, tool')
     .eq('slug', slug)
     .single();
 
@@ -51,15 +80,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
+  // Enhance description with AI tool names for SEO
+  const baseDescription = workflow.meta_description || workflow.description;
+  const enhancedDescription = enhanceMetaDescription(baseDescription, workflow.tool || 'any');
+
   return {
     title: workflow.meta_title || `${workflow.title} | PromptFinder`,
-    description: workflow.meta_description || workflow.description,
+    description: enhancedDescription,
     alternates: {
       canonical: `https://prompt-finder.com/workflows/${slug}`,
     },
     openGraph: {
       title: workflow.meta_title || workflow.title,
-      description: workflow.meta_description || workflow.description,
+      description: enhancedDescription,
       type: 'website',
       images: [
         {
@@ -73,7 +106,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     twitter: {
       card: 'summary_large_image',
       title: workflow.meta_title || workflow.title,
-      description: workflow.meta_description || workflow.description,
+      description: enhancedDescription,
       images: [`https://prompt-finder.com/api/og/${slug}`],
     },
   };
@@ -219,6 +252,7 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
     "url": `https://prompt-finder.com/workflows/${workflow.slug}`,
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web",
+    "softwareRequirements": getSchemaToolRequirements(workflow.tool),
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -312,6 +346,12 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
               </Badge>
             )}
           </div>
+
+          {/* Works with AI Tools */}
+          <p className="mt-3 text-sm text-zinc-500">
+            <span>Works with: </span>
+            <span className="text-zinc-400">{getCompatibleToolsDisplay(workflow.tool)}</span>
+          </p>
         </div>
 
         {/* ============================================ */}
