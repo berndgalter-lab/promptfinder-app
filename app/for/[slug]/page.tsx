@@ -217,7 +217,7 @@ export default async function JobProfilePage({ params }: PageProps) {
         {/* Hero Section */}
         <section className="mb-12">
           <h1 className="text-3xl font-bold md:text-4xl lg:text-5xl mb-4">
-            {profile.hero_headline || `AI Workflows for ${profile.title}`}
+            {profile.hero_headline || `${totalCount} AI Workflows for ${profile.title}`}
           </h1>
           <p className="text-lg text-zinc-400 max-w-3xl mb-4">
             {profile.hero_subheadline || profile.description}
@@ -230,12 +230,12 @@ export default async function JobProfilePage({ params }: PageProps) {
 
         {/* Featured Workflows */}
         {featuredWorkflows.length > 0 && (
-          <section className="mb-12">
+          <section className="mb-12 py-8 px-6 -mx-6 rounded-xl bg-zinc-900/30 border border-zinc-800/50">
             <h2 className="text-xl font-semibold mb-6 flex items-center gap-2">
-              <span className="text-yellow-400">★</span>
+              <span className="text-yellow-400">⭐</span>
               Top Workflows for {profile.title}
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {featuredWorkflows.map(({ workflow }) => (
                 <ProfileWorkflowCard 
                   key={workflow.id} 
@@ -278,16 +278,13 @@ export default async function JobProfilePage({ params }: PageProps) {
           </div>
         )}
 
-        {/* SEO Text */}
+        {/* SEO Text (rendered as HTML to support internal links) */}
         {profile.seo_text && (
           <section className="mt-16 pt-8 border-t border-zinc-800">
-            <div className="prose prose-invert prose-zinc max-w-none">
-              {profile.seo_text.split('\n\n').map((paragraph, idx) => (
-                <p key={idx} className="text-zinc-400 mb-4">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
+            <div 
+              className="prose prose-invert prose-zinc max-w-none prose-a:text-blue-400 hover:prose-a:text-blue-300 prose-p:text-zinc-400"
+              dangerouslySetInnerHTML={{ __html: profile.seo_text }}
+            />
           </section>
         )}
       </div>
@@ -311,19 +308,13 @@ function ProfileWorkflowCard({
       <div 
         className={cn(
           "relative h-full p-5 rounded-xl border transition-all duration-200",
-          "bg-zinc-900/50 border-zinc-800",
           "hover:border-zinc-600 hover:bg-zinc-900 hover:scale-[1.02]",
           "hover:shadow-lg hover:shadow-zinc-950/50",
-          featured && "ring-1 ring-yellow-500/20"
+          featured 
+            ? "bg-zinc-900/80 border-yellow-500/30" 
+            : "bg-zinc-900/50 border-zinc-800"
         )}
       >
-        {/* Featured indicator */}
-        {featured && (
-          <div className="absolute -top-2 -right-2 px-2 py-0.5 rounded-full bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 text-[10px] font-medium">
-            Featured
-          </div>
-        )}
-
         {/* Icon + Title */}
         <div className="flex items-start gap-3 mb-3">
           <span className="text-2xl flex-shrink-0">{workflow.icon || '📝'}</span>
@@ -337,16 +328,8 @@ function ProfileWorkflowCard({
           {workflow.description}
         </p>
 
-        {/* Footer: Category + Time */}
-        <div className="flex items-center justify-between gap-2 pt-3 border-t border-zinc-800/50">
-          {/* Category Badge */}
-          {workflow.category && (
-            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-zinc-800/50 text-xs text-zinc-400">
-              <span>{workflow.category.icon}</span>
-              <span>{workflow.category.name}</span>
-            </span>
-          )}
-
+        {/* Footer: Time only (category removed - redundant on profile pages) */}
+        <div className="flex items-center justify-end pt-3 border-t border-zinc-800/50">
           {/* Estimated Time */}
           {workflow.estimated_minutes && workflow.estimated_minutes > 0 && (
             <span className="inline-flex items-center gap-1 text-xs text-zinc-500">
