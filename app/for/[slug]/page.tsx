@@ -25,6 +25,12 @@ interface JobProfile {
   status: string;
 }
 
+interface CategoryData {
+  name: string;
+  icon: string;
+  slug: string;
+}
+
 interface WorkflowData {
   id: string;
   slug: string;
@@ -33,17 +39,25 @@ interface WorkflowData {
   icon: string | null;
   difficulty: string | null;
   estimated_minutes: number | null;
-  category: {
-    name: string;
-    icon: string;
-    slug: string;
-  } | null;
+  category: CategoryData | null;
 }
 
-interface WorkflowJoin {
+// Raw types from Supabase (can return arrays for joins)
+interface RawWorkflowData {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  icon: string | null;
+  difficulty: string | null;
+  estimated_minutes: number | null;
+  category: CategoryData | CategoryData[] | null;
+}
+
+interface RawWorkflowJoin {
   is_featured: boolean;
   sort_order: number;
-  workflow: WorkflowData | WorkflowData[];
+  workflow: RawWorkflowData | RawWorkflowData[] | null;
 }
 
 // Fetch profile data (used by both metadata and page)
@@ -129,14 +143,24 @@ export default async function JobProfilePage({ params }: PageProps) {
   const allWorkflows: Array<{ workflow: WorkflowData; is_featured: boolean }> = [];
   
   if (workflowJoins) {
-    for (const join of workflowJoins as WorkflowJoin[]) {
+    for (const join of workflowJoins as RawWorkflowJoin[]) {
       // Handle Supabase returning array or single object
-      const workflow = Array.isArray(join.workflow) ? join.workflow[0] : join.workflow;
-      if (workflow) {
+      const rawWorkflow = Array.isArray(join.workflow) ? join.workflow[0] : join.workflow;
+      if (rawWorkflow) {
         // Handle category similarly
-        const category = Array.isArray(workflow.category) ? workflow.category[0] : workflow.category;
+        const category = Array.isArray(rawWorkflow.category) ? rawWorkflow.category[0] : rawWorkflow.category;
+        const workflow: WorkflowData = {
+          id: rawWorkflow.id,
+          slug: rawWorkflow.slug,
+          title: rawWorkflow.title,
+          description: rawWorkflow.description,
+          icon: rawWorkflow.icon,
+          difficulty: rawWorkflow.difficulty,
+          estimated_minutes: rawWorkflow.estimated_minutes,
+          category: category || null,
+        };
         allWorkflows.push({
-          workflow: { ...workflow, category: category || null },
+          workflow,
           is_featured: join.is_featured,
         });
       }
