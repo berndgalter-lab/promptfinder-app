@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { ArrowRight, Star, Sparkles, ChevronDown, Target, FileEdit, CheckCircle, Clock, Check, Zap, RotateCcw, BarChart3, Lock } from "lucide-react";
+import { ArrowRight, Sparkles, ChevronDown, Target, FileEdit, CheckCircle, Clock, Check, Zap, RotateCcw, BarChart3, Lock } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 export default function Home() {
@@ -90,12 +90,7 @@ export default function Home() {
             </div>
 
             {/* Social Proof */}
-            <div className="flex flex-col items-center lg:items-start gap-2 pt-4">
-              <div className="flex gap-1">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 fill-yellow-500 text-yellow-500" />
-                ))}
-              </div>
+            <div className="flex flex-col items-center lg:items-start pt-4">
               <p className="text-sm text-zinc-500">
                 No credit card required · Start with 5 free workflows
               </p>
@@ -104,80 +99,75 @@ export default function Home() {
 
           {/* Right side - Visual */}
           <div className="relative">
-            {/* Hero Mock-Up - Right Side */}
-            <div className="rounded-lg border border-zinc-800 bg-zinc-900/50 backdrop-blur-sm shadow-2xl shadow-blue-500/10 overflow-hidden group hover:shadow-blue-500/20 transition-all duration-500">
-              
-              {/* Window Header */}
-              <div className="border-b border-zinc-800 p-4 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="flex gap-1.5">
-                    <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
-                    <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-                    <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+            {/* Hero Mock-Up - Clickable */}
+            <Link href="/workflows/linkedin-post-generator" className="block group">
+              <div className="relative">
+                <div className="rounded-lg border border-zinc-800 bg-zinc-900/50 backdrop-blur-sm shadow-2xl shadow-blue-500/10 overflow-hidden 
+                                transition-all duration-300 group-hover:border-blue-500/50 group-hover:shadow-blue-500/20 group-hover:-translate-y-1">
+                  
+                  {/* Window Header */}
+                  <div className="border-b border-zinc-800 px-4 py-3 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="flex gap-1.5">
+                        <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+                        <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                        <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+                      </div>
+                      <span className="text-sm text-zinc-400 font-medium">LinkedIn Post Generator</span>
+                    </div>
+                    <div className="bg-green-600/90 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+                      ✓ Tested
+                    </div>
                   </div>
-                  <span className="text-sm text-zinc-400 font-medium">LinkedIn Post Generator</span>
+                  
+                  {/* Workflow Content - 3 Steps Only */}
+                  <div className="p-5 space-y-4">
+                    
+                    {/* Step 1 */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold shrink-0">1</div>
+                      <div className="flex-1 px-3 py-2 bg-zinc-800/80 rounded border border-zinc-700 text-sm text-zinc-300">
+                        AI productivity tips
+                      </div>
+                    </div>
+                    
+                    {/* Step 2 */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold shrink-0">2</div>
+                      <div className="flex-1 px-3 py-2 bg-zinc-800/80 rounded border border-zinc-700 text-sm text-zinc-300">
+                        Marketing managers
+                      </div>
+                    </div>
+                    
+                    {/* Step 3 */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold shrink-0">3</div>
+                      <div className="flex-1 px-3 py-2 bg-zinc-800/80 rounded border border-zinc-700 text-sm text-zinc-300">
+                        Professional tone
+                      </div>
+                    </div>
+                    
+                    {/* CTA Button */}
+                    <div className="pt-2">
+                      <div className="h-11 bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 group-hover:shadow-blue-600/50 transition-shadow">
+                        <Sparkles className="h-4 w-4 text-white" />
+                        <span className="text-white font-semibold text-sm">Open in ChatGPT</span>
+                      </div>
+                    </div>
+                    
+                    {/* Hover Hint */}
+                    <div className="text-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="text-xs text-blue-400">Click to try this workflow →</span>
+                    </div>
+                    
+                  </div>
                 </div>
-                <div className="bg-green-600/90 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                  ✓ Tested & Proven
-                </div>
+                
+                {/* Decorative blurs */}
+                <div className="absolute -top-6 -right-6 w-32 h-32 bg-blue-500/20 rounded-full blur-2xl"></div>
+                <div className="absolute -bottom-6 -left-6 w-40 h-40 bg-purple-500/20 rounded-full blur-2xl"></div>
               </div>
-              
-              {/* Workflow Content */}
-              <div className="p-6 space-y-5">
-                
-                {/* Step 1 */}
-                <div className="space-y-2">
-                  <div className="flex items-center gap-3">
-                    <div className="w-7 h-7 rounded-full bg-blue-600/20 border border-blue-600/50 flex items-center justify-center text-blue-400 text-xs font-semibold">1</div>
-                    <span className="text-sm text-zinc-300">What's your main topic?</span>
-                  </div>
-                  <div className="ml-10">
-                    <div className="px-4 py-2.5 bg-zinc-800/50 rounded-lg border border-zinc-700 text-sm text-zinc-300">
-                      AI productivity tips for busy professionals
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Step 2 */}
-                <div className="space-y-2">
-                  <div className="flex items-center gap-3">
-                    <div className="w-7 h-7 rounded-full bg-blue-600/20 border border-blue-600/50 flex items-center justify-center text-blue-400 text-xs font-semibold">2</div>
-                    <span className="text-sm text-zinc-300">Who's your target audience?</span>
-                  </div>
-                  <div className="ml-10">
-                    <div className="px-4 py-2.5 bg-zinc-800/50 rounded-lg border border-zinc-700 text-sm text-zinc-300">
-                      Marketing managers & startup founders
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Step 3 */}
-                <div className="space-y-2">
-                  <div className="flex items-center gap-3">
-                    <div className="w-7 h-7 rounded-full bg-blue-600/20 border border-blue-600/50 flex items-center justify-center text-blue-400 text-xs font-semibold">3</div>
-                    <span className="text-sm text-zinc-300">What tone do you want?</span>
-                  </div>
-                  <div className="ml-10">
-                    <div className="px-4 py-2.5 bg-zinc-800/50 rounded-lg border border-zinc-700 text-sm text-zinc-300">
-                      Professional but conversational
-                    </div>
-                  </div>
-                </div>
-                
-                {/* CTA Button */}
-                <div className="ml-10 pt-2">
-                  <div className="h-12 bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 cursor-pointer hover:shadow-blue-600/50 transition-shadow">
-                    <Sparkles className="h-4 w-4 text-white" />
-                    <span className="text-white font-semibold text-sm">Open in ChatGPT</span>
-                  </div>
-                </div>
-                
-              </div>
-            </div>
-            
-            {/* Decorative blurs */}
-            <div className="absolute -top-6 -right-6 w-32 h-32 bg-blue-500/20 rounded-full blur-2xl"></div>
-            <div className="absolute -bottom-6 -left-6 w-40 h-40 bg-purple-500/20 rounded-full blur-2xl"></div>
+            </Link>
           </div>
         </div>
       </div>
