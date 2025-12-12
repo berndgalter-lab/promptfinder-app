@@ -104,72 +104,80 @@ export default function Home() {
 
           {/* Right side - Visual */}
           <div className="relative">
-            {/* Main demo card */}
-            <Card className="border-zinc-800 bg-zinc-900/50 backdrop-blur-sm shadow-2xl shadow-blue-500/10 overflow-hidden group hover:shadow-blue-500/20 transition-all duration-500">
-              <CardContent className="p-0">
-                {/* Workflow Preview */}
-                <div className="relative aspect-[4/3] bg-gradient-to-br from-zinc-900 to-zinc-950">
-                  {/* Header */}
-                  <div className="border-b border-zinc-800 p-4 flex items-center gap-3">
-                    <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                      <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                      <div className="w-3 h-3 rounded-full bg-green-500/80" />
-                    </div>
-                    <div className="flex-1 text-center">
-                      <div className="h-6 bg-zinc-800 rounded-md max-w-xs mx-auto" />
-                    </div>
+            {/* Hero Mock-Up - Right Side */}
+            <div className="rounded-lg border border-zinc-800 bg-zinc-900/50 backdrop-blur-sm shadow-2xl shadow-blue-500/10 overflow-hidden group hover:shadow-blue-500/20 transition-all duration-500">
+              
+              {/* Window Header */}
+              <div className="border-b border-zinc-800 p-4 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="flex gap-1.5">
+                    <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+                    <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                    <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
                   </div>
-
-                  {/* Content - Workflow Steps Preview */}
-                  <div className="p-6 space-y-4">
-                    {/* Step 1 */}
-                    <div className="space-y-3 animate-fade-in">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-blue-600/20 border border-blue-600/50 flex items-center justify-center text-blue-400 text-sm font-semibold">
-                          1
-                        </div>
-                        <div className="h-4 bg-zinc-800 rounded w-32" />
-                      </div>
-                      <div className="ml-11 space-y-2">
-                        <div className="h-10 bg-zinc-800/50 rounded border border-zinc-700" />
-                        <div className="h-10 bg-zinc-800/50 rounded border border-zinc-700" />
-                      </div>
-                    </div>
-
-                    {/* Step 2 */}
-                    <div className="space-y-3 animate-fade-in delay-200">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-blue-600/20 border border-blue-600/50 flex items-center justify-center text-blue-400 text-sm font-semibold">
-                          2
-                        </div>
-                        <div className="h-4 bg-zinc-800 rounded w-40" />
-                      </div>
-                      <div className="ml-11 space-y-2">
-                        <div className="h-20 bg-zinc-800/50 rounded border border-zinc-700" />
-                      </div>
-                    </div>
-
-                    {/* CTA Button Preview */}
-                    <div className="ml-11 pt-2 animate-fade-in delay-400">
-                      <div className="h-12 bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30">
-                        <Sparkles className="h-4 w-4 text-white" />
-                        <span className="text-white font-semibold text-sm">Open in ChatGPT</span>
-                      </div>
-                    </div>
+                  <span className="text-sm text-zinc-400 font-medium">LinkedIn Post Generator</span>
+                </div>
+                <div className="bg-green-600/90 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                  ✓ Tested & Proven
+                </div>
+              </div>
+              
+              {/* Workflow Content */}
+              <div className="p-6 space-y-5">
+                
+                {/* Step 1 */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-full bg-blue-600/20 border border-blue-600/50 flex items-center justify-center text-blue-400 text-xs font-semibold">1</div>
+                    <span className="text-sm text-zinc-300">What's your main topic?</span>
                   </div>
-
-                  {/* Floating badge */}
-                  <div className="absolute top-4 right-4 bg-green-600/90 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg">
-                    ✓ Tested & Proven
+                  <div className="ml-10">
+                    <div className="px-4 py-2.5 bg-zinc-800/50 rounded-lg border border-zinc-700 text-sm text-zinc-300">
+                      AI productivity tips for busy professionals
+                    </div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* Decorative elements */}
-            <div className="absolute -top-6 -right-6 w-32 h-32 bg-blue-500/20 rounded-full blur-2xl" />
-            <div className="absolute -bottom-6 -left-6 w-40 h-40 bg-purple-500/20 rounded-full blur-2xl" />
+                
+                {/* Step 2 */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-full bg-blue-600/20 border border-blue-600/50 flex items-center justify-center text-blue-400 text-xs font-semibold">2</div>
+                    <span className="text-sm text-zinc-300">Who's your target audience?</span>
+                  </div>
+                  <div className="ml-10">
+                    <div className="px-4 py-2.5 bg-zinc-800/50 rounded-lg border border-zinc-700 text-sm text-zinc-300">
+                      Marketing managers & startup founders
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Step 3 */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-full bg-blue-600/20 border border-blue-600/50 flex items-center justify-center text-blue-400 text-xs font-semibold">3</div>
+                    <span className="text-sm text-zinc-300">What tone do you want?</span>
+                  </div>
+                  <div className="ml-10">
+                    <div className="px-4 py-2.5 bg-zinc-800/50 rounded-lg border border-zinc-700 text-sm text-zinc-300">
+                      Professional but conversational
+                    </div>
+                  </div>
+                </div>
+                
+                {/* CTA Button */}
+                <div className="ml-10 pt-2">
+                  <div className="h-12 bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 cursor-pointer hover:shadow-blue-600/50 transition-shadow">
+                    <Sparkles className="h-4 w-4 text-white" />
+                    <span className="text-white font-semibold text-sm">Open in ChatGPT</span>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+            
+            {/* Decorative blurs */}
+            <div className="absolute -top-6 -right-6 w-32 h-32 bg-blue-500/20 rounded-full blur-2xl"></div>
+            <div className="absolute -bottom-6 -left-6 w-40 h-40 bg-purple-500/20 rounded-full blur-2xl"></div>
           </div>
         </div>
       </div>
