@@ -119,14 +119,19 @@ export function useWorkflowLimit(userId: string | null) {
   };
 
   const closeModal = () => {
-    setState(prev => ({ 
-      ...prev, 
-      showModal: false, 
-      modalType: null,
-      // If user chooses to wait, allow workflow usage despite limit
-      canUse: true,
-      userDismissed: true // Mark that user dismissed the modal
-    }));
+    console.log('🔓 closeModal called - setting canUse=true and userDismissed=true');
+    setState(prev => {
+      const newState = { 
+        ...prev, 
+        showModal: false, 
+        modalType: null,
+        // If user chooses to wait, allow workflow usage despite limit
+        canUse: true,
+        userDismissed: true // Mark that user dismissed the modal
+      };
+      console.log('🔓 New state after closeModal:', newState);
+      return newState;
+    });
   };
 
   const refreshLimit = () => {

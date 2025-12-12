@@ -23,6 +23,9 @@ export function WorkflowLimitGuard({ userId, children, workflowId, workflowTitle
     isLoading,
   } = useWorkflowLimit(userId);
 
+  // Debug logging
+  console.log('🛡️ WorkflowLimitGuard render:', { canUse, showModal, modalType, isLoading });
+
   if (isLoading) {
     return (
       <Card className="border-zinc-800 bg-zinc-900/50">

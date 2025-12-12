@@ -147,7 +147,13 @@ export function LimitModal({ isOpen, onClose, type, remaining = 0, workflowId, w
   // UPGRADE_TO_PRO: Free user limit reached
   if (type === 'UPGRADE_TO_PRO') {
     return (
-      <Dialog open={isOpen} onOpenChange={() => {}}>
+      <Dialog open={isOpen} onOpenChange={(open) => {
+        // Only allow closing via button, not via outside click or ESC
+        if (!open) {
+          // User wants to close - call onClose handler
+          onClose();
+        }
+      }}>
         <DialogContent 
           className="!bg-zinc-900 !border-zinc-800" 
           onPointerDownOutside={(e) => e.preventDefault()}
@@ -182,7 +188,10 @@ export function LimitModal({ isOpen, onClose, type, remaining = 0, workflowId, w
               Upgrade to Pro — Unlimited Workflows
             </Button>
             <Button
-              onClick={onClose}
+              onClick={() => {
+                console.log('🔓 I\'ll Wait button clicked - closing modal and allowing workflow');
+                onClose();
+              }}
               variant="outline"
               className="!border-zinc-700 !text-zinc-400 hover:!bg-zinc-800 hover:!text-zinc-300 w-full"
             >
