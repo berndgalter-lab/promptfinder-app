@@ -2,18 +2,18 @@ import { createAdminClient } from '@/lib/supabase/server';
 import { getUserWithAdminStatus } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { 
   Users, 
-  Zap, 
-  TrendingUp, 
-  DollarSign, 
-  Calendar,
+  UserPlus,
+  Activity,
   Crown,
+  Play,
+  TrendingUp,
+  Star,
+  Target,
   BarChart3,
-  Clock,
+  Sparkles,
   RefreshCw,
 } from 'lucide-react';
 
@@ -22,23 +22,24 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 // Types
-interface DailyUsage {
-  date: string;
-  total: number;
-  registered: number;
-  anonymous: number;
-}
-
 interface TopWorkflow {
   id: string;
   title: string;
-  usage_count: number;
+  icon: string;
+  count: number;
 }
 
-interface RecentActivity {
+interface NewSignup {
   id: string;
-  workflow_title: string;
-  used_at: string;
+  email: string;
+  created_at: string;
+}
+
+interface ProConversion {
+  id: string;
+  email: string;
+  plan_type: string;
+  created_at: string;
 }
 
 // Time period config
@@ -60,13 +61,48 @@ function getStartDate(period: TimePeriod): Date {
   return new Date(now.getTime() - config.days * 24 * 60 * 60 * 1000);
 }
 
-function formatTimeAgo(dateStr: string): string {
+function formatRelativeTime(dateStr: string): string {
   const seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
   
   if (seconds < 60) return 'just now';
   if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
   if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
-  return `${Math.floor(seconds / 86400)}d ago`;
+  if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
+  return `${Math.floor(seconds / 604800)}w ago`;
+}
+
+// MetricCard Component
+interface MetricCardProps {
+  icon: React.ReactNode;
+  label: string;
+  value: string | number;
+  subtext: string;
+  trend?: number;
+  highlight?: boolean;
+}
+
+function MetricCard({ icon, label, value, subtext, trend, highlight }: MetricCardProps) {
+  return (
+    <div className={`p-5 rounded-xl border ${
+      highlight 
+        ? 'bg-yellow-900/10 border-yellow-800/30' 
+        : 'bg-zinc-900/50 border-zinc-800'
+    }`}>
+      <div className="flex items-center gap-2 text-zinc-400 mb-2">
+        {icon}
+        <span className="text-sm">{label}</span>
+      </div>
+      <div className="flex items-baseline gap-2">
+        <span className="text-2xl font-bold">{value}</span>
+        {trend !== undefined && (
+          <span className={`text-sm ${trend >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+            {trend >= 0 ? '+' : ''}{trend}
+          </span>
+        )}
+      </div>
+      <span className="text-xs text-zinc-500">{subtext}</span>
+    </div>
+  );
 }
 
 interface PageProps {
@@ -85,153 +121,135 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
   const supabase = createAdminClient();
   const now = new Date();
   const todayStr = now.toISOString().split('T')[0];
+  const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+  const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+  const fourteenDaysAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
 
   // ============================================
   // FETCH ALL DATA
   // ============================================
 
-  // Users & Revenue
+  // USER METRICS
   const [
     { count: totalUsers },
-    { data: proSubscribers },
-    { count: totalFavorites },
+    { count: newUsersCount },
+    { data: activeUserIds },
+    { count: proUsers },
   ] = await Promise.all([
+    // Total Users
     supabase.from('user_stats').select('*', { count: 'exact', head: true }),
-    supabase.from('subscriptions').select('*').in('status', ['active', 'past_due']),
-    supabase.from('user_favorites').select('*', { count: 'exact', head: true }),
+    // New Users (7 days)
+    supabase.from('user_stats').select('*', { count: 'exact', head: true })
+      .gte('created_at', sevenDaysAgo.toISOString()),
+    // Active Users (30 days) - users with at least 1 usage
+    supabase.from('user_usage').select('user_id').gte('used_at', thirtyDaysAgo.toISOString()),
+    // Pro Users
+    supabase.from('subscriptions').select('*', { count: 'exact', head: true }).eq('status', 'active'),
   ]);
 
-  const proCount = proSubscribers?.length || 0;
-  const mrr = proSubscribers?.reduce((acc, sub) => {
-    const monthly = sub.plan_type === 'annual' ? (sub.amount || 0) / 12 : (sub.amount || 0);
-    return acc + monthly;
-  }, 0) || 0;
+  const activeUsers = new Set(activeUserIds?.map(u => u.user_id)).size;
+  const proPercentage = totalUsers && totalUsers > 0 ? Math.round((proUsers || 0) / totalUsers * 100) : 0;
 
-  // Usage data for selected period (registered users)
-  const { data: periodUsage } = await supabase
-    .from('user_usage')
-    .select('id, workflow_id, used_at')
-    .gte('used_at', periodStart.toISOString())
-    .order('used_at', { ascending: false });
-
-  const registeredInPeriod = periodUsage?.length || 0;
-
-  // Anonymous usage for selected period
-  const { data: periodAnonymous } = await supabase
-    .from('global_daily_stats')
-    .select('total_anonymous')
-    .gte('date', periodStart.toISOString().split('T')[0]);
-
-  const anonymousInPeriod = periodAnonymous?.reduce((sum, d) => sum + (d.total_anonymous || 0), 0) || 0;
-  const totalInPeriod = registeredInPeriod + anonymousInPeriod;
-
-  // All-time totals
+  // USAGE METRICS
   const [
-    { count: totalRegisteredUsage },
-    { data: allAnonymous },
+    { count: totalRunsInPeriod },
+    { count: totalFavorites },
+    { data: allUsersWithUsage },
   ] = await Promise.all([
-    supabase.from('user_usage').select('*', { count: 'exact', head: true }),
-    supabase.from('global_daily_stats').select('total_anonymous'),
+    // Total Runs in period
+    supabase.from('user_usage').select('*', { count: 'exact', head: true })
+      .gte('used_at', periodStart.toISOString()),
+    // Total Favorites
+    supabase.from('user_favorites').select('*', { count: 'exact', head: true }),
+    // All users with at least 1 usage (for activation rate)
+    supabase.from('user_usage').select('user_id'),
   ]);
 
-  const totalAnonymousUsage = allAnonymous?.reduce((sum, d) => sum + (d.total_anonymous || 0), 0) || 0;
-  const totalUsageAllTime = (totalRegisteredUsage || 0) + totalAnonymousUsage;
+  const uniqueUsersWithUsage = new Set(allUsersWithUsage?.map(u => u.user_id)).size;
+  const runsPerUser = activeUsers > 0 ? (totalRunsInPeriod || 0) / activeUsers : 0;
+  const activationRate = totalUsers && totalUsers > 0 ? Math.round((uniqueUsersWithUsage / totalUsers) * 100) : 0;
 
-  // Top workflows in period (registered + anonymous)
-  const workflowCounts: Record<string, { registered: number; anonymous: number }> = {};
-  
-  // Add registered user counts
-  periodUsage?.forEach(u => {
-    const id = String(u.workflow_id);
-    if (!workflowCounts[id]) workflowCounts[id] = { registered: 0, anonymous: 0 };
-    workflowCounts[id].registered++;
-  });
-
-  // Add anonymous counts from workflow_daily_stats
-  const { data: periodWorkflowStats } = await supabase
-    .from('workflow_daily_stats')
-    .select('workflow_id, anonymous_count')
-    .gte('date', periodStart.toISOString().split('T')[0]);
-
-  periodWorkflowStats?.forEach(s => {
-    const id = String(s.workflow_id);
-    if (!workflowCounts[id]) workflowCounts[id] = { registered: 0, anonymous: 0 };
-    workflowCounts[id].anonymous += s.anonymous_count || 0;
-  });
-
-  // Sort by total (registered + anonymous)
-  const topWorkflowIds = Object.entries(workflowCounts)
-    .map(([id, counts]) => ({ id, total: counts.registered + counts.anonymous }))
-    .sort((a, b) => b.total - a.total)
-    .slice(0, 5)
-    .map(item => item.id);
-
-  const { data: workflowDetails } = topWorkflowIds.length > 0
-    ? await supabase.from('workflows').select('id, title').in('id', topWorkflowIds)
-    : { data: [] };
-
-  const topWorkflows: TopWorkflow[] = topWorkflowIds.map(id => {
-    const counts = workflowCounts[id] || { registered: 0, anonymous: 0 };
-    return {
-      id,
-      title: workflowDetails?.find(w => String(w.id) === String(id))?.title || 'Unknown',
-      usage_count: counts.registered + counts.anonymous,
-    };
-  });
-
-  // Recent activity (last 10)
-  const { data: recentRaw } = await supabase
+  // DAILY USAGE (Last 14 days)
+  const { data: dailyUsageRaw } = await supabase
     .from('user_usage')
-    .select('id, used_at, workflows:workflow_id (title)')
-    .order('used_at', { ascending: false })
-    .limit(10);
-
-  const recentActivity: RecentActivity[] = (recentRaw || [])
-    .filter((r: any) => r.workflows)
-    .map((r: any) => ({
-      id: r.id,
-      workflow_title: r.workflows.title,
-      used_at: r.used_at,
-    }));
-
-  // Daily usage (last 14 days)
-  const fourteenDaysAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
-  
-  const [{ data: dailyRegistered }, { data: dailyAnonymous }] = await Promise.all([
-    supabase
-      .from('user_usage')
-      .select('used_at')
-      .gte('used_at', fourteenDaysAgo.toISOString()),
-    supabase
-      .from('global_daily_stats')
-      .select('date, total_anonymous')
-      .gte('date', fourteenDaysAgo.toISOString().split('T')[0]),
-  ]);
+    .select('used_at')
+    .gte('used_at', fourteenDaysAgo.toISOString());
 
   // Build daily usage map
-  const dailyMap: Record<string, { registered: number; anonymous: number }> = {};
+  const dailyMap: Record<string, number> = {};
   for (let i = 13; i >= 0; i--) {
     const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-    dailyMap[date] = { registered: 0, anonymous: 0 };
+    dailyMap[date] = 0;
   }
 
-  dailyRegistered?.forEach(u => {
+  dailyUsageRaw?.forEach(u => {
     const date = new Date(u.used_at).toISOString().split('T')[0];
-    if (dailyMap[date]) dailyMap[date].registered++;
+    if (dailyMap[date] !== undefined) dailyMap[date]++;
   });
 
-  dailyAnonymous?.forEach(d => {
-    if (dailyMap[d.date]) dailyMap[d.date].anonymous = d.total_anonymous || 0;
-  });
-
-  const dailyUsage: DailyUsage[] = Object.entries(dailyMap)
-    .map(([date, data]) => ({
-      date,
-      total: data.registered + data.anonymous,
-      registered: data.registered,
-      anonymous: data.anonymous,
-    }))
+  const dailyUsage = Object.entries(dailyMap)
+    .map(([date, count]) => ({ date, count }))
     .sort((a, b) => a.date.localeCompare(b.date));
+
+  // TOP WORKFLOWS (30 days)
+  const { data: workflowUsageRaw } = await supabase
+    .from('user_usage')
+    .select('workflow_id')
+    .gte('used_at', thirtyDaysAgo.toISOString());
+
+  const workflowCounts: Record<string, number> = {};
+  workflowUsageRaw?.forEach(u => {
+    const id = String(u.workflow_id);
+    workflowCounts[id] = (workflowCounts[id] || 0) + 1;
+  });
+
+  const topWorkflowIds = Object.entries(workflowCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 8)
+    .map(([id]) => id);
+
+  const { data: workflowDetails } = topWorkflowIds.length > 0
+    ? await supabase.from('workflows').select('id, title, icon').in('id', topWorkflowIds)
+    : { data: [] };
+
+  const topWorkflows: TopWorkflow[] = topWorkflowIds.map(id => ({
+    id,
+    title: workflowDetails?.find(w => String(w.id) === id)?.title || 'Unknown',
+    icon: workflowDetails?.find(w => String(w.id) === id)?.icon || '📝',
+    count: workflowCounts[id] || 0,
+  }));
+
+  // NEW SIGNUPS (7 days)
+  const { data: newSignupsRaw } = await supabase
+    .from('user_stats')
+    .select('user_id, created_at')
+    .gte('created_at', sevenDaysAgo.toISOString())
+    .order('created_at', { ascending: false })
+    .limit(10);
+
+  // Get emails for new signups (from auth.users via profiles or another method)
+  // Since we can't directly query auth.users, we'll show user_id truncated
+  const newSignups: NewSignup[] = (newSignupsRaw || []).map(s => ({
+    id: s.user_id,
+    email: `user-${s.user_id.slice(0, 8)}...`,
+    created_at: s.created_at,
+  }));
+
+  // PRO CONVERSIONS (30 days)
+  const { data: proConversionsRaw } = await supabase
+    .from('subscriptions')
+    .select('id, user_id, plan_type, created_at')
+    .eq('status', 'active')
+    .gte('created_at', thirtyDaysAgo.toISOString())
+    .order('created_at', { ascending: false })
+    .limit(10);
+
+  const proConversions: ProConversion[] = (proConversionsRaw || []).map(s => ({
+    id: s.id,
+    email: `user-${s.user_id.slice(0, 8)}...`,
+    plan_type: s.plan_type,
+    created_at: s.created_at,
+  }));
 
   // ============================================
   // RENDER
@@ -241,12 +259,14 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
     <div className="min-h-screen bg-zinc-950 px-4 py-8 text-white">
       <div className="mx-auto max-w-6xl">
         
-        {/* Header */}
+        {/* ============================================ */}
+        {/* HEADER */}
+        {/* ============================================ */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
             <div className="flex items-center gap-3 mb-1">
               <BarChart3 className="h-7 w-7 text-blue-500" />
-              <h1 className="text-2xl md:text-3xl font-bold">Dashboard</h1>
+              <h1 className="text-2xl md:text-3xl font-bold">Admin Dashboard</h1>
             </div>
             <p className="text-sm text-zinc-500">
               {now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
@@ -277,209 +297,188 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
           ))}
         </div>
 
-        {/* Key Metrics */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          
-          {/* MRR */}
-          <Card className="border-zinc-800 bg-zinc-900">
-            <CardContent className="p-5">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-xs text-zinc-500 mb-1 uppercase">Monthly Revenue</p>
-                  <p className="text-2xl font-bold text-green-400">€{(mrr / 100).toFixed(0)}</p>
-                  <p className="text-xs text-zinc-600 mt-1">{proCount} Pro users</p>
-                </div>
-                <DollarSign className="h-5 w-5 text-zinc-700" />
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Workflows in Period */}
-          <Card className="border-zinc-800 bg-zinc-900">
-            <CardContent className="p-5">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-xs text-zinc-500 mb-1 uppercase">Workflows ({periodLabel})</p>
-                  <p className="text-2xl font-bold text-blue-400">{totalInPeriod}</p>
-                  <p className="text-xs text-zinc-600 mt-1">
-                    {registeredInPeriod} users · {anonymousInPeriod} guests
-                  </p>
-                </div>
-                <Zap className="h-5 w-5 text-zinc-700" />
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Users */}
-          <Card className="border-zinc-800 bg-zinc-900">
-            <CardContent className="p-5">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-xs text-zinc-500 mb-1 uppercase">Registered Users</p>
-                  <p className="text-2xl font-bold text-purple-400">{totalUsers || 0}</p>
-                  <p className="text-xs text-zinc-600 mt-1">{totalFavorites || 0} favorites saved</p>
-                </div>
-                <Users className="h-5 w-5 text-zinc-700" />
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Total Workflows */}
-          <Card className="border-zinc-800 bg-zinc-900">
-            <CardContent className="p-5">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-xs text-zinc-500 mb-1 uppercase">Total Workflows</p>
-                  <p className="text-2xl font-bold text-amber-400">{totalUsageAllTime}</p>
-                  <p className="text-xs text-zinc-600 mt-1">all time</p>
-                </div>
-                <TrendingUp className="h-5 w-5 text-zinc-700" />
-              </div>
-            </CardContent>
-          </Card>
+        {/* ============================================ */}
+        {/* ROW 1: USER METRICS */}
+        {/* ============================================ */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <MetricCard
+            icon={<Users className="w-5 h-5" />}
+            label="Total Users"
+            value={totalUsers || 0}
+            subtext="all time"
+          />
+          <MetricCard
+            icon={<UserPlus className="w-5 h-5" />}
+            label="New Users"
+            value={newUsersCount || 0}
+            subtext="last 7 days"
+          />
+          <MetricCard
+            icon={<Activity className="w-5 h-5" />}
+            label="Active Users"
+            value={activeUsers}
+            subtext="last 30 days"
+          />
+          <MetricCard
+            icon={<Crown className="w-5 h-5 text-yellow-500" />}
+            label="Pro Users"
+            value={proUsers || 0}
+            subtext={`${proPercentage}% of total`}
+            highlight={true}
+          />
         </div>
 
-        {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        {/* ============================================ */}
+        {/* ROW 2: USAGE METRICS */}
+        {/* ============================================ */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <MetricCard
+            icon={<Play className="w-5 h-5" />}
+            label="Total Runs"
+            value={totalRunsInPeriod || 0}
+            subtext={periodLabel.toLowerCase()}
+          />
+          <MetricCard
+            icon={<TrendingUp className="w-5 h-5" />}
+            label="Runs per User"
+            value={runsPerUser.toFixed(1)}
+            subtext="avg (active users)"
+          />
+          <MetricCard
+            icon={<Star className="w-5 h-5" />}
+            label="Favorites Saved"
+            value={totalFavorites || 0}
+            subtext="all time"
+          />
+          <MetricCard
+            icon={<Target className="w-5 h-5" />}
+            label="Activation Rate"
+            value={`${activationRate}%`}
+            subtext="users with 1+ run"
+          />
+        </div>
+
+        {/* ============================================ */}
+        {/* ROW 3: CHARTS */}
+        {/* ============================================ */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
           
           {/* Daily Usage Chart */}
-          <Card className="border-zinc-800 bg-zinc-900 lg:col-span-2">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-base">
-                <Calendar className="h-4 w-4 text-blue-500" />
-                Daily Usage
-              </CardTitle>
-              <CardDescription>Last 14 days</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-1">
-                {dailyUsage.map((day) => {
-                  const maxTotal = Math.max(...dailyUsage.map(d => d.total), 1);
-                  const percentage = (day.total / maxTotal) * 100;
-                  const isToday = day.date === todayStr;
-                  
-                  return (
-                    <div key={day.date} className={`flex items-center gap-3 py-1 ${isToday ? 'bg-blue-950/20 -mx-2 px-2 rounded' : ''}`}>
-                      <span className={`text-xs w-12 ${isToday ? 'text-blue-400 font-medium' : 'text-zinc-500'}`}>
-                        {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
-                      </span>
-                      <div className="flex-1 h-4 bg-zinc-800 rounded overflow-hidden">
-                        <div 
-                          className={`h-full rounded transition-all ${isToday ? 'bg-blue-500' : 'bg-zinc-600'}`}
-                          style={{ width: `${Math.max(percentage, 3)}%` }}
-                        />
-                      </div>
-                      <span className={`text-sm w-8 text-right font-medium ${isToday ? 'text-blue-400' : 'text-zinc-400'}`}>
-                        {day.total}
-                      </span>
+          <div className="p-5 rounded-xl bg-zinc-900/50 border border-zinc-800">
+            <h3 className="font-semibold mb-4 flex items-center gap-2">
+              <BarChart3 className="w-4 h-4 text-zinc-400" />
+              Daily Usage
+              <span className="text-sm text-zinc-500 font-normal">Last 14 days</span>
+            </h3>
+            <div className="space-y-1">
+              {dailyUsage.map((day) => {
+                const maxCount = Math.max(...dailyUsage.map(d => d.count), 1);
+                const percentage = (day.count / maxCount) * 100;
+                const isToday = day.date === todayStr;
+                
+                return (
+                  <div key={day.date} className={`flex items-center gap-3 py-1 ${isToday ? 'bg-blue-950/20 -mx-2 px-2 rounded' : ''}`}>
+                    <span className={`text-xs w-10 ${isToday ? 'text-blue-400 font-medium' : 'text-zinc-500'}`}>
+                      {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
+                    </span>
+                    <div className="flex-1 h-4 bg-zinc-800 rounded overflow-hidden">
+                      <div 
+                        className={`h-full rounded transition-all ${isToday ? 'bg-blue-500' : 'bg-zinc-600'}`}
+                        style={{ width: `${Math.max(percentage, 3)}%` }}
+                      />
                     </div>
-                  );
-                })}
-              </div>
-              <div className="flex gap-4 mt-4 pt-4 border-t border-zinc-800 text-xs text-zinc-500">
-                <span>Users = registered users</span>
-                <span>Guests = anonymous visitors</span>
-              </div>
-            </CardContent>
-          </Card>
+                    <span className={`text-sm w-8 text-right font-medium ${isToday ? 'text-blue-400' : 'text-zinc-400'}`}>
+                      {day.count}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
 
           {/* Top Workflows */}
-          <Card className="border-zinc-800 bg-zinc-900">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-base">
-                <Zap className="h-4 w-4 text-yellow-500" />
-                Top Workflows
-              </CardTitle>
-              <CardDescription>{periodLabel}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {topWorkflows.length === 0 ? (
-                <p className="text-zinc-500 text-center py-6 text-sm">No data yet</p>
-              ) : (
-                <div className="space-y-2">
-                  {topWorkflows.map((workflow, i) => (
-                    <div key={workflow.id} className="flex items-center justify-between p-2 rounded bg-zinc-950">
-                      <div className="flex items-center gap-2 min-w-0">
-                        <span className={`text-xs font-bold w-4 ${
-                          i === 0 ? 'text-yellow-500' : i === 1 ? 'text-zinc-400' : 'text-zinc-600'
-                        }`}>
-                          {i + 1}
-                        </span>
-                        <span className="text-sm truncate">{workflow.title}</span>
-                      </div>
-                      <Badge variant="secondary" className="bg-zinc-800 text-xs ml-2">
-                        {workflow.usage_count}
-                      </Badge>
+          <div className="p-5 rounded-xl bg-zinc-900/50 border border-zinc-800">
+            <h3 className="font-semibold mb-4 flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-yellow-500" />
+              Top Workflows
+              <span className="text-sm text-zinc-500 font-normal">30 days</span>
+            </h3>
+            {topWorkflows.length === 0 ? (
+              <p className="text-sm text-zinc-500 text-center py-8">No data yet</p>
+            ) : (
+              <div className="space-y-3">
+                {topWorkflows.map((workflow, index) => (
+                  <div key={workflow.id} className="flex items-center justify-between">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className="text-zinc-500 w-4 text-sm">{index + 1}</span>
+                      <span className="text-lg">{workflow.icon}</span>
+                      <span className="text-sm truncate">{workflow.title}</span>
                     </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                    <span className="text-sm font-medium bg-zinc-800 px-2 py-1 rounded ml-2">
+                      {workflow.count}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* Bottom Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* ============================================ */}
+        {/* ROW 4: LISTS */}
+        {/* ============================================ */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           
-          {/* Recent Activity */}
-          <Card className="border-zinc-800 bg-zinc-900">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-base">
-                <Clock className="h-4 w-4 text-cyan-500" />
-                Recent Activity
-              </CardTitle>
-              <CardDescription>Registered users only (guests are anonymous)</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {recentActivity.length === 0 ? (
-                <p className="text-zinc-500 text-center py-6 text-sm">No activity yet</p>
-              ) : (
-                <div className="space-y-2">
-                  {recentActivity.map((activity) => (
-                    <div key={activity.id} className="flex items-center justify-between p-2 rounded bg-zinc-950">
-                      <span className="text-sm truncate">{activity.workflow_title}</span>
-                      <span className="text-xs text-zinc-500 ml-2 shrink-0">
-                        {formatTimeAgo(activity.used_at)}
+          {/* New Signups */}
+          <div className="p-5 rounded-xl bg-zinc-900/50 border border-zinc-800">
+            <h3 className="font-semibold mb-4 flex items-center gap-2">
+              <UserPlus className="w-4 h-4 text-green-500" />
+              New Signups
+              <span className="text-sm text-zinc-500 font-normal">Last 7 days</span>
+            </h3>
+            {newSignups.length > 0 ? (
+              <div className="space-y-2">
+                {newSignups.map((user) => (
+                  <div key={user.id} className="flex items-center justify-between py-2 border-b border-zinc-800 last:border-0">
+                    <span className="text-sm text-zinc-300 font-mono">{user.email}</span>
+                    <span className="text-xs text-zinc-500">{formatRelativeTime(user.created_at)}</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-zinc-500 text-center py-8">No new signups in the last 7 days</p>
+            )}
+          </div>
+
+          {/* Pro Conversions */}
+          <div className="p-5 rounded-xl bg-zinc-900/50 border border-zinc-800">
+            <h3 className="font-semibold mb-4 flex items-center gap-2">
+              <Crown className="w-4 h-4 text-yellow-500" />
+              Recent Pro Conversions
+              <span className="text-sm text-zinc-500 font-normal">Last 30 days</span>
+            </h3>
+            {proConversions.length > 0 ? (
+              <div className="space-y-2">
+                {proConversions.map((sub) => (
+                  <div key={sub.id} className="flex items-center justify-between py-2 border-b border-zinc-800 last:border-0">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-zinc-300 font-mono">{sub.email}</span>
+                      <span className={`text-xs px-2 py-0.5 rounded ${
+                        sub.plan_type === 'annual' 
+                          ? 'bg-purple-900/50 text-purple-400' 
+                          : 'bg-blue-900/50 text-blue-400'
+                      }`}>
+                        {sub.plan_type}
                       </span>
                     </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Subscriptions */}
-          <Card className="border-zinc-800 bg-zinc-900">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-base">
-                <Crown className="h-4 w-4 text-purple-500" />
-                Subscriptions
-              </CardTitle>
-              <CardDescription>User breakdown</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 rounded bg-purple-950/20 border border-purple-900/30">
-                  <span className="text-sm">Monthly Pro</span>
-                  <span className="font-bold text-purple-400">
-                    {proSubscribers?.filter(s => s.plan_type === 'monthly').length || 0}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between p-3 rounded bg-amber-950/20 border border-amber-900/30">
-                  <span className="text-sm">Annual Pro</span>
-                  <span className="font-bold text-amber-400">
-                    {proSubscribers?.filter(s => s.plan_type === 'annual').length || 0}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between p-3 rounded bg-zinc-800/50 border border-zinc-700/30">
-                  <span className="text-sm">Free Users</span>
-                  <span className="font-bold text-zinc-400">
-                    {(totalUsers || 0) - proCount}
-                  </span>
-                </div>
+                    <span className="text-xs text-zinc-500">{formatRelativeTime(sub.created_at)}</span>
+                  </div>
+                ))}
               </div>
-            </CardContent>
-          </Card>
+            ) : (
+              <p className="text-sm text-zinc-500 text-center py-8">No conversions in the last 30 days</p>
+            )}
+          </div>
         </div>
 
       </div>
