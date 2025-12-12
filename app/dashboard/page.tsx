@@ -98,11 +98,11 @@ export default async function DashboardPage() {
           <div>
             <h1 className="text-3xl font-bold">Dashboard</h1>
             <p className="text-zinc-400 mt-1">Welcome back, {username}!</p>
-          </div>
+        </div>
 
-          {/* ============================================ */}
+        {/* ============================================ */}
           {/* 2. CONTINUE WHERE YOU LEFT OFF */}
-          {/* ============================================ */}
+        {/* ============================================ */}
           <section>
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold flex items-center gap-2">
@@ -120,7 +120,7 @@ export default async function DashboardPage() {
             {recentWorkflows && recentWorkflows.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
                 {recentWorkflows.map((item: any) => (
-                  <Link 
+                <Link 
                     key={item.workflow?.id || item.used_at} 
                     href={`/workflows/${item.workflow?.slug}`}
                     className="p-3 rounded-lg bg-zinc-900/50 border border-zinc-800 hover:border-zinc-600 hover:-translate-y-0.5 transition-all"
@@ -129,23 +129,23 @@ export default async function DashboardPage() {
                     <div className="font-medium text-sm line-clamp-2">{item.workflow?.title || 'Workflow'}</div>
                     <div className="text-xs text-zinc-500 mt-1">
                       {formatRelativeTime(item.used_at)}
-                    </div>
-                  </Link>
-                ))}
-              </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
             ) : (
               <div className="p-6 rounded-xl bg-zinc-900/30 border border-zinc-800 text-center">
                 <p className="text-zinc-400 mb-3">You haven&apos;t used any workflows yet.</p>
                 <Link href="/workflows">
                   <Button variant="secondary" size="sm">Browse Workflows</Button>
                 </Link>
-              </div>
-            )}
+          </div>
+        )}
           </section>
 
-          {/* ============================================ */}
+        {/* ============================================ */}
           {/* 3. YOUR FAVORITES */}
-          {/* ============================================ */}
+        {/* ============================================ */}
           <section>
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold flex items-center gap-2">
@@ -163,7 +163,7 @@ export default async function DashboardPage() {
             {favoritesData && favoritesData.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {favoritesData.slice(0, 6).map((fav: any) => (
-                  <Link 
+                <Link 
                     key={fav.workflow?.id || fav.id}
                     href={`/workflows/${fav.workflow?.slug}`}
                     className="p-4 rounded-lg bg-zinc-900/50 border border-zinc-800 hover:border-zinc-600 hover:-translate-y-0.5 transition-all"
@@ -175,16 +175,16 @@ export default async function DashboardPage() {
                         <div className="text-xs text-zinc-500">
                           {fav.workflow?.category?.name || 'Workflow'}
                         </div>
-                      </div>
                     </div>
-                  </Link>
-                ))}
-              </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
             ) : (
               <div className="p-6 rounded-xl bg-zinc-900/30 border border-zinc-800 text-center">
                 <p className="text-zinc-400">No favorites yet. Star workflows to save them here.</p>
-              </div>
-            )}
+          </div>
+        )}
           </section>
 
           {/* ============================================ */}
@@ -228,8 +228,8 @@ export default async function DashboardPage() {
                   Manage subscription →
                 </Link>
               </div>
-            </div>
-          )}
+                </div>
+              )}
 
           {/* ============================================ */}
           {/* 5. STATS & ACHIEVEMENTS (2-column grid) */}
@@ -265,7 +265,7 @@ export default async function DashboardPage() {
                   <span className="font-medium">🔥 {userStats?.current_streak || 0} days</span>
                 </div>
               </div>
-            </div>
+                  </div>
 
             {/* Achievements - Right Column */}
             <div className="p-5 rounded-xl bg-zinc-900/50 border border-zinc-800">
@@ -284,24 +284,24 @@ export default async function DashboardPage() {
                   style={{ width: `${(unlockedCount / totalAchievements) * 100}%` }}
                 />
               </div>
-              
+
               {/* Recent Unlocked - Show up to 3 icons */}
               <div className="flex items-center gap-2 mb-3">
                 {unlockedAchievements?.slice(0, 3).map((ua) => (
-                  <div 
+                      <div 
                     key={ua.achievement_code}
                     className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-sm"
                     title={ACHIEVEMENTS.find(a => a.code === ua.achievement_code)?.title}
                   >
                     {getAchievementIcon(ua.achievement_code)}
-                  </div>
-                ))}
+                      </div>
+                    ))}
                 {lockedCount > 0 && (
                   <div className="w-8 h-8 rounded-full bg-zinc-800/50 flex items-center justify-center text-xs text-zinc-500">
                     +{lockedCount}
                   </div>
-                )}
-              </div>
+                  )}
+                </div>
               
               <Link 
                 href="/achievements" 
@@ -310,7 +310,7 @@ export default async function DashboardPage() {
                 View all achievements →
               </Link>
             </div>
-          </div>
+        </div>
 
         </div>
       </div>

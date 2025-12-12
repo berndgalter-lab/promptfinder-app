@@ -45,9 +45,9 @@ export function AuthButton({ variant = 'default' }: AuthButtonProps) {
         <Link href="/pricing">
           <Button className="!bg-white !text-black hover:!bg-zinc-200 font-medium">
             Get Started
-          </Button>
+      </Button>
         </Link>
-      </div>
+    </div>
       <SignInModal open={showSignIn} onOpenChange={setShowSignIn} />
     </>
   );

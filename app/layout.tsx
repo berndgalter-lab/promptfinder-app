@@ -60,7 +60,7 @@ export default async function RootLayout({
                 {user ? (
                   <UserDropdown email={user.email || ''} isPro={isPro} />
                 ) : (
-                  <AuthButton />
+                <AuthButton />
                 )}
               </div>
             </div>

@@ -66,18 +66,18 @@ export function NavLinks({ isLoggedIn, isAdmin = false, userEmail = '', isPro = 
       {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center gap-1">
         {visibleLinks.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className={cn(
+            <Link
+              key={link.href}
+              href={link.href}
+              className={cn(
               'px-4 py-2 text-sm font-medium rounded-lg transition-colors',
               isActive(link.href)
-                ? 'bg-zinc-800 text-white'
+                  ? 'bg-zinc-800 text-white'
                 : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
-            )}
-          >
-            {link.label}
-          </Link>
+              )}
+            >
+              {link.label}
+            </Link>
         ))}
         
         {/* Admin link - only for admins */}
@@ -111,19 +111,19 @@ export function NavLinks({ isLoggedIn, isAdmin = false, userEmail = '', isPro = 
           </SheetHeader>
           <nav className="flex flex-col gap-2 mt-6">
             {visibleLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className={cn(
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className={cn(
                   'px-4 py-3 text-base font-medium rounded-lg transition-colors',
                   isActive(link.href)
-                    ? 'bg-zinc-800 text-white'
+                      ? 'bg-zinc-800 text-white'
                     : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
-                )}
-              >
-                {link.label}
-              </Link>
+                  )}
+                >
+                  {link.label}
+                </Link>
             ))}
             
             {/* Admin link in mobile */}
@@ -143,7 +143,7 @@ export function NavLinks({ isLoggedIn, isAdmin = false, userEmail = '', isPro = 
               </Link>
             )}
           </nav>
-
+          
           {/* Auth Section in Mobile Sheet */}
           <div className="mt-8 pt-6 border-t border-zinc-800">
             {isLoggedIn ? (
@@ -206,7 +206,7 @@ export function NavLinks({ isLoggedIn, isAdmin = false, userEmail = '', isPro = 
               </>
             ) : (
               <>
-                <p className="text-xs text-zinc-500 mb-3 px-4">Account</p>
+            <p className="text-xs text-zinc-500 mb-3 px-4">Account</p>
                 <div className="space-y-2 px-4">
                   <Button 
                     onClick={() => {
@@ -223,7 +223,7 @@ export function NavLinks({ isLoggedIn, isAdmin = false, userEmail = '', isPro = 
                       Get Started
                     </Button>
                   </Link>
-                </div>
+            </div>
               </>
             )}
           </div>

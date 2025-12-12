@@ -133,22 +133,30 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
   // ============================================
 
   // USER METRICS
+  // Note: We use user_stats instead of profiles because:
+  // - profiles may not exist for all users
+  // - user_stats is created when a user first uses a workflow (more reliable)
+  // - For true sign-ups, we'd need auth.users (requires Admin API)
   const [
     { count: totalUsers },
-    { count: newUsersCount },
+    { data: newUsersData },
     { data: activeUserData },
     { count: proUsers },
   ] = await Promise.all([
-    // Total Users
-    supabase.from('profiles').select('*', { count: 'exact', head: true }),
-    // New Users (7 days)
-    supabase.from('profiles').select('*', { count: 'exact', head: true })
+    // Total Users (users who have used at least 1 workflow)
+    supabase.from('user_stats').select('*', { count: 'exact', head: true }),
+    // New Users (7 days) - users who first appeared in user_stats in last 7 days
+    // This counts users who signed up AND used a workflow in the last 7 days
+    supabase.from('user_stats')
+      .select('user_id, created_at')
       .gte('created_at', sevenDaysAgo.toISOString()),
     // Active Users (30 days) - users with at least 1 usage
     supabase.from('user_usage').select('user_id').gte('used_at', thirtyDaysAgo.toISOString()),
     // Pro Users
     supabase.from('subscriptions').select('*', { count: 'exact', head: true }).eq('status', 'active'),
   ]);
+
+  const newUsersCount = newUsersData?.length || 0;
 
   const activeUsers = new Set(activeUserData?.map(u => u.user_id)).size;
   const proPercentage = totalUsers && totalUsers > 0 ? Math.round((proUsers || 0) / totalUsers * 100) : 0;
@@ -287,16 +295,18 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
   }));
 
   // NEW SIGNUPS (7 days)
+  // Note: This shows users who first used a workflow in the last 7 days
+  // (user_stats.created_at is set when user_stats is first created)
   const { data: newSignupsRaw } = await supabase
-    .from('profiles')
-    .select('id, created_at')
+    .from('user_stats')
+    .select('user_id, created_at')
     .gte('created_at', sevenDaysAgo.toISOString())
     .order('created_at', { ascending: false })
     .limit(10);
 
   const newSignups: NewSignup[] = (newSignupsRaw || []).map(s => ({
-    id: s.id,
-    email: `user-${s.id.slice(0, 8)}...`,
+    id: s.user_id,
+    email: `user-${s.user_id.slice(0, 8)}...`,
     created_at: s.created_at,
   }));
 
@@ -368,15 +378,15 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <MetricCard
             icon={<Users className="w-5 h-5" />}
-            label="Total Users"
+            label="Total Active Users"
             value={totalUsers || 0}
-            subtext="all time"
+            subtext="users with 1+ workflow use"
           />
           <MetricCard
             icon={<UserPlus className="w-5 h-5 text-green-500" />}
-            label="New Users"
+            label="New Active Users"
             value={newUsersCount || 0}
-            subtext="last 7 days"
+            subtext="first workflow use (7 days)"
           />
           <MetricCard
             icon={<Activity className="w-5 h-5 text-blue-500" />}
@@ -527,8 +537,8 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
           <div className="p-5 rounded-xl bg-zinc-900/50 border border-zinc-800">
             <h3 className="font-semibold mb-4 flex items-center gap-2">
               <UserPlus className="w-4 h-4 text-green-500" />
-              New Signups
-              <span className="text-sm text-zinc-500 font-normal">Last 7 days</span>
+              New Active Users
+              <span className="text-sm text-zinc-500 font-normal">First workflow use (7 days)</span>
             </h3>
             {newSignups.length > 0 ? (
                 <div className="space-y-2">
@@ -540,7 +550,7 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
                   ))}
                 </div>
             ) : (
-              <p className="text-sm text-zinc-500 text-center py-6">No new signups in the last 7 days</p>
+              <p className="text-sm text-zinc-500 text-center py-6">No new active users in the last 7 days</p>
             )}
                 </div>
 
