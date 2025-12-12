@@ -74,8 +74,17 @@ export function UserDropdown({ email, isPro }: UserDropdownProps) {
               className="flex items-center gap-3 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors"
               onClick={() => setIsOpen(false)}
             >
-              <Settings className="w-4 h-4" />
+              <User className="w-4 h-4" />
               Dashboard
+            </Link>
+            
+            <Link
+              href="/settings"
+              className="flex items-center gap-3 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              <Settings className="w-4 h-4" />
+              Settings
             </Link>
             
             <a
