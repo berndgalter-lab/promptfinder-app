@@ -245,15 +245,9 @@ export default async function DashboardPage() {
                   {subscriptionDetails?.status === 'active' ? 'Active' : subscriptionDetails?.status || 'Active'}
                 </span>
               </div>
-              <Link 
-                href="/dashboard" 
-                className="text-sm text-zinc-400 hover:text-white transition-colors"
-                onClick={(e) => {
-                  // Will be updated to /settings when that page exists
-                }}
-              >
-                Manage →
-              </Link>
+              <span className="text-sm text-zinc-500">
+                Pro Member
+              </span>
             </div>
           </div>
         )}
