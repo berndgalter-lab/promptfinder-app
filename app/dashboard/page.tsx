@@ -1,15 +1,10 @@
 import { createClient } from '@/lib/supabase/server';
 import { getUser } from '@/lib/auth';
 import { redirect } from 'next/navigation';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ACHIEVEMENTS, getAchievementIcon, type Achievement } from '@/lib/achievements';
+import { ACHIEVEMENTS, getAchievementIcon } from '@/lib/achievements';
 import { formatDistanceToNow } from 'date-fns';
 import Link from 'next/link';
-import { AccountSettings } from '@/components/dashboard/AccountSettings';
-import { UpgradeToPro } from '@/components/dashboard/UpgradeToPro';
-import { SubscriptionManagement } from '@/components/dashboard/SubscriptionManagement';
 import { getUserPlan, getSubscriptionDetails } from '@/lib/subscription';
 import { Star, Clock, ArrowRight, Play } from 'lucide-react';
 
@@ -47,17 +42,8 @@ export default async function DashboardPage() {
     .eq('user_id', user.id)
     .order('unlocked_at', { ascending: false });
 
-  // Fetch current month usage
-  const now = new Date();
-  const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-  const { count: monthlyUsage } = await supabase
-    .from('user_usage')
-    .select('*', { count: 'exact', head: true })
-    .eq('user_id', user.id)
-    .gte('used_at', firstDayOfMonth.toISOString());
-
-  // Fetch favorites with workflow data (for Quick Access)
-  const { data: favoritesData, count: favoritesCount } = await supabase
+  // Fetch favorites with workflow data
+  const { data: favoritesData } = await supabase
     .from('user_favorites')
     .select(`
       id,
@@ -70,7 +56,7 @@ export default async function DashboardPage() {
         description,
         icon
       )
-    `, { count: 'exact' })
+    `)
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
     .limit(6);
@@ -78,16 +64,18 @@ export default async function DashboardPage() {
   // Extract favorite workflows
   const favoriteWorkflows = favoritesData?.map((fav: any) => fav.workflows).filter(Boolean) || [];
 
-  // Fetch recent activity
-  const { data: recentUsage } = await supabase
+  // Fetch recent history (last 5 used workflows)
+  const { data: recentHistory } = await supabase
     .from('user_usage')
     .select(`
       id,
       used_at,
       workflow_id,
       workflows:workflow_id (
+        id,
         title,
-        slug
+        slug,
+        icon
       )
     `)
     .eq('user_id', user.id)
@@ -96,58 +84,108 @@ export default async function DashboardPage() {
 
   // Map unlocked achievements
   const unlockedCodes = new Set(unlockedAchievements?.map(a => a.achievement_code) || []);
-  const unlockedAchievementsList = (unlockedAchievements || [])
-    .map(ua => {
-      const achievement = ACHIEVEMENTS.find(a => a.code === ua.achievement_code);
-      return achievement ? { ...achievement, unlockedAt: ua.unlocked_at } : null;
-    })
-    .filter((a): a is Achievement & { unlockedAt: string } => a !== null);
-
-  const lockedAchievements = ACHIEVEMENTS.filter(a => !unlockedCodes.has(a.code));
+  const unlockedCount = unlockedCodes.size;
+  const totalAchievements = ACHIEVEMENTS.length;
+  const achievementProgress = (unlockedCount / totalAchievements) * 100;
 
   const totalWorkflows = userStats?.total_workflows || 0;
-  const achievementProgress = (unlockedAchievementsList.length / ACHIEVEMENTS.length) * 100;
-  const FREE_USER_LIMIT = 5;
+  const username = user.email?.split('@')[0] || 'there';
 
   return (
     <div className="min-h-screen bg-zinc-950 px-4 py-12 text-white">
-      <div className="mx-auto max-w-7xl">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold md:text-5xl">Dashboard</h1>
+      <div className="mx-auto max-w-6xl space-y-8">
+        
+        {/* ============================================ */}
+        {/* 1. HEADER */}
+        {/* ============================================ */}
+        <header>
+          <h1 className="text-3xl font-bold md:text-4xl">Dashboard</h1>
           <p className="mt-2 text-lg text-zinc-400">
-            Welcome back, {user.email?.split('@')[0]}!
+            Welcome back, {username}!
           </p>
-        </div>
+        </header>
 
         {/* ============================================ */}
-        {/* QUICK ACCESS: Favorites */}
+        {/* 2. CONTINUE WHERE YOU LEFT OFF (History) */}
         {/* ============================================ */}
-        {favoriteWorkflows.length > 0 && (
-          <div className="mb-8">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <Star className="h-5 w-5 text-yellow-400 fill-yellow-400" />
-                <h2 className="text-xl font-semibold">Your Favorites</h2>
-              </div>
-              <Link href="/favorites">
-                <Button variant="ghost" size="sm" className="!text-zinc-400 hover:!text-white gap-1">
-                  View all <ArrowRight className="h-4 w-4" />
+        <section>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold flex items-center gap-2">
+              <Clock className="w-5 h-5 text-zinc-400" />
+              Continue Where You Left Off
+            </h2>
+            <Link 
+              href="/history" 
+              className="text-sm text-zinc-400 hover:text-white transition-colors flex items-center gap-1"
+            >
+              View full history <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          
+          {recentHistory && recentHistory.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+              {recentHistory.map((usage: any) => (
+                <Link 
+                  key={usage.id} 
+                  href={`/workflows/${usage.workflows?.slug}`}
+                  className="group"
+                >
+                  <div className="p-4 rounded-xl border border-zinc-800 bg-zinc-900/50 hover:border-zinc-600 hover:bg-zinc-900 transition-all">
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className="text-xl">{usage.workflows?.icon || '📝'}</span>
+                      <h3 className="font-medium text-sm text-white group-hover:text-blue-400 transition-colors line-clamp-1">
+                        {usage.workflows?.title || 'Workflow'}
+                      </h3>
+                    </div>
+                    <p className="text-xs text-zinc-500">
+                      Used {formatDistanceToNow(new Date(usage.used_at), { addSuffix: false })} ago
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="p-8 rounded-xl border border-zinc-800 bg-zinc-900/50 text-center">
+              <p className="text-zinc-500 mb-4">You haven't used any workflows yet.</p>
+              <Link href="/workflows">
+                <Button className="!bg-blue-600 hover:!bg-blue-700 !text-white">
+                  Browse workflows to get started
                 </Button>
               </Link>
             </div>
+          )}
+        </section>
+
+        {/* ============================================ */}
+        {/* 3. YOUR FAVORITES */}
+        {/* ============================================ */}
+        <section>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold flex items-center gap-2">
+              <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+              Your Favorites
+            </h2>
+            <Link 
+              href="/favorites" 
+              className="text-sm text-zinc-400 hover:text-white transition-colors flex items-center gap-1"
+            >
+              View all <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          
+          {favoriteWorkflows.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {favoriteWorkflows.slice(0, 3).map((workflow: any) => (
+              {favoriteWorkflows.slice(0, 6).map((workflow: any) => (
                 <Link 
                   key={workflow.id} 
                   href={`/workflows/${workflow.slug}`}
                   className="group"
                 >
-                  <div className="relative p-4 rounded-xl border border-zinc-800 bg-zinc-900/50 hover:border-zinc-700 hover:bg-zinc-900 transition-all">
+                  <div className="p-4 rounded-xl border border-zinc-800 bg-zinc-900/50 hover:border-zinc-600 hover:bg-zinc-900 transition-all">
                     <div className="flex items-start gap-3">
                       <span className="text-2xl">{workflow.icon || '📝'}</span>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-medium text-white group-hover:text-blue-400 transition-colors truncate">
+                        <h3 className="font-medium text-white group-hover:text-blue-400 transition-colors line-clamp-1">
                           {workflow.title}
                         </h3>
                         <p className="text-xs text-zinc-500 mt-1 line-clamp-2">
@@ -164,262 +202,140 @@ export default async function DashboardPage() {
                 </Link>
               ))}
             </div>
-          </div>
-        )}
-
-        {/* ============================================ */}
-        {/* QUICK ACCESS: Continue Where You Left Off */}
-        {/* ============================================ */}
-        {recentUsage && recentUsage.length > 0 && totalWorkflows > 0 && (
-          <div className="mb-8">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <Clock className="h-5 w-5 text-zinc-400" />
-                <h2 className="text-xl font-semibold">Continue Where You Left Off</h2>
-              </div>
-              <Link href="/history">
-                <Button variant="ghost" size="sm" className="!text-zinc-400 hover:!text-white gap-1">
-                  View history <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {recentUsage.slice(0, 3).map((usage: any) => (
-                <Link 
-                  key={usage.id} 
-                  href={`/workflows/${usage.workflows?.slug}`}
-                  className="group"
-                >
-                  <div className="relative p-4 rounded-xl border border-zinc-800 bg-zinc-900/50 hover:border-zinc-700 hover:bg-zinc-900 transition-all">
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-medium text-white group-hover:text-blue-400 transition-colors truncate">
-                          {usage.workflows?.title || 'Workflow'}
-                        </h3>
-                        <p className="text-xs text-zinc-500 mt-1">
-                          {formatDistanceToNow(new Date(usage.used_at), { addSuffix: true })}
-                        </p>
-                      </div>
-                      <span className="inline-flex items-center gap-1 text-xs text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                        <Play className="h-3 w-3" /> Continue
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Show onboarding if no workflows used */}
-        {totalWorkflows === 0 ? (
-          <Card className="border-zinc-800 bg-zinc-900 mb-8">
-            <CardHeader>
-              <CardTitle className="text-2xl">🎉 Welcome to PromptFinder!</CardTitle>
-              <CardDescription>
-                You haven't used any workflows yet. Start exploring now!
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Link href="/workflows">
-                <Button size="lg" className="!bg-blue-600 hover:!bg-blue-700 !text-white">
-                  Browse Workflows
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-        ) : null}
-
-        {/* Subscription Section */}
-        <div className="mb-8">
-          {currentPlan === 'free' ? (
-            <UpgradeToPro currentPlan={currentPlan} monthlyUsage={monthlyUsage || 0} />
           ) : (
-            <SubscriptionManagement details={subscriptionDetails} />
+            <div className="p-6 rounded-xl border border-zinc-800 bg-zinc-900/50 text-center">
+              <p className="text-zinc-500">
+                No favorites yet. <Link href="/workflows" className="text-blue-400 hover:text-blue-300">Star workflows</Link> to save them here.
+              </p>
+            </div>
           )}
-        </div>
+        </section>
 
-        {/* Stats Grid */}
-        <div className="grid gap-6 md:grid-cols-2">
-          {/* Card 1: Usage Stats */}
-          <Card className="border-zinc-800 bg-zinc-900">
-            <CardHeader>
-              <CardTitle>Your Stats</CardTitle>
-              <CardDescription>Your usage statistics</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Total workflows */}
+        {/* ============================================ */}
+        {/* 4. PRO SUBSCRIPTION / UPGRADE BOX (COMPACT) */}
+        {/* ============================================ */}
+        {currentPlan === 'free' ? (
+          // Free user: Compact upgrade box
+          <div className="p-4 rounded-xl bg-gradient-to-r from-purple-900/30 to-blue-900/30 border border-purple-800/50">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <p className="text-sm text-zinc-400 mb-1">Total Workflows Used</p>
-                <p className="text-5xl font-bold text-white">{totalWorkflows}</p>
-              </div>
-
-              {/* Current month usage */}
-              <div>
-                <p className="text-sm text-zinc-400 mb-2">This Month's Usage</p>
-                <div className="flex items-center gap-3">
-                  {/* Simple progress bar without radix */}
-                  <div className="flex-1 h-2 bg-zinc-800 rounded-full overflow-hidden">
-                    <div 
-                      className={`h-full transition-all duration-500 ${
-                        currentPlan !== 'free'
-                          ? 'bg-gradient-to-r from-purple-600 to-pink-500'
-                          : (monthlyUsage || 0) > FREE_USER_LIMIT
-                          ? 'bg-gradient-to-r from-red-600 to-orange-500'
-                          : 'bg-gradient-to-r from-blue-600 to-blue-500'
-                      }`}
-                      style={{ 
-                        width: currentPlan !== 'free' 
-                          ? '100%' 
-                          : `${Math.min(100, (monthlyUsage || 0) / FREE_USER_LIMIT * 100)}%` 
-                      }}
-                    />
-                  </div>
-                  <span className="text-sm font-medium">
-                    {currentPlan !== 'free' ? (
-                      <span className="text-purple-400 font-semibold">∞ Unlimited</span>
-                    ) : (monthlyUsage || 0) > FREE_USER_LIMIT ? (
-                      <span className="text-red-400 font-semibold">{monthlyUsage}/{FREE_USER_LIMIT} ⚠️</span>
-                    ) : (
-                      <>{monthlyUsage || 0}/{FREE_USER_LIMIT}</>
-                    )}
-                  </span>
-                </div>
-              </div>
-
-              {/* Last used */}
-              {userStats?.last_used_at && (
-                <div>
-                  <p className="text-sm text-zinc-400">Last Used</p>
-                  <p className="text-base font-medium">
-                    {formatDistanceToNow(new Date(userStats.last_used_at), { 
-                      addSuffix: true
-                    })}
-                  </p>
-                </div>
-              )}
-
-              {/* Favorites count - clickable */}
-              <Link href="/favorites" className="block pt-3 border-t border-zinc-800 mt-3 group">
-                <p className="text-sm text-zinc-400 group-hover:text-zinc-300 transition-colors flex items-center gap-1">
-                  <Star className="h-3.5 w-3.5" /> Favorites
+                <span className="font-semibold text-white">Upgrade to Pro</span>
+                <span className="text-sm text-zinc-400 ml-2 hidden sm:inline">
+                  Unlimited workflows · Advanced features · Priority support
+                </span>
+                <p className="text-sm text-zinc-400 sm:hidden mt-1">
+                  Unlimited workflows · Advanced features
                 </p>
-                <p className="text-2xl font-bold group-hover:text-blue-400 transition-colors">
-                  {favoritesCount || 0}
-                </p>
+              </div>
+              <Link href="/pricing">
+                <Button className="!bg-purple-600 hover:!bg-purple-700 !text-white whitespace-nowrap">
+                  Upgrade
+                </Button>
               </Link>
+            </div>
+          </div>
+        ) : (
+          // Pro user: Compact status box
+          <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-800">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="text-yellow-500">👑</span>
+                <span className="font-semibold text-white">Pro Subscription</span>
+                <span className="text-xs px-2 py-0.5 bg-green-900/50 text-green-400 rounded border border-green-800/50">
+                  {subscriptionDetails?.status === 'active' ? 'Active' : subscriptionDetails?.status || 'Active'}
+                </span>
+              </div>
+              <Link 
+                href="/dashboard" 
+                className="text-sm text-zinc-400 hover:text-white transition-colors"
+                onClick={(e) => {
+                  // Will be updated to /settings when that page exists
+                }}
+              >
+                Manage →
+              </Link>
+            </div>
+          </div>
+        )}
 
-              {/* Current streak - ALWAYS show */}
-              <div className="pt-3 border-t border-zinc-800 mt-3">
-                <p className="text-sm text-zinc-400">Current Streak 🔥</p>
-                {userStats?.current_streak && userStats.current_streak > 0 ? (
-                  <p className="text-2xl font-bold text-orange-400">
-                    {userStats.current_streak} {userStats.current_streak === 1 ? 'day' : 'days'}
-                  </p>
-                ) : (
-                  <div>
-                    <p className="text-2xl font-bold text-zinc-600">0 days</p>
-                    <p className="text-xs text-zinc-500 mt-1">Use a workflow today to start your streak!</p>
-                  </div>
+        {/* ============================================ */}
+        {/* 5. STATS & ACHIEVEMENTS (Compact, side by side) */}
+        {/* ============================================ */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          {/* Stats */}
+          <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-800">
+            <h3 className="font-semibold mb-3">Your Stats</h3>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-zinc-400">Workflows used</span>
+                <span className="text-white font-medium">{totalWorkflows}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-400">Last active</span>
+                <span className="text-white">
+                  {userStats?.last_used_at 
+                    ? formatDistanceToNow(new Date(userStats.last_used_at), { addSuffix: false }) + ' ago'
+                    : 'Never'
+                  }
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-400">Favorites</span>
+                <span className="text-white">{favoriteWorkflows.length}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-400">Current streak</span>
+                <span className="text-white">
+                  🔥 {userStats?.current_streak || 0} days
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Achievements */}
+          <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-800">
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="font-semibold">Achievements</h3>
+              <span className="text-sm text-zinc-400">{unlockedCount}/{totalAchievements} unlocked</span>
+            </div>
+            
+            {/* Progress bar */}
+            <div className="w-full bg-zinc-800 rounded-full h-2 mb-3">
+              <div 
+                className="bg-yellow-500 h-2 rounded-full transition-all duration-500"
+                style={{ width: `${achievementProgress}%` }}
+              />
+            </div>
+
+            {/* Recent unlocked (show up to 2) */}
+            {unlockedCount > 0 && (
+              <div className="flex items-center gap-2 mb-3">
+                {unlockedAchievements?.slice(0, 3).map((ua) => (
+                  <span 
+                    key={ua.achievement_code} 
+                    className="text-xl"
+                    title={ACHIEVEMENTS.find(a => a.code === ua.achievement_code)?.title}
+                  >
+                    {getAchievementIcon(ua.achievement_code)}
+                  </span>
+                ))}
+                {unlockedCount > 3 && (
+                  <span className="text-xs text-zinc-500">+{unlockedCount - 3} more</span>
                 )}
               </div>
-            </CardContent>
-          </Card>
+            )}
 
-          {/* Card 2: Achievements */}
-          <Card className="border-zinc-800 bg-zinc-900">
-            <CardHeader>
-              <CardTitle>Achievements</CardTitle>
-              <CardDescription>
-                {unlockedAchievementsList.length}/{ACHIEVEMENTS.length} unlocked 
-                ({Math.round(achievementProgress)}%)
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Progress bar */}
-              <div className="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-gradient-to-r from-yellow-600 to-amber-500 transition-all duration-500"
-                  style={{ width: `${achievementProgress}%` }}
-                />
-              </div>
-
-              {/* Unlocked achievements */}
-              {unlockedAchievementsList.length > 0 && (
-                <div className="space-y-3">
-                  <p className="text-sm font-semibold text-zinc-300">Unlocked</p>
-                  <div className="max-h-64 overflow-y-auto space-y-2">
-                    {unlockedAchievementsList.map((achievement) => (
-                      <div 
-                        key={achievement.code}
-                        className="flex items-start gap-3 rounded-lg border border-zinc-800 bg-zinc-950 p-3"
-                      >
-                        <span className="text-2xl">{getAchievementIcon(achievement.code)}</span>
-                        <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-sm text-white">
-                            {achievement.title}
-                          </p>
-                          <p className="text-xs text-zinc-400">
-                            {achievement.description}
-                          </p>
-                          <p className="text-xs text-zinc-500 mt-1">
-                            {formatDistanceToNow(new Date(achievement.unlockedAt), { 
-                              addSuffix: true
-                            })}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Locked achievements */}
-              {lockedAchievements.length > 0 && (
-                <div className="space-y-3">
-                  <p className="text-sm font-semibold text-zinc-500">Locked</p>
-                  <div className="space-y-2">
-                    {lockedAchievements.slice(0, 3).map((achievement) => (
-                      <div 
-                        key={achievement.code}
-                        className="flex items-start gap-3 rounded-lg border border-zinc-800/50 bg-zinc-950/50 p-3 opacity-50"
-                      >
-                        <span className="text-2xl grayscale">
-                          {getAchievementIcon(achievement.code)}
-                        </span>
-                        <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-sm text-zinc-400">
-                            {achievement.title}
-                          </p>
-                          <p className="text-xs text-zinc-500">
-                            {achievement.description}
-                          </p>
-                        </div>
-                        <Badge variant="outline" className="text-xs">
-                          🔒
-                        </Badge>
-                      </div>
-                    ))}
-                  </div>
-                  {lockedAchievements.length > 3 && (
-                    <p className="text-xs text-zinc-500 text-center">
-                      +{lockedAchievements.length - 3} more
-                    </p>
-                  )}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
+            <Link 
+              href="/dashboard#achievements" 
+              className="text-sm text-zinc-400 hover:text-white transition-colors"
+            >
+              View all achievements →
+            </Link>
+          </div>
         </div>
 
-        {/* Account Settings Section */}
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold mb-6">Account Settings</h2>
-          <AccountSettings userId={user.id} userEmail={user.email || ''} />
-        </div>
       </div>
     </div>
   );
 }
-
