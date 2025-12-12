@@ -4,8 +4,10 @@ import "./globals.css";
 import { AuthButton } from "@/components/auth/AuthButton";
 import { Toaster } from "@/components/ui/toaster";
 import { NavLinks } from "@/components/nav/NavLinks";
+import { UserDropdown } from "@/components/nav/UserDropdown";
 import { Footer } from "@/components/footer/Footer";
 import { getUserWithAdminStatus } from "@/lib/auth";
+import { getUserPlan } from "@/lib/subscription";
 import Link from "next/link";
 import { Analytics } from "@vercel/analytics/react";
 
@@ -30,6 +32,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const { user, isAdmin } = await getUserWithAdminStatus();
+  
+  // Get user plan if logged in
+  const isPro = user ? (await getUserPlan(user.id)) !== 'free' : false;
 
   return (
     <html lang="en">
@@ -44,10 +49,19 @@ export default async function RootLayout({
               </h1>
             </Link>
             <div className="flex items-center gap-4 md:gap-6">
-              <NavLinks isLoggedIn={!!user} isAdmin={isAdmin} />
-              {/* AuthButton nur auf Desktop im Header, auf Mobile im Sheet */}
+              <NavLinks 
+                isLoggedIn={!!user} 
+                isAdmin={isAdmin} 
+                userEmail={user?.email || ''}
+                isPro={isPro}
+              />
+              {/* User Area: Dropdown for logged-in, Auth buttons for logged-out */}
               <div className="hidden md:block">
-                <AuthButton />
+                {user ? (
+                  <UserDropdown email={user.email || ''} isPro={isPro} />
+                ) : (
+                  <AuthButton />
+                )}
               </div>
             </div>
           </div>
