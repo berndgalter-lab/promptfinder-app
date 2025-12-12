@@ -60,16 +60,6 @@ export function Footer() {
                   Contact
                 </a>
               </li>
-              <li>
-                <Link href="#" className="text-sm text-zinc-400 hover:text-white transition-colors">
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-sm text-zinc-400 hover:text-white transition-colors">
-                  Changelog
-                </Link>
-              </li>
             </ul>
           </div>
 

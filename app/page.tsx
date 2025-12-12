@@ -97,7 +97,7 @@ export default function Home() {
                 ))}
               </div>
               <p className="text-sm text-zinc-500">
-                Trusted by 500+ professionals who need consistent AI results
+                No credit card required · Start with 5 free workflows
               </p>
             </div>
           </div>
@@ -259,7 +259,7 @@ export default function Home() {
 
                 {/* Description */}
                 <p className="text-base text-zinc-400 leading-relaxed">
-                  Browse 50+ tested workflows for every task. Email writing, content creation, research — we've got you covered.
+                  Browse 166 tested workflows for every task. Email writing, content creation, research — we've got you covered.
                 </p>
               </CardContent>
             </Card>
@@ -346,10 +346,10 @@ export default function Home() {
               <CardContent className="p-0 flex flex-col items-center text-center space-y-4">
                 <CheckCircle className="h-12 w-12 text-green-400" />
                 <div className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  50+
+                  166
                 </div>
                 <p className="text-lg text-zinc-400">
-                  Workflows Tested
+                  Ready-to-Use Workflows
                 </p>
               </CardContent>
             </Card>
@@ -359,10 +359,10 @@ export default function Home() {
               <CardContent className="p-0 flex flex-col items-center text-center space-y-4">
                 <Sparkles className="h-12 w-12 text-purple-400" />
                 <div className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  100+
+                  1,000+
                 </div>
                 <p className="text-lg text-zinc-400">
-                  Prompt Variations Refined
+                  Hours of Testing
                 </p>
               </CardContent>
             </Card>
@@ -372,10 +372,10 @@ export default function Home() {
               <CardContent className="p-0 flex flex-col items-center text-center space-y-4">
                 <Clock className="h-12 w-12 text-blue-400" />
                 <div className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
-                  6+
+                  8
                 </div>
                 <p className="text-lg text-zinc-400">
-                  Months of Testing
+                  Job Role Categories
                 </p>
               </CardContent>
             </Card>
@@ -383,26 +383,20 @@ export default function Home() {
 
           {/* Founder Quote */}
           <div className="max-w-3xl mx-auto">
-            <Card className="relative border-zinc-800 bg-zinc-900/50 backdrop-blur-sm p-8 md:p-12 border-l-4 border-l-blue-500">
+            <Card className="relative border-zinc-800 bg-zinc-900/50 backdrop-blur-sm p-8 md:p-12">
               <CardContent className="p-0">
-                {/* Decorative quote mark */}
-                <div className="absolute -top-4 -left-4 text-6xl text-blue-500/20 font-serif">
-                  "
-                </div>
-                
-                {/* Quote text */}
-                <blockquote className="relative">
-                  <p className="text-xl md:text-2xl text-zinc-300 leading-relaxed italic mb-6">
-                    I built PromptFinder because I was tired of inconsistent ChatGPT results. After 6 months of testing hundreds of prompt variations, I discovered what actually works — and created workflows you can trust.
+                <div className="space-y-4">
+                  <h3 className="text-xl font-semibold text-white">Why I Built This</h3>
+                  <p className="text-lg text-zinc-300 leading-relaxed">
+                    I was tired of getting amazing results from ChatGPT one day and completely 
+                    different output the next.
                   </p>
-                  
-                  {/* Attribution */}
-                  <footer className="text-right">
-                    <cite className="text-base text-zinc-500 not-italic">
-                      — Bernd, Founder
-                    </cite>
-                  </footer>
-                </blockquote>
+                  <p className="text-lg text-zinc-300 leading-relaxed">
+                    After testing hundreds of prompt variations, I discovered what actually 
+                    works — and built PromptFinder so you don't have to figure it out yourself.
+                  </p>
+                  <p className="text-base text-zinc-500">— Bernd, Founder</p>
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -548,7 +542,7 @@ export default function Home() {
                   <Target className="h-6 w-6 text-blue-400" />
                 </div>
                 <h3 className="text-xl font-bold text-white">
-                  50+ Ready-to-Use Workflows
+                  166 Ready-to-Use Workflows
                 </h3>
                 <p className="text-base text-zinc-400 leading-relaxed">
                   Skip the trial and error. Every workflow is tested and proven to work.
