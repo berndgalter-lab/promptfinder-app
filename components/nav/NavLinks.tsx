@@ -13,7 +13,6 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { SignInModal } from '@/components/auth/SignInModal';
 import { createClient } from '@/lib/supabase/client';
 
 interface NavLinksProps {
@@ -29,7 +28,6 @@ const CUSTOMER_PORTAL_URL = 'https://promptfinder.lemonsqueezy.com/billing';
 export function NavLinks({ isLoggedIn, isAdmin = false, userEmail = '', isPro = false }: NavLinksProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [showSignIn, setShowSignIn] = useState(false);
   const supabase = createClient();
 
   const handleSignOut = async () => {
@@ -206,32 +204,27 @@ export function NavLinks({ isLoggedIn, isAdmin = false, userEmail = '', isPro = 
               </>
             ) : (
               <>
-            <p className="text-xs text-zinc-500 mb-3 px-4">Account</p>
+                <p className="text-xs text-zinc-500 mb-3 px-4">Account</p>
                 <div className="space-y-2 px-4">
-                  <Button 
-                    onClick={() => {
-                      setOpen(false);
-                      setShowSignIn(true);
-                    }}
-                    variant="outline"
-                    className="w-full !text-white !border-zinc-700 hover:!bg-zinc-800"
-                  >
-                    Sign In
-                  </Button>
+                  <Link href="/login" onClick={() => setOpen(false)} className="block">
+                    <Button 
+                      variant="outline"
+                      className="w-full !text-white !border-zinc-700 hover:!bg-zinc-800"
+                    >
+                      Sign In
+                    </Button>
+                  </Link>
                   <Link href="/pricing" onClick={() => setOpen(false)}>
                     <Button className="w-full !bg-white !text-black hover:!bg-zinc-200 font-medium">
                       Get Started
                     </Button>
                   </Link>
-            </div>
+                </div>
               </>
             )}
           </div>
         </SheetContent>
       </Sheet>
-
-      {/* Sign In Modal (for mobile) */}
-      <SignInModal open={showSignIn} onOpenChange={setShowSignIn} />
     </>
   );
 }
