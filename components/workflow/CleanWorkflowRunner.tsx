@@ -85,11 +85,12 @@ export function CleanWorkflowRunner({ workflow, userId, onComplete }: CleanWorkf
     }, 100);
   };
 
-  // Track first usage
+  // Track first usage (only once on first copy/open - this is completion for single mode)
   const trackFirstUsage = () => {
     if (!hasBeenUsed) {
       setHasBeenUsed(true);
       
+      // Create history entry on first use (single mode completion)
       if (onComplete) {
         onComplete({ 
           fieldValues: { [promptStep.number]: fieldValues }, 
@@ -102,7 +103,7 @@ export function CleanWorkflowRunner({ workflow, userId, onComplete }: CleanWorkf
   // Copy prompt to clipboard
   const handleCopyPrompt = () => {
     navigator.clipboard.writeText(generatedPrompt);
-    trackFirstUsage();
+    trackFirstUsage(); // Track only on first copy (completion for single mode)
     
     toast({
       title: '✅ Prompt copied!',
@@ -113,7 +114,7 @@ export function CleanWorkflowRunner({ workflow, userId, onComplete }: CleanWorkf
   // Open in ChatGPT
   const handleOpenChatGPT = () => {
     navigator.clipboard.writeText(generatedPrompt);
-    trackFirstUsage();
+    trackFirstUsage(); // Track only on first open (completion for single mode)
     
     const encodedPrompt = encodeURIComponent(generatedPrompt);
     window.open(`https://chat.openai.com/?q=${encodedPrompt}`, '_blank');

@@ -63,7 +63,9 @@ export function WorkflowLimitGuard({ userId, children, workflowId, workflowTitle
     );
   }
 
-  if (!canUse && modalType === 'UPGRADE_TO_PRO') {
+  // Show upgrade modal if limit reached AND modal should be shown
+  // Note: If user clicked "I'll wait", closeModal sets canUse=true, so this block won't render
+  if (!canUse && modalType === 'UPGRADE_TO_PRO' && showModal) {
     return (
       <>
         <Card className="border-purple-600/50 bg-zinc-900/50">

@@ -50,6 +50,8 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   const [expandedSteps, setExpandedSteps] = useState<Set<number>>(new Set());
   const [isCompleted, setIsCompleted] = useState(false); // Single mode completion
   const [isWorkflowCompleted, setIsWorkflowCompleted] = useState(false); // Multi-step completion
+  const [hasBeenUsed, setHasBeenUsed] = useState(false); // Track if history entry already created
+  const [hasBeenUsed, setHasBeenUsed] = useState(false); // Track if history entry already created
   const [hasBeenUsed, setHasBeenUsed] = useState(false); // Track first usage
 
   // Auto-detect mode: Single (1 prompt) vs Multi-Step (everything else)
@@ -181,25 +183,11 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
     setCompletedSteps(prev => new Set([...prev, stepNumber]));
   };
 
-  // Track first usage (both Single and Multi-Step)
-  const trackFirstUsage = () => {
-    if (!hasBeenUsed) {
-      setHasBeenUsed(true);
-      
-      // Trigger onComplete for usage tracking
-      if (onComplete) {
-        onComplete({ fieldValues, inputValues });
-      }
-      
-      console.log('📊 First usage tracked for workflow:', workflow.slug);
-    }
-  };
-
   // Handle Single Mode completion (triggered by Copy or Open)
   const handleSingleModeComplete = () => {
     if (!isCompleted) {
       setIsCompleted(true);
-      trackFirstUsage(); // Track usage on first interaction
+      // Don't track usage here - only on explicit "Complete Workflow"
     }
   };
 
@@ -207,8 +195,7 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   const handleCopyPrompt = (prompt: string) => {
     navigator.clipboard.writeText(prompt);
     
-    // Track first usage (both Single and Multi-Step)
-    trackFirstUsage();
+    // Don't track usage here - only create history entry on "Complete Workflow"
     
     // Different toast for Single vs Multi-Step
     if (isSingleMode) {
@@ -230,8 +217,7 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
     // Copy to clipboard as fallback
     navigator.clipboard.writeText(prompt);
     
-    // Track first usage (both Single and Multi-Step)
-    trackFirstUsage();
+    // Don't track usage here - only create history entry on "Complete Workflow"
     
     // Open ChatGPT with pre-filled prompt
     const encodedPrompt = encodeURIComponent(prompt);
@@ -289,7 +275,9 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
     const allStepNumbers = workflow.steps.map(s => s.number);
     setCompletedSteps(new Set(allStepNumbers));
     
-    if (onComplete) {
+    // Create history entry ONLY on explicit completion (prevents duplicates from copy/open)
+    if (onComplete && !hasBeenUsed) {
+      setHasBeenUsed(true); // Prevent duplicate entries
       onComplete({ fieldValues, inputValues });
     }
     
@@ -313,6 +301,7 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
     setFieldValues({});
     setInputValues({});
     setExpandedSteps(new Set());
+    setHasBeenUsed(false); // Reset usage tracking for new session
   };
 
   // ============================================
