@@ -164,17 +164,26 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
   // USAGE METRICS
   const [
     { count: totalRunsInPeriod },
+    { data: anonymousStatsInPeriod },
     { data: allUsersWithUsage },
     { data: userDaysData },
   ] = await Promise.all([
-    // Total Runs in period
+    // Total Runs in period (logged-in users)
     supabase.from('user_usage').select('*', { count: 'exact', head: true })
       .gte('used_at', periodStart.toISOString()),
+    // Anonymous usage in period (from global_daily_stats)
+    supabase.from('global_daily_stats')
+      .select('total_anonymous')
+      .gte('date', periodStart.toISOString().split('T')[0]),
     // All users with at least 1 usage (for activation rate)
     supabase.from('user_usage').select('user_id'),
     // User days data for returning users calculation
     supabase.from('user_usage').select('user_id, used_at').gte('used_at', thirtyDaysAgo.toISOString()),
   ]);
+
+  // Calculate total runs including anonymous
+  const anonymousRunsInPeriod = anonymousStatsInPeriod?.reduce((sum, stat) => sum + (stat.total_anonymous || 0), 0) || 0;
+  const totalRunsIncludingAnonymous = (totalRunsInPeriod || 0) + anonymousRunsInPeriod;
 
   const uniqueUsersWithUsage = new Set(allUsersWithUsage?.map(u => u.user_id)).size;
   const runsPerUser = activeUsers > 0 ? (totalRunsInPeriod || 0) / activeUsers : 0;
@@ -244,11 +253,20 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
     },
   ];
 
-  // DAILY USAGE (Last 14 days)
-  const { data: dailyUsageRaw } = await supabase
-      .from('user_usage')
+  // DAILY USAGE (Last 14 days) - includes anonymous
+  const [
+    { data: dailyUsageRaw },
+    { data: dailyAnonymousStats }
+  ] = await Promise.all([
+    // Logged-in user usage
+    supabase.from('user_usage')
       .select('used_at')
-    .gte('used_at', fourteenDaysAgo.toISOString());
+      .gte('used_at', fourteenDaysAgo.toISOString()),
+    // Anonymous usage stats
+    supabase.from('global_daily_stats')
+      .select('date, total_anonymous')
+      .gte('date', fourteenDaysAgo.toISOString().split('T')[0])
+  ]);
 
   // Build daily usage map
   const dailyMap: Record<string, number> = {};
@@ -257,25 +275,50 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
     dailyMap[date] = 0;
   }
 
+  // Add logged-in user usage
   dailyUsageRaw?.forEach(u => {
     const date = new Date(u.used_at).toISOString().split('T')[0];
     if (dailyMap[date] !== undefined) dailyMap[date]++;
+  });
+
+  // Add anonymous usage
+  dailyAnonymousStats?.forEach(stat => {
+    if (dailyMap[stat.date] !== undefined) {
+      dailyMap[stat.date] += (stat.total_anonymous || 0);
+    }
   });
 
   const dailyUsage = Object.entries(dailyMap)
     .map(([date, count]) => ({ date, count }))
     .sort((a, b) => a.date.localeCompare(b.date));
 
-  // TOP WORKFLOWS (30 days)
-  const { data: workflowUsageRaw } = await supabase
-    .from('user_usage')
-    .select('workflow_id')
-    .gte('used_at', thirtyDaysAgo.toISOString());
+  // TOP WORKFLOWS (30 days) - includes anonymous
+  const [
+    { data: workflowUsageRaw },
+    { data: workflowAnonymousStats }
+  ] = await Promise.all([
+    // Logged-in user workflow usage
+    supabase.from('user_usage')
+      .select('workflow_id')
+      .gte('used_at', thirtyDaysAgo.toISOString()),
+    // Anonymous workflow usage stats
+    supabase.from('workflow_daily_stats')
+      .select('workflow_id, anonymous_count, logged_in_count')
+      .gte('date', thirtyDaysAgo.toISOString().split('T')[0])
+  ]);
 
   const workflowCounts: Record<string, number> = {};
+  
+  // Add logged-in user usage
   workflowUsageRaw?.forEach(u => {
     const id = String(u.workflow_id);
     workflowCounts[id] = (workflowCounts[id] || 0) + 1;
+  });
+
+  // Add anonymous and logged-in counts from workflow_daily_stats
+  workflowAnonymousStats?.forEach(stat => {
+    const id = String(stat.workflow_id);
+    workflowCounts[id] = (workflowCounts[id] || 0) + (stat.anonymous_count || 0) + (stat.logged_in_count || 0);
   });
 
   const topWorkflowIds = Object.entries(workflowCounts)
@@ -410,8 +453,8 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
           <MetricCard
             icon={<Play className="w-5 h-5" />}
             label="Total Runs"
-            value={totalRunsInPeriod || 0}
-            subtext={periodLabel.toLowerCase()}
+            value={totalRunsIncludingAnonymous}
+            subtext={`${periodLabel.toLowerCase()} (incl. anonymous)`}
           />
           <MetricCard
             icon={<TrendingUp className="w-5 h-5" />}
