@@ -14,7 +14,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { ChevronLeft, ChevronRight, Check, ChevronDown, ChevronUp, Copy, ExternalLink } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, ChevronDown, ChevronUp, Copy, ExternalLink, CheckCircle, RotateCcw, Layout } from 'lucide-react';
+import Link from 'next/link';
+import { WorkflowRating } from '@/components/workflow/WorkflowRating';
 import { useToast } from '@/components/ui/use-toast';
 import {
   type Workflow,
@@ -46,7 +48,8 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   const [fieldValues, setFieldValues] = useState<Record<number, Record<string, string>>>({});
   const [inputValues, setInputValues] = useState<Record<number, string>>({});
   const [expandedSteps, setExpandedSteps] = useState<Set<number>>(new Set());
-  const [isCompleted, setIsCompleted] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false); // Single mode completion
+  const [isWorkflowCompleted, setIsWorkflowCompleted] = useState(false); // Multi-step completion
   const [hasBeenUsed, setHasBeenUsed] = useState(false); // Track first usage
 
   // Auto-detect mode: Single (1 prompt) vs Multi-Step (everything else)
@@ -282,6 +285,10 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
 
   // Complete workflow
   const handleCompleteWorkflow = () => {
+    // Mark all steps as completed
+    const allStepNumbers = workflow.steps.map(s => s.number);
+    setCompletedSteps(new Set(allStepNumbers));
+    
     if (onComplete) {
       onComplete({ fieldValues, inputValues });
     }
@@ -289,10 +296,23 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
     // Clear progress from localStorage after completion (Privacy)
     localStorage.removeItem(`workflow_progress_${workflow.slug}`);
     
+    // Show completion screen
+    setIsWorkflowCompleted(true);
+    
     toast({
       title: '🎉 Workflow Complete!',
       description: 'You\'ve completed all steps',
     });
+  };
+
+  // Reset workflow to start again
+  const handleResetWorkflow = () => {
+    setIsWorkflowCompleted(false);
+    setCurrentStep(1);
+    setCompletedSteps(new Set());
+    setFieldValues({});
+    setInputValues({});
+    setExpandedSteps(new Set());
   };
 
   // ============================================
@@ -453,6 +473,51 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
           <p className="text-zinc-400">Step not found</p>
         </CardContent>
       </Card>
+    );
+  }
+
+  // Show completion screen if workflow is completed
+  if (isWorkflowCompleted) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 px-4 text-center space-y-8">
+        {/* Success Icon */}
+        <div className="w-20 h-20 rounded-full bg-green-600/20 flex items-center justify-center">
+          <CheckCircle className="w-10 h-10 text-green-500" />
+        </div>
+        
+        {/* Success Message */}
+        <div className="space-y-2">
+          <h2 className="text-2xl font-bold text-white">Workflow Complete!</h2>
+          <p className="text-zinc-400 max-w-md">
+            You've successfully completed the {workflow.title}. Your prompts are ready to use.
+          </p>
+        </div>
+        
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Button
+            onClick={handleResetWorkflow}
+            variant="outline"
+            className="!border-zinc-700 !text-white hover:!bg-zinc-800"
+          >
+            <RotateCcw className="w-4 h-4 mr-2" />
+            Start Again
+          </Button>
+          
+          <Link href="/workflows">
+            <Button className="!bg-blue-600 hover:!bg-blue-700 !text-white">
+              <Layout className="w-4 h-4 mr-2" />
+              Browse Workflows
+            </Button>
+          </Link>
+        </div>
+        
+        {/* Rating Section */}
+        <div className="pt-8 border-t border-zinc-800 w-full max-w-md">
+          <p className="text-zinc-400 mb-4">How helpful was this workflow?</p>
+          <WorkflowRating workflowId={workflow.id} userId={userId} />
+        </div>
+      </div>
     );
   }
 
