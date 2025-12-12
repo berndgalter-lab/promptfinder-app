@@ -14,6 +14,7 @@ export interface WorkflowLimitState {
   modalType: LimitModalType | null;
   isPro: boolean;
   isLoading: boolean;
+  userDismissed: boolean; // Track if user chose to wait
 }
 
 export function useWorkflowLimit(userId: string | null) {
@@ -26,10 +27,12 @@ export function useWorkflowLimit(userId: string | null) {
     modalType: null,
     isPro: false,
     isLoading: true,
+    userDismissed: false,
   });
 
   useEffect(() => {
     checkLimit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   const checkLimit = async () => {
@@ -42,7 +45,7 @@ export function useWorkflowLimit(userId: string | null) {
         
         if (isPro) {
           // Pro users: unlimited
-          setState({
+          setState(prev => ({
             canUse: true,
             count: 0,
             limit: 0,
@@ -51,7 +54,8 @@ export function useWorkflowLimit(userId: string | null) {
             modalType: null,
             isPro: true,
             isLoading: false,
-          });
+            userDismissed: prev.userDismissed, // Preserve dismissal state
+          }));
           return;
         }
 
@@ -59,16 +63,17 @@ export function useWorkflowLimit(userId: string | null) {
         const limitInfo = await checkUserLimit(userId);
         const { count, limit = 5, canUse, remaining = 0 } = limitInfo;
 
-        setState({
-          canUse,
+        setState(prev => ({
+          canUse: prev.userDismissed ? true : canUse, // Respect user's choice to wait
           count,
           limit,
           remaining,
-          showModal: !canUse,
-          modalType: !canUse ? 'UPGRADE_TO_PRO' : null,
+          showModal: prev.userDismissed ? false : !canUse,
+          modalType: prev.userDismissed ? null : (!canUse ? 'UPGRADE_TO_PRO' : null),
           isPro: false,
           isLoading: false,
-        });
+          userDismissed: prev.userDismissed, // Preserve dismissal state
+        }));
       } else {
         // Anonymous user: check combined limit
         const limitInfo = checkAnonymousLimit();
@@ -84,21 +89,22 @@ export function useWorkflowLimit(userId: string | null) {
           modalType = 'SIGN_UP_SOFT';
         }
 
-        setState({
-          canUse,
+        setState(prev => ({
+          canUse: prev.userDismissed ? true : canUse,
           count,
           limit,
           remaining,
-          showModal: modalType !== null,
-          modalType,
+          showModal: prev.userDismissed ? false : modalType !== null,
+          modalType: prev.userDismissed ? null : modalType,
           isPro: false,
           isLoading: false,
-        });
+          userDismissed: prev.userDismissed, // Preserve dismissal state
+        }));
       }
     } catch (error) {
       console.error('Error checking workflow limit:', error);
       // On error, allow usage but log the issue
-      setState({
+      setState(prev => ({
         canUse: true,
         count: 0,
         limit: 5,
@@ -107,7 +113,8 @@ export function useWorkflowLimit(userId: string | null) {
         modalType: null,
         isPro: false,
         isLoading: false,
-      });
+        userDismissed: prev.userDismissed, // Preserve dismissal state
+      }));
     }
   };
 
@@ -117,7 +124,8 @@ export function useWorkflowLimit(userId: string | null) {
       showModal: false, 
       modalType: null,
       // If user chooses to wait, allow workflow usage despite limit
-      canUse: true 
+      canUse: true,
+      userDismissed: true // Mark that user dismissed the modal
     }));
   };
 
