@@ -51,8 +51,6 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   const [isCompleted, setIsCompleted] = useState(false); // Single mode completion
   const [isWorkflowCompleted, setIsWorkflowCompleted] = useState(false); // Multi-step completion
   const [hasBeenUsed, setHasBeenUsed] = useState(false); // Track if history entry already created
-  const [hasBeenUsed, setHasBeenUsed] = useState(false); // Track if history entry already created
-  const [hasBeenUsed, setHasBeenUsed] = useState(false); // Track first usage
 
   // Auto-detect mode: Single (1 prompt) vs Multi-Step (everything else)
   const isSingleMode = workflow.steps.length === 1 && isPromptStep(workflow.steps[0]);
