@@ -10,7 +10,8 @@ import {
   Info, 
   ClipboardPaste, 
   Send,
-  Check
+  Check,
+  ClipboardCheck
 } from 'lucide-react';
 import { type InstructionStep } from '@/lib/types/workflow';
 
@@ -20,13 +21,14 @@ interface InstructionStepProps {
   isCompleted: boolean;
 }
 
-const iconMap = {
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   clipboard: Clipboard,
   'arrow-right': ArrowRight,
   check: CheckCircle,
   info: Info,
   paste: ClipboardPaste,
   send: Send,
+  'clipboard-check': ClipboardCheck, // Support clipboard-check icon
 };
 
 export function InstructionStepComponent({
@@ -34,9 +36,8 @@ export function InstructionStepComponent({
   onComplete,
   isCompleted,
 }: InstructionStepProps) {
-  const IconComponent = step.instruction_icon 
-    ? iconMap[step.instruction_icon] 
-    : Info;
+  // Safe icon lookup with fallback - prevents undefined component errors
+  const IconComponent = (step.instruction_icon && iconMap[step.instruction_icon]) || Info;
 
   return (
     <Card className={`border-2 transition-all ${

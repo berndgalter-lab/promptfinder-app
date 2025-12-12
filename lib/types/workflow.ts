@@ -56,7 +56,7 @@ export interface PromptStep extends BaseStep {
 export interface InstructionStep extends BaseStep {
   type: 'instruction';
   instruction_text: string;
-  instruction_icon?: 'clipboard' | 'arrow-right' | 'check' | 'info' | 'paste' | 'send';
+  instruction_icon?: 'clipboard' | 'clipboard-check' | 'arrow-right' | 'check' | 'info' | 'paste' | 'send';
 }
 
 // Input Step - user pastes their own content
