@@ -3,8 +3,9 @@ import { getUser } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { getUserPlan } from '@/lib/subscription';
-import { User, CreditCard, ExternalLink } from 'lucide-react';
+import { User, CreditCard, ExternalLink, Lock } from 'lucide-react';
 import { AccountSettings } from '@/components/dashboard/AccountSettings';
+import { SecuritySettings } from '@/components/settings/SecuritySettings';
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
@@ -119,7 +120,21 @@ export default async function SettingsPage() {
           </section>
 
           {/* ============================================ */}
-          {/* SECTION 3: DATA & PRIVACY */}
+          {/* SECTION 3: SECURITY */}
+          {/* ============================================ */}
+          <section className="p-6 rounded-xl bg-zinc-900/50 border border-zinc-800">
+            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <Lock className="w-5 h-5 text-zinc-400" />
+              Security
+            </h2>
+            <p className="text-sm text-zinc-400 mb-4">
+              Manage your password and security settings.
+            </p>
+            <SecuritySettings />
+          </section>
+
+          {/* ============================================ */}
+          {/* SECTION 4: DATA & PRIVACY */}
           {/* ============================================ */}
           <section className="p-6 rounded-xl bg-zinc-900/50 border border-zinc-800">
             <h2 className="text-lg font-semibold mb-4">Data & Privacy</h2>
