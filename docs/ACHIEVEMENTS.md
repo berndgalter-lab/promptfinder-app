@@ -1,6 +1,6 @@
 # Achievement System Documentation
 
-## Overview
+## Overview All
 
 The achievement/badge system adds gamification to PromptFinder. Users unlock achievements based on their usage patterns and milestones.
 
