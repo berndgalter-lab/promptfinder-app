@@ -1,6 +1,6 @@
 'use client';
 
-import { FileText, Users, Clock, Package, CheckCircle, ArrowRight } from 'lucide-react';
+import { FileText, Users, Clock, Package, CheckCircle, ArrowRight, ListChecks } from 'lucide-react';
 import type { Workflow, SOPDetails } from '@/lib/types/workflow';
 
 interface SOPOverviewProps {
@@ -93,6 +93,41 @@ export function SOPOverview({ workflow, onStart }: SOPOverviewProps) {
             What you'll create
           </h3>
           <p className="text-zinc-300">{sopDetails.outcome_description ? String(sopDetails.outcome_description) : ''}</p>
+        </div>
+      )}
+
+      {/* Steps Preview */}
+      {workflow.steps && workflow.steps.length > 0 && (
+        <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-6">
+          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+            <ListChecks className="w-5 h-5 text-blue-400" />
+            What's included ({workflow.steps.length} Steps)
+          </h3>
+          <div className="space-y-3">
+            {workflow.steps.map((step, index) => (
+              <div 
+                key={index}
+                className="flex items-start gap-4 p-4 bg-zinc-800/50 rounded-lg border border-zinc-700/50"
+              >
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-600/20 text-blue-400 flex items-center justify-center text-sm font-medium">
+                  {index + 1}
+                </div>
+                <div className="flex-grow min-w-0">
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <h4 className="font-medium text-white truncate">{step.title}</h4>
+                    {'duration_minutes' in step && step.duration_minutes && (
+                      <span className="flex-shrink-0 text-xs text-zinc-500 flex items-center gap-1">
+                        <Clock className="w-3 h-3" />~{step.duration_minutes} min
+                      </span>
+                    )}
+                  </div>
+                  {step.description && (
+                    <p className="text-sm text-zinc-400 line-clamp-2">{step.description}</p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
