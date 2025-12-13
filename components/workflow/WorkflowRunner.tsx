@@ -58,7 +58,7 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   const totalSteps = workflow.steps.length;
   const progress = (currentStep / totalSteps) * 100;
 
-  // Load progress from localStorage
+  // Load progress from localStorage (only for mid-session recovery, not after completion)
   useEffect(() => {
     const savedProgress = localStorage.getItem(`workflow_progress_${workflow.slug}`);
     if (savedProgress) {
@@ -67,8 +67,11 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
         
         // GDPR-SAFE: Only load progress state, NO user content
         // User must re-enter fields - this is safer
-        if (parsed.currentStep) setCurrentStep(parsed.currentStep);
-        if (parsed.completedSteps) setCompletedSteps(new Set(parsed.completedSteps));
+        // Only restore if workflow hasn't been completed yet
+        if (!isWorkflowCompleted) {
+          if (parsed.currentStep) setCurrentStep(parsed.currentStep);
+          if (parsed.completedSteps) setCompletedSteps(new Set(parsed.completedSteps));
+        }
         
         // fieldValues and inputValues are NOT loaded
         // User starts with empty fields - Privacy by Design
@@ -78,10 +81,15 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
         console.error('Error loading workflow progress:', error);
       }
     }
-  }, [workflow.slug]);
+  }, [workflow.slug, isWorkflowCompleted]);
 
-  // Save progress to localStorage
+  // Save progress to localStorage (but not after completion)
   useEffect(() => {
+    // Don't save progress if workflow is completed - user should start fresh on next visit
+    if (isWorkflowCompleted) {
+      return;
+    }
+
     // GDPR-SAFE: Store ONLY progress state, NO user content
     // - currentStep: OK (number)
     // - completedSteps: OK (array of numbers)
@@ -96,7 +104,7 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
     };
     
     localStorage.setItem(`workflow_progress_${workflow.slug}`, JSON.stringify(progressData));
-  }, [currentStep, completedSteps, workflow.slug]);
+  }, [currentStep, completedSteps, workflow.slug, isWorkflowCompleted]);
 
   // Build prompt by replacing {{variables}} with values from ALL steps
   const buildPrompt = (step: WorkflowStep): string => {
@@ -279,11 +287,12 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
       onComplete({ fieldValues, inputValues });
     }
     
-    // Clear progress from localStorage after completion (Privacy)
-    localStorage.removeItem(`workflow_progress_${workflow.slug}`);
-    
-    // Show completion screen
+    // Show completion screen FIRST (prevents save useEffect from running)
     setIsWorkflowCompleted(true);
+    
+    // Clear ALL progress data from localStorage after completion
+    // User should start fresh on next visit
+    localStorage.removeItem(`workflow_progress_${workflow.slug}`);
     
     toast({
       title: '🎉 Workflow Complete!',
@@ -300,6 +309,9 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
     setInputValues({});
     setExpandedSteps(new Set());
     setHasBeenUsed(false); // Reset usage tracking for new session
+    
+    // Clear localStorage for fresh start
+    localStorage.removeItem(`workflow_progress_${workflow.slug}`);
   };
 
   // ============================================
