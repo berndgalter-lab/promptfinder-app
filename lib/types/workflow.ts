@@ -37,6 +37,9 @@ export interface WorkflowField {
   options?: string[];  // only for type: 'select'
 }
 
+// Chat instruction type for multi-step SOPs
+export type ChatInstruction = 'new_chat' | 'same_chat' | 'paste_previous';
+
 // Base Step (shared properties)
 export interface BaseStep {
   number: number;
@@ -49,6 +52,7 @@ export interface BaseStep {
   duration_minutes?: number;
   quality_checks?: string[];
   common_mistakes?: string[];
+  chat_instruction?: ChatInstruction;
 }
 
 // Prompt Step - has fields and prompt template

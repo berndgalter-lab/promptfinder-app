@@ -1,6 +1,6 @@
 'use client';
 
-import { FileText, Users, Clock, Package, CheckCircle, ArrowRight, ListChecks } from 'lucide-react';
+import { FileText, Users, Clock, Package, CheckCircle, ArrowRight, ListChecks, Lightbulb } from 'lucide-react';
 import type { Workflow, SOPDetails } from '@/lib/types/workflow';
 
 interface SOPOverviewProps {
@@ -57,6 +57,23 @@ export function SOPOverview({ workflow, onStart }: SOPOverviewProps) {
         </button>
         <p className="text-xs text-zinc-500 mt-2">
           ~{workflow.estimated_minutes} min · Scroll down to see what's included
+        </p>
+      </div>
+
+      {/* How this SOP works */}
+      <div className="bg-zinc-800/50 border border-zinc-700 rounded-lg p-4">
+        <h3 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+          <Lightbulb className="w-4 h-4 text-yellow-400" />
+          How this SOP works
+        </h3>
+        <ol className="text-sm text-zinc-400 space-y-1.5 list-decimal list-inside">
+          <li>Click "Start This SOP" above</li>
+          <li>Open ChatGPT, Claude, or your preferred AI tool</li>
+          <li>Keep the <strong className="text-white">same chat</strong> open for all {stepCount} steps</li>
+          <li>Copy each prompt → Paste → Get response → Continue</li>
+        </ol>
+        <p className="text-xs text-zinc-500 mt-3">
+          💡 The AI builds on previous responses, so don't start a new chat between steps!
         </p>
       </div>
 

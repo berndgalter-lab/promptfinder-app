@@ -164,6 +164,7 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
       duration_minutes: step.duration_minutes,
       quality_checks: step.quality_checks,
       common_mistakes: step.common_mistakes,
+      chat_instruction: step.chat_instruction,
       ...((!step.type || step.type === 'prompt') && {
         prompt_template: step.prompt_template || '',
         fields: (step.fields || []).map((field: any) => ({

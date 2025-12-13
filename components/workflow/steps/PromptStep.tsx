@@ -18,6 +18,7 @@ import { type PromptStep } from '@/lib/types/workflow';
 import { WorkflowSectionLabel } from '@/components/workflow/WorkflowSectionLabel';
 import { PromptReadyBanner } from '@/components/workflow/PromptReadyBanner';
 import { ProTip } from '@/components/workflow/ProTip';
+import { ChatInstructionHint } from '@/components/workflow/ChatInstructionHint';
 
 interface PromptStepProps {
   step: PromptStep;
@@ -59,8 +60,19 @@ export function PromptStepComponent({
     any: 'Open AI Assistant'
   };
 
+  // "Open AI Assistant" Button nur bei Step 1 oder explizit new_chat zeigen
+  // Bei Step 2+ im gleichen Chat würde ein neuer Tab den Kontext zerstören
+  const showOpenAIButton = !isSOP || step.number === 1 || step.chat_instruction === 'new_chat';
+
   return (
     <div>
+      {/* SOP Chat-Hinweis (new_chat / same_chat / paste_previous) */}
+      <ChatInstructionHint 
+        stepNumber={step.number}
+        chatInstruction={step.chat_instruction}
+        isSOP={isSOP}
+      />
+
       {/* SOP-spezifisch: Step Title groß */}
       {isSOP && step.title && (
         <div className="mb-6">
@@ -182,19 +194,21 @@ export function PromptStepComponent({
                   onClick={onCopyPrompt}
                   disabled={!areRequiredFieldsFilled}
                   variant="outline"
-                  className="flex-1 !text-white !border-zinc-700 hover:!bg-zinc-800"
+                  className={`${showOpenAIButton ? 'flex-1' : 'w-full'} !text-white !border-zinc-700 hover:!bg-zinc-800`}
                 >
                   <Copy className="w-4 h-4 mr-2" />
                   Copy to Clipboard
                 </Button>
-                <Button
-                  onClick={onOpenChatGPT}
-                  disabled={!areRequiredFieldsFilled}
-                  className="flex-1 !bg-blue-600 hover:!bg-blue-700 !text-white"
-                >
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  {openButtonLabels[tool]}
-                </Button>
+                {showOpenAIButton && (
+                  <Button
+                    onClick={onOpenChatGPT}
+                    disabled={!areRequiredFieldsFilled}
+                    className="flex-1 !bg-blue-600 hover:!bg-blue-700 !text-white"
+                  >
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    {openButtonLabels[tool]}
+                  </Button>
+                )}
               </div>
 
               <ProTip tool={tool} />
