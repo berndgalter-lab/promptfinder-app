@@ -276,6 +276,10 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
   // Determine if this is a single-prompt workflow (use clean runner) or multi-step
   const isSinglePromptWorkflow = workflow.steps.length === 1 && isPromptStep(workflow.steps[0]);
 
+  // Determine if this is an SOP (sequential workflow with sop_details)
+  // SOPs show their own overview, so we hide the page header
+  const isSOP = workflow.workflow_type === 'sequential' && !!workflow.sop_details;
+
   // Fetch related workflows from the same category
   let relatedWorkflows: Array<{
     id: number;
@@ -358,77 +362,79 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
         <Breadcrumbs workflowTitle={workflow.title} />
 
         {/* ============================================ */}
-        {/* 1. HERO SECTION */}
+        {/* 1. HERO SECTION (hidden for SOPs - they have their own) */}
         {/* ============================================ */}
-        <div className="mb-6">
-          {/* Title Row */}
-          <div className="flex items-start justify-between gap-4 mb-4">
-            <div className="flex-1">
-              <div className="flex flex-wrap items-center gap-3 mb-3">
-                <h1 className="text-3xl font-bold md:text-4xl lg:text-5xl">
-                  {workflow.title}
-                </h1>
-                {workflow.category && (
-                  <CategoryBadge 
-                    slug={workflow.category.slug}
-                    name={workflow.category.name}
-                    icon={workflow.category.icon}
-                  />
-                )}
+        {!isSOP && (
+          <div className="mb-6">
+            {/* Title Row */}
+            <div className="flex items-start justify-between gap-4 mb-4">
+              <div className="flex-1">
+                <div className="flex flex-wrap items-center gap-3 mb-3">
+                  <h1 className="text-3xl font-bold md:text-4xl lg:text-5xl">
+                    {workflow.title}
+                  </h1>
+                  {workflow.category && (
+                    <CategoryBadge 
+                      slug={workflow.category.slug}
+                      name={workflow.category.name}
+                      icon={workflow.category.icon}
+                    />
+                  )}
+                </div>
+                <p className="text-lg text-zinc-400">
+                  {workflow.description}
+                </p>
               </div>
-              <p className="text-lg text-zinc-400">
-                {workflow.description}
-              </p>
+              
+              {/* Favorite button */}
+              <FavoriteButton
+                workflowId={workflow.id}
+                initialIsFavorited={isFavorited}
+                userId={user?.id || null}
+                workflowTitle={workflow.title}
+              />
             </div>
-            
-            {/* Favorite button */}
-            <FavoriteButton
-              workflowId={workflow.id}
-              initialIsFavorited={isFavorited}
-              userId={user?.id || null}
-              workflowTitle={workflow.title}
-            />
-          </div>
 
-          {/* Meta Badges Row */}
-          <div className="flex flex-wrap items-center gap-2 mt-4">
-            {/* Estimated Time */}
-            <Badge variant="secondary" className="bg-zinc-800/80 text-zinc-300 border-zinc-700 gap-1.5 py-1 px-2.5">
-              <Clock className="h-3.5 w-3.5" />
-              <span>{workflow.estimated_minutes} min</span>
-            </Badge>
-            
-            {/* Difficulty */}
-            <Badge variant="secondary" className="bg-zinc-800/80 text-zinc-300 border-zinc-700 gap-1.5 py-1 px-2.5">
-              <Target className="h-3.5 w-3.5" />
-              <span>{formatDifficulty(workflow.difficulty)}</span>
-            </Badge>
-            
-            {/* Time Saved */}
-            {workflow.time_saved_minutes && workflow.time_saved_minutes > 0 && (
-              <Badge variant="secondary" className="bg-green-950/50 text-green-400 border-green-800/50 gap-1.5 py-1 px-2.5">
-                <Sparkles className="h-3.5 w-3.5" />
-                <span>Saves {workflow.time_saved_minutes} min of work</span>
+            {/* Meta Badges Row */}
+            <div className="flex flex-wrap items-center gap-2 mt-4">
+              {/* Estimated Time */}
+              <Badge variant="secondary" className="bg-zinc-800/80 text-zinc-300 border-zinc-700 gap-1.5 py-1 px-2.5">
+                <Clock className="h-3.5 w-3.5" />
+                <span>{workflow.estimated_minutes} min</span>
               </Badge>
-            )}
-            
-            {/* Updated Date - at the end */}
-            <span className="text-sm text-zinc-500">
-              · Updated {formatUpdatedDate(workflow.updated_at)}
-            </span>
+              
+              {/* Difficulty */}
+              <Badge variant="secondary" className="bg-zinc-800/80 text-zinc-300 border-zinc-700 gap-1.5 py-1 px-2.5">
+                <Target className="h-3.5 w-3.5" />
+                <span>{formatDifficulty(workflow.difficulty)}</span>
+              </Badge>
+              
+              {/* Time Saved */}
+              {workflow.time_saved_minutes && workflow.time_saved_minutes > 0 && (
+                <Badge variant="secondary" className="bg-green-950/50 text-green-400 border-green-800/50 gap-1.5 py-1 px-2.5">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  <span>Saves {workflow.time_saved_minutes} min of work</span>
+                </Badge>
+              )}
+              
+              {/* Updated Date - at the end */}
+              <span className="text-sm text-zinc-500">
+                · Updated {formatUpdatedDate(workflow.updated_at)}
+              </span>
+            </div>
+
+            {/* Works with AI Tools */}
+            <p className="mt-3 text-sm text-zinc-500">
+              <span>Works with: </span>
+              <span className="text-zinc-300">{getCompatibleToolsDisplay(workflow.tool)}</span>
+            </p>
           </div>
-
-          {/* Works with AI Tools */}
-          <p className="mt-3 text-sm text-zinc-500">
-            <span>Works with: </span>
-            <span className="text-zinc-300">{getCompatibleToolsDisplay(workflow.tool)}</span>
-          </p>
-        </div>
+        )}
 
         {/* ============================================ */}
-        {/* 2. USE CASES SECTION */}
+        {/* 2. USE CASES SECTION (hidden for SOPs) */}
         {/* ============================================ */}
-        {workflow.use_cases && workflow.use_cases.length > 0 && (
+        {!isSOP && workflow.use_cases && workflow.use_cases.length > 0 && (
           <div className="mb-6 p-4 rounded-lg bg-zinc-900/50 border border-zinc-800">
             <p className="text-sm text-zinc-500 mb-2">Perfect for:</p>
             <div className="flex flex-wrap gap-2">
@@ -445,23 +451,23 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
         )}
 
         {/* ============================================ */}
-        {/* 3. EXAMPLE OUTPUT SECTION (Open by default) */}
+        {/* 3. EXAMPLE OUTPUT SECTION (hidden for SOPs) */}
         {/* ============================================ */}
-        {workflow.example_output && (
+        {!isSOP && workflow.example_output && (
           <ExampleOutputSection exampleOutput={workflow.example_output} workflowTitle={workflow.title} />
         )}
 
         {/* ============================================ */}
-        {/* 4. LONG DESCRIPTION SECTION (Closed by default) */}
+        {/* 4. LONG DESCRIPTION SECTION (hidden for SOPs) */}
         {/* ============================================ */}
-        {workflow.long_description && (
+        {!isSOP && workflow.long_description && (
           <LongDescriptionSection longDescription={workflow.long_description} workflowTitle={workflow.title} />
         )}
 
         {/* ============================================ */}
-        {/* 5. DIVIDER */}
+        {/* 5. DIVIDER (hidden for SOPs) */}
         {/* ============================================ */}
-        <div className="my-10 border-t border-zinc-800" />
+        {!isSOP && <div className="my-10 border-t border-zinc-800" />}
 
         {/* ============================================ */}
         {/* 6. WORKFLOW RUNNER */}

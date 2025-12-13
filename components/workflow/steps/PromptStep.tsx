@@ -40,15 +40,6 @@ export function PromptStepComponent({
   tool = 'chatgpt',
   isSOP = false,
 }: PromptStepProps) {
-  // Debug logging for SOP fields
-  console.log('=== PROMPT STEP DEBUG ===');
-  console.log('step:', step);
-  console.log('step.why:', step.why);
-  console.log('step.duration_minutes:', step.duration_minutes);
-  console.log('step.quality_checks:', step.quality_checks);
-  console.log('step.common_mistakes:', step.common_mistakes);
-  console.log('isSOP:', isSOP);
-  
   // Check if all required fields are filled
   const areRequiredFieldsFilled = step.fields
     .filter(field => field.required)

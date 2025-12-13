@@ -42,10 +42,22 @@ export function SOPOverview({ workflow, onStart }: SOPOverviewProps) {
       <div className="text-center space-y-4">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-600/20 text-blue-400 text-sm font-medium">
           <FileText className="w-4 h-4" />
-          Multi-Step SOP
+          Multi-Step SOP · {stepCount} Steps
         </div>
         <h1 className="text-3xl font-bold text-white">{workflow.title}</h1>
         <p className="text-lg text-zinc-400">{workflow.description}</p>
+        
+        {/* Quick Start Button - above the fold */}
+        <button
+          onClick={onStart}
+          className="mt-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors inline-flex items-center gap-2"
+        >
+          Start This SOP
+          <ArrowRight className="w-4 h-4" />
+        </button>
+        <p className="text-xs text-zinc-500 mt-2">
+          ~{workflow.estimated_minutes} min · Scroll down to see what's included
+        </p>
       </div>
 
       {/* Stats Cards */}
