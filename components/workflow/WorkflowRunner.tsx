@@ -46,7 +46,7 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   const { toast } = useToast();
   
   // Check if this is an SOP that should show overview first
-  const isSOP = workflow.workflow_type === 'sequential' && workflow.sop_details;
+  const isSOP = workflow.workflow_type === 'sequential' && !!workflow.sop_details;
   
   // Debug logging
   console.log('=== SOP DEBUG ===');
