@@ -9,8 +9,31 @@ interface SOPOverviewProps {
 }
 
 export function SOPOverview({ workflow, onStart }: SOPOverviewProps) {
-  const stepCount = workflow.steps?.length || 0;
-  const sopDetails = workflow.sop_details;
+  try {
+    // Safety check: ensure workflow has required fields
+    if (!workflow) {
+      console.error('SOPOverview: workflow is undefined or null');
+      return <div className="text-red-400 p-4">Error: Workflow data is missing</div>;
+    }
+
+    const stepCount = workflow.steps?.length || 0;
+    const sopDetails = workflow.sop_details;
+
+    // Safely get prerequisites array
+    const prerequisites = (() => {
+      try {
+        if (!sopDetails?.prerequisites) return [];
+        // Handle both array and potentially string formats
+        if (Array.isArray(sopDetails.prerequisites)) {
+          return sopDetails.prerequisites.filter(Boolean).map(String);
+        }
+        // If it's a string, try to parse it or return empty array
+        return [];
+      } catch (error) {
+        console.error('Error parsing prerequisites:', error);
+        return [];
+      }
+    })();
 
   return (
     <div className="max-w-3xl mx-auto space-y-8 py-8">
@@ -30,7 +53,7 @@ export function SOPOverview({ workflow, onStart }: SOPOverviewProps) {
         <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 text-center">
           <Users className="w-6 h-6 text-blue-400 mx-auto mb-2" />
           <p className="text-sm text-zinc-500">For</p>
-          <p className="text-sm text-white font-medium">{sopDetails?.target_role || 'All roles'}</p>
+          <p className="text-sm text-white font-medium">{sopDetails?.target_role ? String(sopDetails.target_role) : 'All roles'}</p>
         </div>
         <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 text-center">
           <Clock className="w-6 h-6 text-green-400 mx-auto mb-2" />
@@ -45,17 +68,17 @@ export function SOPOverview({ workflow, onStart }: SOPOverviewProps) {
       </div>
 
       {/* Prerequisites */}
-      {sopDetails?.prerequisites && sopDetails.prerequisites.length > 0 && (
+      {prerequisites.length > 0 && (
         <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <CheckCircle className="w-5 h-5 text-green-400" />
             Before you start
           </h3>
           <ul className="space-y-2">
-            {sopDetails.prerequisites.map((prereq, index) => (
+            {prerequisites.map((prereq, index) => (
               <li key={index} className="flex items-start gap-3 text-zinc-300">
                 <span className="text-green-400 mt-1">•</span>
-                {prereq}
+                <span>{String(prereq)}</span>
               </li>
             ))}
           </ul>
@@ -69,7 +92,7 @@ export function SOPOverview({ workflow, onStart }: SOPOverviewProps) {
             <Package className="w-5 h-5 text-purple-400" />
             What you'll create
           </h3>
-          <p className="text-zinc-300">{sopDetails.outcome_description}</p>
+          <p className="text-zinc-300">{sopDetails.outcome_description ? String(sopDetails.outcome_description) : ''}</p>
         </div>
       )}
 
@@ -88,6 +111,25 @@ export function SOPOverview({ workflow, onStart }: SOPOverviewProps) {
       </div>
 
     </div>
-  );
+    );
+  } catch (error) {
+    console.error('SOPOverview render error:', error);
+    return (
+      <div className="max-w-3xl mx-auto py-8">
+        <div className="bg-red-900/20 border border-red-800 rounded-lg p-6">
+          <h2 className="text-xl font-semibold text-red-400 mb-2">Error loading SOP Overview</h2>
+          <p className="text-zinc-400 text-sm">
+            {error instanceof Error ? error.message : 'An unexpected error occurred'}
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg"
+          >
+            Reload Page
+          </button>
+        </div>
+      </div>
+    );
+  }
 }
 

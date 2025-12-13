@@ -216,14 +216,27 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
       }
       // If it's an array (Supabase JOIN can return arrays), take first element
       if (Array.isArray(rawWorkflow.sop_details) && rawWorkflow.sop_details.length > 0) {
-        console.log('Using first element from sop_details array:', rawWorkflow.sop_details[0]);
-        return rawWorkflow.sop_details[0];
+        const firstElement = rawWorkflow.sop_details[0];
+        console.log('Using first element from sop_details array:', firstElement);
+        // Ensure prerequisites is an array
+        if (firstElement && firstElement.prerequisites && !Array.isArray(firstElement.prerequisites)) {
+          console.warn('prerequisites is not an array, converting...');
+          firstElement.prerequisites = [];
+        }
+        return firstElement;
       }
       // If fields are flattened at root level (from view or direct query)
       if (rawWorkflow.target_role || rawWorkflow.prerequisites || rawWorkflow.outcome_description) {
+        // Ensure prerequisites is an array
+        let prerequisites = rawWorkflow.prerequisites;
+        if (prerequisites && !Array.isArray(prerequisites)) {
+          console.warn('Flattened prerequisites is not an array, converting...');
+          prerequisites = [];
+        }
+        
         const flattened = {
           target_role: rawWorkflow.target_role ?? null,
-          prerequisites: rawWorkflow.prerequisites ?? null,
+          prerequisites: prerequisites ?? null,
           outcome_description: rawWorkflow.outcome_description ?? null,
           next_steps: rawWorkflow.next_steps ?? null,
           platform_instructions: rawWorkflow.platform_instructions ?? null,
