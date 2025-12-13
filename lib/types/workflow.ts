@@ -25,7 +25,7 @@ export type DifficultyType = 'beginner' | 'intermediate' | 'advanced';
 export type WorkflowStatus = 'draft' | 'published';
 
 // Field Types (for prompt steps)
-export type FieldType = 'text' | 'textarea' | 'select';
+export type FieldType = 'text' | 'textarea' | 'select' | 'multiselect';
 
 // Field Definition
 export interface WorkflowField {

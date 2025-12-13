@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Copy, ExternalLink, Sparkles, Check, RotateCcw, Twitter, Linkedin, Link } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import {
@@ -262,6 +263,49 @@ export function CleanWorkflowRunner({ workflow, userId, onComplete }: CleanWorkf
                         ))}
                       </SelectContent>
                     </Select>
+                  </div>
+                )}
+                
+                {/* Multiselect Checkbox Group */}
+                {field.type === 'multiselect' && field.options && (
+                  <div className="space-y-2 p-3 rounded-lg bg-zinc-800/50 border border-zinc-700">
+                    {field.options.map((option) => {
+                      const currentValues = (fieldValues[field.name] || '').split(',').filter(Boolean).map(v => v.trim());
+                      const isChecked = currentValues.includes(option);
+                      
+                      const handleToggle = (checked: boolean) => {
+                        let newValues: string[];
+                        if (checked) {
+                          newValues = [...currentValues, option];
+                        } else {
+                          newValues = currentValues.filter(v => v !== option);
+                        }
+                        handleFieldChange(field.name, newValues.join(', '));
+                      };
+                      
+                      return (
+                        <div key={option} className="flex items-center space-x-3">
+                          <Checkbox
+                            id={`clean-${field.name}-${option}`}
+                            checked={isChecked}
+                            onCheckedChange={handleToggle}
+                            className="border-zinc-600 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600"
+                          />
+                          <label
+                            htmlFor={`clean-${field.name}-${option}`}
+                            className="text-sm text-zinc-300 cursor-pointer select-none"
+                          >
+                            {option}
+                          </label>
+                        </div>
+                      );
+                    })}
+                    {/* Show selected count */}
+                    {(fieldValues[field.name] || '').split(',').filter(Boolean).length > 0 && (
+                      <p className="text-xs text-zinc-500 mt-2 pt-2 border-t border-zinc-700">
+                        {(fieldValues[field.name] || '').split(',').filter(Boolean).length} selected
+                      </p>
+                    )}
                   </div>
                 )}
               </div>

@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
 import { ChevronLeft, ChevronRight, Check, ChevronDown, ChevronUp, Copy, ExternalLink, CheckCircle, RotateCcw, Layout } from 'lucide-react';
 import Link from 'next/link';
 import { WorkflowRating } from '@/components/workflow/WorkflowRating';
@@ -403,6 +404,43 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
                       ))}
                     </SelectContent>
                   </Select>
+                )}
+                
+                {/* Multiselect Checkbox Group */}
+                {field.type === 'multiselect' && field.options && (
+                  <div className="mt-1.5 space-y-2 p-3 rounded-lg bg-zinc-800 border border-zinc-700">
+                    {field.options.map((option) => {
+                      const currentValues = (values[field.name] || '').split(',').filter(Boolean).map(v => v.trim());
+                      const isChecked = currentValues.includes(option);
+                      
+                      const handleToggle = (checked: boolean) => {
+                        let newValues: string[];
+                        if (checked) {
+                          newValues = [...currentValues, option];
+                        } else {
+                          newValues = currentValues.filter(v => v !== option);
+                        }
+                        handleFieldChange(singleStep.number, field.name, newValues.join(', '));
+                      };
+                      
+                      return (
+                        <div key={option} className="flex items-center space-x-3">
+                          <Checkbox
+                            id={`single-${field.name}-${option}`}
+                            checked={isChecked}
+                            onCheckedChange={handleToggle}
+                            className="border-zinc-600 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600"
+                          />
+                          <label
+                            htmlFor={`single-${field.name}-${option}`}
+                            className="text-sm text-zinc-300 cursor-pointer select-none"
+                          >
+                            {option}
+                          </label>
+                        </div>
+                      );
+                    })}
+                  </div>
                 )}
               </div>
             ))}
