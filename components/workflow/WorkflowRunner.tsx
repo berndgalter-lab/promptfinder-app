@@ -48,23 +48,41 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   // Check if this is an SOP that should show overview first
   const isSOP = workflow.workflow_type === 'sequential' && workflow.sop_details;
   
+  // Debug logging
+  console.log('=== SOP DEBUG ===');
+  console.log('workflow_type:', workflow.workflow_type);
+  console.log('sop_details:', workflow.sop_details);
+  console.log('isSOP:', isSOP);
+  console.log('workflow.slug:', workflow.slug);
+  
   // Check localStorage synchronously to determine if user has already started
   const checkIfStarted = () => {
-    if (typeof window === 'undefined' || !isSOP) return false;
+    if (typeof window === 'undefined') {
+      console.log('checkIfStarted: window is undefined (SSR)');
+      return false;
+    }
+    if (!isSOP) {
+      console.log('checkIfStarted: not an SOP, returning false');
+      return false;
+    }
     try {
       const savedProgress = localStorage.getItem(`workflow_progress_${workflow.slug}`);
+      console.log('checkIfStarted: savedProgress from localStorage:', savedProgress);
       if (savedProgress) {
         const parsed = JSON.parse(savedProgress);
-        // If there's saved progress, user has already started
-        return !!(parsed.currentStep || (parsed.completedSteps && parsed.completedSteps.length > 0));
+        const hasProgress = !!(parsed.currentStep || (parsed.completedSteps && parsed.completedSteps.length > 0));
+        console.log('checkIfStarted: hasProgress:', hasProgress, 'parsed:', parsed);
+        return hasProgress;
       }
     } catch (error) {
       console.error('Error checking workflow progress:', error);
     }
+    console.log('checkIfStarted: returning false (no saved progress)');
     return false;
   };
   
   const [hasStarted, setHasStarted] = useState(checkIfStarted());
+  console.log('hasStarted state:', hasStarted);
   const [currentStep, setCurrentStep] = useState(1);
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
   const [fieldValues, setFieldValues] = useState<Record<number, Record<string, string>>>({});
@@ -111,13 +129,24 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   }, [workflow.slug, isWorkflowCompleted, isSOP]);
 
   // If SOP and not started, show overview
+  console.log('=== SOP RENDERING CHECK ===');
+  console.log('isSOP:', isSOP);
+  console.log('hasStarted:', hasStarted);
+  console.log('Should show SOP Overview?', isSOP && !hasStarted);
+  
   if (isSOP && !hasStarted) {
+    console.log('✅ Rendering SOPOverview component');
     return (
       <SOPOverview 
         workflow={workflow} 
-        onStart={() => setHasStarted(true)} 
+        onStart={() => {
+          console.log('🚀 SOP Start button clicked');
+          setHasStarted(true);
+        }} 
       />
     );
+  } else {
+    console.log('❌ NOT showing SOP Overview - isSOP:', isSOP, 'hasStarted:', hasStarted);
   }
 
   // Save progress to localStorage (but not after completion)

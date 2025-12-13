@@ -200,22 +200,38 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
     example_output: rawWorkflow.example_output ?? null,
     long_description: rawWorkflow.long_description ?? null,
     updated_at: rawWorkflow.updated_at || rawWorkflow.created_at,
-    // Handle sop_details: could be nested object from join OR flattened fields
+    // Handle sop_details: could be nested object from join OR flattened fields OR array
     sop_details: (() => {
+      console.log('=== SOP DETAILS TRANSFORMATION DEBUG ===');
+      console.log('rawWorkflow.sop_details:', rawWorkflow.sop_details);
+      console.log('rawWorkflow.target_role:', rawWorkflow.target_role);
+      console.log('rawWorkflow.prerequisites:', rawWorkflow.prerequisites);
+      console.log('rawWorkflow.sop_details type:', typeof rawWorkflow.sop_details);
+      console.log('rawWorkflow.sop_details isArray:', Array.isArray(rawWorkflow.sop_details));
+      
       // If nested object exists (from join), use it
       if (rawWorkflow.sop_details && typeof rawWorkflow.sop_details === 'object' && !Array.isArray(rawWorkflow.sop_details)) {
+        console.log('Using nested sop_details object');
         return rawWorkflow.sop_details;
+      }
+      // If it's an array (Supabase JOIN can return arrays), take first element
+      if (Array.isArray(rawWorkflow.sop_details) && rawWorkflow.sop_details.length > 0) {
+        console.log('Using first element from sop_details array:', rawWorkflow.sop_details[0]);
+        return rawWorkflow.sop_details[0];
       }
       // If fields are flattened at root level (from view or direct query)
       if (rawWorkflow.target_role || rawWorkflow.prerequisites || rawWorkflow.outcome_description) {
-        return {
+        const flattened = {
           target_role: rawWorkflow.target_role ?? null,
           prerequisites: rawWorkflow.prerequisites ?? null,
           outcome_description: rawWorkflow.outcome_description ?? null,
           next_steps: rawWorkflow.next_steps ?? null,
           platform_instructions: rawWorkflow.platform_instructions ?? null,
         };
+        console.log('Using flattened sop_details:', flattened);
+        return flattened;
       }
+      console.log('No sop_details found, returning null');
       return null;
     })(),
     // Category from join
@@ -447,10 +463,21 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
                 />
               ) : (
                 // Original runner for multi-step workflows
-                <WorkflowRunnerWrapper 
-                  workflow={workflow}
-                  userId={user?.id || null}
-                />
+                <>
+                  {/* Debug: Log workflow data */}
+                  {(() => {
+                    console.log('=== PAGE DEBUG: Workflow Data ===');
+                    console.log('workflow.workflow_type:', workflow.workflow_type);
+                    console.log('workflow.sop_details:', workflow.sop_details);
+                    console.log('isSequential:', workflow.workflow_type === 'sequential');
+                    console.log('hasSopDetails:', !!workflow.sop_details);
+                    return null;
+                  })()}
+                  <WorkflowRunnerWrapper 
+                    workflow={workflow}
+                    userId={user?.id || null}
+                  />
+                </>
               )}
             </WorkflowLimitGuard>
           ) : (
