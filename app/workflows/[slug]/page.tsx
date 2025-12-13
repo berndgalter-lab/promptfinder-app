@@ -19,16 +19,6 @@ import { Breadcrumbs } from '@/components/workflow/Breadcrumbs';
 import { BreadcrumbSchema } from '@/components/workflow/BreadcrumbSchema';
 import { getCompatibleToolsDisplay } from '@/lib/constants/ai-tools';
 
-// Format updated date for display
-function formatUpdatedDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', { 
-    month: 'short', 
-    day: 'numeric', 
-    year: 'numeric' 
-  });
-}
-
 interface PageProps {
   params: Promise<{
     slug: string;
