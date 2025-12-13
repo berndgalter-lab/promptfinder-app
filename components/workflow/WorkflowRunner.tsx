@@ -48,41 +48,8 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   // Check if this is an SOP that should show overview first
   const isSOP = workflow.workflow_type === 'sequential' && !!workflow.sop_details;
   
-  // Debug logging
-  console.log('=== SOP DEBUG ===');
-  console.log('workflow_type:', workflow.workflow_type);
-  console.log('sop_details:', workflow.sop_details);
-  console.log('isSOP:', isSOP);
-  console.log('workflow.slug:', workflow.slug);
-  
-  // Check localStorage synchronously to determine if user has already started
-  const checkIfStarted = () => {
-    if (typeof window === 'undefined') {
-      console.log('checkIfStarted: window is undefined (SSR)');
-      return false;
-    }
-    if (!isSOP) {
-      console.log('checkIfStarted: not an SOP, returning false');
-      return false;
-    }
-    try {
-      const savedProgress = localStorage.getItem(`workflow_progress_${workflow.slug}`);
-      console.log('checkIfStarted: savedProgress from localStorage:', savedProgress);
-      if (savedProgress) {
-        const parsed = JSON.parse(savedProgress);
-        const hasProgress = !!(parsed.currentStep || (parsed.completedSteps && parsed.completedSteps.length > 0));
-        console.log('checkIfStarted: hasProgress:', hasProgress, 'parsed:', parsed);
-        return hasProgress;
-      }
-    } catch (error) {
-      console.error('Error checking workflow progress:', error);
-    }
-    console.log('checkIfStarted: returning false (no saved progress)');
-    return false;
-  };
-  
-  const [hasStarted, setHasStarted] = useState(checkIfStarted());
-  console.log('hasStarted state:', hasStarted);
+  // Initialize hasStarted to false (safe for SSR), then check localStorage in useEffect
+  const [hasStarted, setHasStarted] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
   const [fieldValues, setFieldValues] = useState<Record<number, Record<string, string>>>({});
@@ -364,14 +331,10 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   // Must be AFTER all hooks to avoid React Rules of Hooks violation
   // ============================================
   if (isSOP && !hasStarted) {
-    console.log('✅ Rendering SOPOverview component');
     return (
       <SOPOverview 
         workflow={workflow} 
-        onStart={() => {
-          console.log('🚀 SOP Start button clicked');
-          setHasStarted(true);
-        }} 
+        onStart={() => setHasStarted(true)} 
       />
     );
   }
