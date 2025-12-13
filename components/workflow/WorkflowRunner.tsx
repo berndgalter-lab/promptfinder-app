@@ -128,27 +128,6 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
     }
   }, [workflow.slug, isWorkflowCompleted, isSOP]);
 
-  // If SOP and not started, show overview
-  console.log('=== SOP RENDERING CHECK ===');
-  console.log('isSOP:', isSOP);
-  console.log('hasStarted:', hasStarted);
-  console.log('Should show SOP Overview?', isSOP && !hasStarted);
-  
-  if (isSOP && !hasStarted) {
-    console.log('✅ Rendering SOPOverview component');
-    return (
-      <SOPOverview 
-        workflow={workflow} 
-        onStart={() => {
-          console.log('🚀 SOP Start button clicked');
-          setHasStarted(true);
-        }} 
-      />
-    );
-  } else {
-    console.log('❌ NOT showing SOP Overview - isSOP:', isSOP, 'hasStarted:', hasStarted);
-  }
-
   // Save progress to localStorage (but not after completion)
   useEffect(() => {
     // Don't save progress if workflow is completed - user should start fresh on next visit
@@ -379,6 +358,23 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
     // Clear localStorage for fresh start
     localStorage.removeItem(`workflow_progress_${workflow.slug}`);
   };
+
+  // ============================================
+  // SOP OVERVIEW (if sequential workflow with sop_details and not started)
+  // Must be AFTER all hooks to avoid React Rules of Hooks violation
+  // ============================================
+  if (isSOP && !hasStarted) {
+    console.log('✅ Rendering SOPOverview component');
+    return (
+      <SOPOverview 
+        workflow={workflow} 
+        onStart={() => {
+          console.log('🚀 SOP Start button clicked');
+          setHasStarted(true);
+        }} 
+      />
+    );
+  }
 
   // ============================================
   // SINGLE MODE (1 prompt step)
