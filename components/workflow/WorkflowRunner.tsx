@@ -17,6 +17,7 @@ import {
 import { ChevronLeft, ChevronRight, Check, ChevronDown, ChevronUp, Copy, ExternalLink, CheckCircle, RotateCcw, Layout } from 'lucide-react';
 import Link from 'next/link';
 import { WorkflowRating } from '@/components/workflow/WorkflowRating';
+import { SOPOverview } from '@/components/workflow/SOPOverview';
 import { useToast } from '@/components/ui/use-toast';
 import {
   type Workflow,
@@ -43,6 +44,27 @@ interface WorkflowRunnerProps {
 
 export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerProps) {
   const { toast } = useToast();
+  
+  // Check if this is an SOP that should show overview first
+  const isSOP = workflow.workflow_type === 'sequential' && workflow.sop_details;
+  
+  // Check localStorage synchronously to determine if user has already started
+  const checkIfStarted = () => {
+    if (typeof window === 'undefined' || !isSOP) return false;
+    try {
+      const savedProgress = localStorage.getItem(`workflow_progress_${workflow.slug}`);
+      if (savedProgress) {
+        const parsed = JSON.parse(savedProgress);
+        // If there's saved progress, user has already started
+        return !!(parsed.currentStep || (parsed.completedSteps && parsed.completedSteps.length > 0));
+      }
+    } catch (error) {
+      console.error('Error checking workflow progress:', error);
+    }
+    return false;
+  };
+  
+  const [hasStarted, setHasStarted] = useState(checkIfStarted());
   const [currentStep, setCurrentStep] = useState(1);
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
   const [fieldValues, setFieldValues] = useState<Record<number, Record<string, string>>>({});
@@ -71,6 +93,11 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
         if (!isWorkflowCompleted) {
           if (parsed.currentStep) setCurrentStep(parsed.currentStep);
           if (parsed.completedSteps) setCompletedSteps(new Set(parsed.completedSteps));
+          
+          // If there's saved progress, user has already started the SOP
+          if (isSOP && (parsed.currentStep || (parsed.completedSteps && parsed.completedSteps.length > 0))) {
+            setHasStarted(true);
+          }
         }
         
         // fieldValues and inputValues are NOT loaded
@@ -81,7 +108,17 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
         console.error('Error loading workflow progress:', error);
       }
     }
-  }, [workflow.slug, isWorkflowCompleted]);
+  }, [workflow.slug, isWorkflowCompleted, isSOP]);
+
+  // If SOP and not started, show overview
+  if (isSOP && !hasStarted) {
+    return (
+      <SOPOverview 
+        workflow={workflow} 
+        onStart={() => setHasStarted(true)} 
+      />
+    );
+  }
 
   // Save progress to localStorage (but not after completion)
   useEffect(() => {

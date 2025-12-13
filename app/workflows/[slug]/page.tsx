@@ -126,12 +126,19 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const supabase = await createClient();
   
-  // Fetch workflow with category
+  // Fetch workflow with category and sop_details
   const { data: rawWorkflow, error: workflowError } = await supabase
     .from('workflows')
     .select(`
       *,
-      category:categories(id, slug, name, icon)
+      category:categories(id, slug, name, icon),
+      sop_details (
+        target_role,
+        prerequisites,
+        outcome_description,
+        next_steps,
+        platform_instructions
+      )
     `)
     .eq('slug', slug)
     .single();
@@ -193,6 +200,7 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
     example_output: rawWorkflow.example_output ?? null,
     long_description: rawWorkflow.long_description ?? null,
     updated_at: rawWorkflow.updated_at || rawWorkflow.created_at,
+    sop_details: rawWorkflow.sop_details ?? null,
     // Category from join
     category: rawWorkflow.category ?? null,
   };

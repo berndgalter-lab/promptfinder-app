@@ -74,6 +74,15 @@ export type WorkflowStep = PromptStep | InstructionStep | InputStep;
 // Workflow Type
 export type WorkflowType = 'combined' | 'sequential';
 
+// SOP Details (for multi-step sequential workflows)
+export interface SOPDetails {
+  target_role: string | null;
+  prerequisites: string[] | null;
+  outcome_description: string | null;
+  next_steps: string | null;
+  platform_instructions: string | null;
+}
+
 // Complete Workflow
 export interface Workflow {
   id: string;  // UUID from Supabase
@@ -102,6 +111,7 @@ export interface Workflow {
   use_cases: string[] | null;
   example_output: string | null;
   long_description: string | null;
+  sop_details: SOPDetails | null;
 }
 
 // User's progress through a workflow
