@@ -687,6 +687,7 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
               onOpenChatGPT={() => handleOpenChatGPT(buildPrompt(currentStepObj))}
               generatedPrompt={buildPrompt(currentStepObj)}
               tool={workflow.tool}
+              isSOP={isSOP}
             />
           )}
 
@@ -695,6 +696,7 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
               step={currentStepObj}
               onComplete={() => handleInstructionComplete(currentStep)}
               isCompleted={completedSteps.has(currentStep)}
+              isSOP={isSOP}
             />
           )}
 

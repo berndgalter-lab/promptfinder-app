@@ -11,7 +11,10 @@ import {
   ClipboardPaste, 
   Send,
   Check,
-  ClipboardCheck
+  ClipboardCheck,
+  Clock,
+  Lightbulb,
+  AlertTriangle
 } from 'lucide-react';
 import { type InstructionStep } from '@/lib/types/workflow';
 
@@ -19,6 +22,7 @@ interface InstructionStepProps {
   step: InstructionStep;
   onComplete: () => void;
   isCompleted: boolean;
+  isSOP?: boolean;
 }
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -35,11 +39,42 @@ export function InstructionStepComponent({
   step,
   onComplete,
   isCompleted,
+  isSOP = false,
 }: InstructionStepProps) {
   // Safe icon lookup with fallback - prevents undefined component errors
   const IconComponent = (step.instruction_icon && iconMap[step.instruction_icon]) || Info;
 
   return (
+    <div>
+      {/* SOP-spezifisch: Step Title groß */}
+      {isSOP && step.title && (
+        <div className="mb-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-semibold text-white">{step.title}</h2>
+            {step.duration_minutes && (
+              <span className="text-sm text-zinc-400 flex items-center gap-1">
+                <Clock className="w-4 h-4" />
+                ~{step.duration_minutes} min
+              </span>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* SOP-spezifisch: Why this step? */}
+      {isSOP && step.why && (
+        <div className="mb-6 bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <Lightbulb className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="text-sm font-medium text-blue-400 mb-1">Why this step?</p>
+              <p className="text-sm text-zinc-300">{step.why}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div>
     <Card className={`border-2 transition-all ${
       isCompleted 
         ? 'border-green-500/50 bg-gradient-to-br from-green-500/10 to-emerald-500/5' 
@@ -106,6 +141,26 @@ export function InstructionStepComponent({
         </div>
       </CardContent>
     </Card>
+
+      {/* SOP-spezifisch: Common Mistakes */}
+      {isSOP && step.common_mistakes && step.common_mistakes.length > 0 && (
+        <div className="mt-4 bg-amber-500/10 border border-amber-500/20 rounded-lg p-4">
+          <p className="text-sm font-medium text-amber-400 mb-3 flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4" />
+            Common mistakes to avoid:
+          </p>
+          <ul className="space-y-2">
+            {step.common_mistakes.map((mistake, index) => (
+              <li key={index} className="flex items-start gap-2 text-sm text-zinc-300">
+                <span className="text-amber-400">•</span>
+                <span>{mistake}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      </div>
+    </div>
   );
 }
 

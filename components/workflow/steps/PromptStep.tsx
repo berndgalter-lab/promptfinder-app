@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Copy, ExternalLink } from 'lucide-react';
+import { Copy, ExternalLink, Clock, Lightbulb, CheckCircle, AlertTriangle } from 'lucide-react';
 import { type PromptStep } from '@/lib/types/workflow';
 import { WorkflowSectionLabel } from '@/components/workflow/WorkflowSectionLabel';
 import { PromptReadyBanner } from '@/components/workflow/PromptReadyBanner';
@@ -27,6 +27,7 @@ interface PromptStepProps {
   onOpenChatGPT: () => void;
   generatedPrompt: string;
   tool?: 'chatgpt' | 'claude' | 'cursor' | 'any';
+  isSOP?: boolean;
 }
 
 export function PromptStepComponent({
@@ -37,6 +38,7 @@ export function PromptStepComponent({
   onOpenChatGPT,
   generatedPrompt,
   tool = 'chatgpt',
+  isSOP = false,
 }: PromptStepProps) {
   // Check if all required fields are filled
   const areRequiredFieldsFilled = step.fields
@@ -58,7 +60,36 @@ export function PromptStepComponent({
   };
 
   return (
-    <div className="space-y-6">
+    <div>
+      {/* SOP-spezifisch: Step Title groß */}
+      {isSOP && step.title && (
+        <div className="mb-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-semibold text-white">{step.title}</h2>
+            {step.duration_minutes && (
+              <span className="text-sm text-zinc-400 flex items-center gap-1">
+                <Clock className="w-4 h-4" />
+                ~{step.duration_minutes} min
+              </span>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* SOP-spezifisch: Why this step? */}
+      {isSOP && step.why && (
+        <div className="mb-6 bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <Lightbulb className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="text-sm font-medium text-blue-400 mb-1">Why this step?</p>
+              <p className="text-sm text-zinc-300">{step.why}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="space-y-6">
       {/* Fields Section with Label */}
       <div>
         <WorkflowSectionLabel 
@@ -171,6 +202,43 @@ export function PromptStepComponent({
           </Card>
         </div>
       )}
+
+      {/* SOP-spezifisch: Quality Checks (nach dem Prompt, vor Navigation) */}
+      {isSOP && step.quality_checks && step.quality_checks.length > 0 && (
+        <div className="mt-6 bg-green-500/10 border border-green-500/20 rounded-lg p-4">
+          <p className="text-sm font-medium text-green-400 mb-3 flex items-center gap-2">
+            <CheckCircle className="w-4 h-4" />
+            Before continuing, check:
+          </p>
+          <ul className="space-y-2">
+            {step.quality_checks.map((check, index) => (
+              <li key={index} className="flex items-start gap-2 text-sm text-zinc-300">
+                <span className="text-green-400">□</span>
+                <span>{check}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* SOP-spezifisch: Common Mistakes */}
+      {isSOP && step.common_mistakes && step.common_mistakes.length > 0 && (
+        <div className="mt-4 bg-amber-500/10 border border-amber-500/20 rounded-lg p-4">
+          <p className="text-sm font-medium text-amber-400 mb-3 flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4" />
+            Common mistakes to avoid:
+          </p>
+          <ul className="space-y-2">
+            {step.common_mistakes.map((mistake, index) => (
+              <li key={index} className="flex items-start gap-2 text-sm text-zinc-300">
+                <span className="text-amber-400">•</span>
+                <span>{mistake}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      </div>
     </div>
   );
 }

@@ -43,6 +43,12 @@ export interface BaseStep {
   type: StepType;
   title: string;
   description: string;
+  
+  // SOP-spezifische Felder (optional, nur für SOPs)
+  why?: string;
+  duration_minutes?: number;
+  quality_checks?: string[];
+  common_mistakes?: string[];
 }
 
 // Prompt Step - has fields and prompt template
