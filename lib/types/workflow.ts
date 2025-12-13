@@ -83,6 +83,7 @@ export interface Workflow {
   workflow_type: WorkflowType;
   steps: WorkflowStep[];
   created_at: string;
+  updated_at: string;
   // NEW: Extended fields for SEO, discovery, and organization
   category_id: number | null;
   tags: string[];

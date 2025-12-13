@@ -45,6 +45,7 @@ interface RawWorkflow {
   sort_order: number;
   status: string;
   tags: string[] | null;
+  updated_at: string;
   // Supabase returns joined data as array
   category: CategoryData | CategoryData[] | null;
 }
@@ -74,6 +75,7 @@ export default async function WorkflowsPage() {
       sort_order,
       status,
       tags,
+      updated_at,
       category:categories(id, slug, name, icon)
     `)
     .eq('status', 'published')
@@ -117,6 +119,7 @@ export default async function WorkflowsPage() {
       time_saved_minutes: w.time_saved_minutes,
       featured: w.featured || false,
       tags: w.tags,
+      updated_at: w.updated_at || w.created_at || new Date().toISOString(),
       category: category || null,
     };
   });

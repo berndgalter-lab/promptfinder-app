@@ -13,12 +13,31 @@ export interface WorkflowCardData {
   time_saved_minutes: number | null;
   featured: boolean;
   tags: string[] | null;
+  updated_at: string;
   category: {
     id: number;
     slug: string;
     name: string;
     icon: string;
   } | null;
+}
+
+// Format updated date for display
+function formatUpdatedDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', { 
+    month: 'short', 
+    day: 'numeric', 
+    year: 'numeric' 
+  });
+}
+
+// Check if workflow was recently updated (last 7 days)
+function isRecentlyUpdated(dateString: string): boolean {
+  const date = new Date(dateString);
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  return date > sevenDaysAgo;
 }
 
 interface WorkflowCardProps {
@@ -60,7 +79,7 @@ export function WorkflowCard({ workflow }: WorkflowCardProps) {
           {workflow.description}
         </p>
 
-        {/* Footer: Category + Time Saved */}
+        {/* Footer: Category + Time Saved + Updated Date */}
         <div className="flex items-center justify-between gap-2 pt-3 border-t border-zinc-800/50">
           {/* Category Badge */}
           {workflow.category && (
@@ -70,13 +89,21 @@ export function WorkflowCard({ workflow }: WorkflowCardProps) {
             </span>
           )}
 
-          {/* Time Saved */}
-          {workflow.time_saved_minutes && workflow.time_saved_minutes > 0 && (
-            <span className="inline-flex items-center gap-1 text-xs text-zinc-500">
-              <Clock className="h-3 w-3" />
-              <span>Saves {workflow.time_saved_minutes} min</span>
-            </span>
-          )}
+          {/* Time Saved + Updated Date */}
+          <div className="flex items-center gap-2 text-xs text-zinc-500">
+            {workflow.time_saved_minutes && workflow.time_saved_minutes > 0 && (
+              <span className="inline-flex items-center gap-1">
+                <Clock className="h-3 w-3" />
+                <span>Saves {workflow.time_saved_minutes} min</span>
+              </span>
+            )}
+            {workflow.time_saved_minutes && workflow.time_saved_minutes > 0 && workflow.updated_at && (
+              <span>·</span>
+            )}
+            {workflow.updated_at && (
+              <span>Updated {formatUpdatedDate(workflow.updated_at)}</span>
+            )}
+          </div>
         </div>
       </div>
     </Link>

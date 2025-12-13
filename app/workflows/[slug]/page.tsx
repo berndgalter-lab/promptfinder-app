@@ -19,6 +19,16 @@ import { Breadcrumbs } from '@/components/workflow/Breadcrumbs';
 import { BreadcrumbSchema } from '@/components/workflow/BreadcrumbSchema';
 import { getCompatibleToolsDisplay } from '@/lib/constants/ai-tools';
 
+// Format updated date for display
+function formatUpdatedDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', { 
+    month: 'short', 
+    day: 'numeric', 
+    year: 'numeric' 
+  });
+}
+
 interface PageProps {
   params: Promise<{
     slug: string;
@@ -33,6 +43,16 @@ function formatDifficulty(difficulty: string): string {
     advanced: 'Advanced',
   };
   return map[difficulty] || difficulty;
+}
+
+// Format updated date for display
+function formatUpdatedDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', { 
+    month: 'short', 
+    day: 'numeric', 
+    year: 'numeric' 
+  });
 }
 
 // Helper to enhance meta description with AI tool names
@@ -182,6 +202,7 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
     use_cases: rawWorkflow.use_cases ?? null,
     example_output: rawWorkflow.example_output ?? null,
     long_description: rawWorkflow.long_description ?? null,
+    updated_at: rawWorkflow.updated_at || rawWorkflow.created_at,
     // Category from join
     category: rawWorkflow.category ?? null,
   };
@@ -327,6 +348,11 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
               <Clock className="h-3.5 w-3.5" />
               <span>{workflow.estimated_minutes} min</span>
             </Badge>
+            
+            {/* Updated Date */}
+            <span className="text-sm text-zinc-400">
+              · Updated {formatUpdatedDate(workflow.updated_at)}
+            </span>
             
             {/* Difficulty */}
             <Badge variant="secondary" className="bg-zinc-800/80 text-zinc-300 border-zinc-700 gap-1.5 py-1 px-2.5">
