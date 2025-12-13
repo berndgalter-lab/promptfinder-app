@@ -339,11 +339,6 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
               <span>{workflow.estimated_minutes} min</span>
             </Badge>
             
-            {/* Updated Date */}
-            <span className="text-sm text-zinc-400">
-              · Updated {formatUpdatedDate(workflow.updated_at)}
-            </span>
-            
             {/* Difficulty */}
             <Badge variant="secondary" className="bg-zinc-800/80 text-zinc-300 border-zinc-700 gap-1.5 py-1 px-2.5">
               <Target className="h-3.5 w-3.5" />
@@ -357,6 +352,11 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
                 <span>Saves {workflow.time_saved_minutes} min of work</span>
               </Badge>
             )}
+            
+            {/* Updated Date - at the end */}
+            <span className="text-sm text-zinc-500">
+              · Updated {formatUpdatedDate(workflow.updated_at)}
+            </span>
           </div>
 
           {/* Works with AI Tools */}
