@@ -43,7 +43,8 @@ export function PromptStepComponent({
   isSOP = false,
 }: PromptStepProps) {
   // Check if all required fields are filled
-  const areRequiredFieldsFilled = step.fields
+  // Handle empty/null fields array safely - if no fields, consider it "filled"
+  const areRequiredFieldsFilled = !step.fields?.length || step.fields
     .filter(field => field.required)
     .every(field => fieldValues[field.name]?.trim());
 
@@ -103,7 +104,8 @@ export function PromptStepComponent({
       )}
 
       <div className="space-y-6">
-      {/* Fields Section with Label */}
+      {/* Fields Section with Label - only show if there are fields */}
+      {step.fields && step.fields.length > 0 && (
       <div>
         <WorkflowSectionLabel 
           step={1} 
@@ -216,6 +218,7 @@ export function PromptStepComponent({
           </CardContent>
         </Card>
       </div>
+      )}
 
       {/* Generated Prompt Preview with Section Label */}
       {generatedPrompt && (
