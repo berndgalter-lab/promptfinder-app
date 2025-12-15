@@ -86,7 +86,10 @@ export default function Loading() {
         </div>
 
         {/* Related Workflows skeleton - prevents CLS */}
-        <section className="mt-16 pt-10 border-t border-zinc-800 min-h-[200px]">
+        <section 
+          className="mt-16 pt-10 border-t border-zinc-800 min-h-[280px]"
+          style={{ contentVisibility: 'auto', containIntrinsicSize: '0 280px' }}
+        >
           <div className="h-8 w-64 mb-6 animate-pulse rounded bg-zinc-800" />
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             {[1, 2, 3, 4].map((i) => (

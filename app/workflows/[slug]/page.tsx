@@ -504,14 +504,12 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
         </div>
 
         {/* ============================================ */}
-        {/* 8. RELATED WORKFLOWS */}
+        {/* 8. RELATED WORKFLOWS - Always render to prevent CLS */}
         {/* ============================================ */}
-        {workflow.category && relatedWorkflows.length > 0 && (
-          <RelatedWorkflows 
-            workflows={relatedWorkflows}
-            currentCategory={workflow.category.name}
-          />
-        )}
+        <RelatedWorkflows 
+          workflows={workflow.category ? relatedWorkflows : []}
+          currentCategory={workflow.category?.name || 'Other'}
+        />
       </div>
     </div>
   );
