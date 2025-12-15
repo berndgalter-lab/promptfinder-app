@@ -25,6 +25,10 @@ interface PageProps {
   }>;
 }
 
+// Cache workflow pages for 60 seconds (ISR)
+// This dramatically improves TTFB and LCP
+export const revalidate = 60;
+
 // Helper to format difficulty
 function formatDifficulty(difficulty: string): string {
   const map: Record<string, string> = {

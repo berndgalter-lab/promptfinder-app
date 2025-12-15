@@ -4,6 +4,9 @@ import { WorkflowsPageClient } from '@/components/workflow/WorkflowsPageClient';
 import type { WorkflowCardData } from '@/components/workflow/WorkflowCard';
 import type { Category } from '@/components/workflow/WorkflowFilters';
 
+// Cache workflow list for 60 seconds (ISR)
+export const revalidate = 60;
+
 export async function generateMetadata(): Promise<Metadata> {
   const supabase = await createClient();
   const { count } = await supabase
