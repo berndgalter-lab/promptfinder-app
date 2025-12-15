@@ -84,6 +84,24 @@ export default function Loading() {
             </div>
           </div>
         </div>
+
+        {/* Related Workflows skeleton - prevents CLS */}
+        <section className="mt-16 pt-10 border-t border-zinc-800 min-h-[200px]">
+          <div className="h-8 w-64 mb-6 animate-pulse rounded bg-zinc-800" />
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-4">
+                <div className="flex items-start gap-2 mb-2">
+                  <div className="h-8 w-8 animate-pulse rounded bg-zinc-800" />
+                  <div className="h-4 flex-1 animate-pulse rounded bg-zinc-800" />
+                </div>
+                <div className="h-3 w-full mb-1 animate-pulse rounded bg-zinc-800/50" />
+                <div className="h-3 w-2/3 mb-3 animate-pulse rounded bg-zinc-800/50" />
+                <div className="h-3 w-24 animate-pulse rounded bg-zinc-800/50" />
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );

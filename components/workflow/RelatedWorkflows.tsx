@@ -16,12 +16,18 @@ interface RelatedWorkflowsProps {
 }
 
 export function RelatedWorkflows({ workflows, currentCategory }: RelatedWorkflowsProps) {
+  // Always render the section container to prevent CLS
+  // Even if empty, the space is reserved
   if (!workflows || workflows.length === 0) {
-    return null;
+    return (
+      <section className="mt-16 pt-10 border-t border-zinc-800 min-h-[200px]">
+        {/* Empty state - space reserved to prevent layout shift */}
+      </section>
+    );
   }
 
   return (
-    <section className="mt-16 pt-10 border-t border-zinc-800">
+    <section className="mt-16 pt-10 border-t border-zinc-800 min-h-[200px]">
       <h2 className="text-2xl font-bold text-white mb-6">
         More {currentCategory} Workflows
       </h2>
