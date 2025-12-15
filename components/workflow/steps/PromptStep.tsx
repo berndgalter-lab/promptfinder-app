@@ -42,11 +42,18 @@ export function PromptStepComponent({
   tool = 'chatgpt',
   isSOP = false,
 }: PromptStepProps) {
+  // Check if there are any fields to display
+  const hasFields = step.fields && step.fields.length > 0;
+
   // Check if all required fields are filled
   // Handle empty/null fields array safely - if no fields, consider it "filled"
-  const areRequiredFieldsFilled = !step.fields?.length || step.fields
+  const areRequiredFieldsFilled = !hasFields || step.fields
     .filter(field => field.required)
     .every(field => fieldValues[field.name]?.trim());
+
+  // Dynamic step numbering: If no fields, "Your Prompt" is step 1, otherwise step 2
+  const detailsStepNumber = 1;
+  const promptStepNumber = hasFields ? 2 : 1;
 
   // Ensure that literal "\n" sequences from the database are rendered as real line breaks
   const displayPrompt = useMemo(
@@ -105,10 +112,10 @@ export function PromptStepComponent({
 
       <div className="space-y-6">
       {/* Fields Section with Label - only show if there are fields */}
-      {step.fields && step.fields.length > 0 && (
+      {hasFields && (
       <div>
         <WorkflowSectionLabel 
-          step={1} 
+          step={detailsStepNumber} 
           title="Your Details" 
           subtitle="Fill in the fields to personalize your prompt"
         />
@@ -224,7 +231,7 @@ export function PromptStepComponent({
       {generatedPrompt && (
         <div>
           <WorkflowSectionLabel 
-            step={2} 
+            step={promptStepNumber} 
             title="Your Prompt" 
           />
           <PromptReadyBanner isReady={areRequiredFieldsFilled} />
