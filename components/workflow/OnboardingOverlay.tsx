@@ -71,7 +71,7 @@ export function OnboardingOverlay({ workflowTitle }: OnboardingOverlayProps) {
           <div className="p-8 pt-10">
             
             {/* Context label */}
-            <p className="text-xs text-zinc-500 text-center mb-4 uppercase tracking-wider">
+            <p className="text-xs text-zinc-400 text-center mb-4 uppercase tracking-wider">
               New to PromptFinder workflows? Here's how they work
             </p>
 
@@ -88,7 +88,7 @@ export function OnboardingOverlay({ workflowTitle }: OnboardingOverlayProps) {
 
             {/* Current workflow context */}
             <div className="mb-8 p-3 rounded-lg bg-zinc-800/50 border border-zinc-700/50 text-center">
-              <p className="text-xs text-zinc-500 mb-1">You've opened:</p>
+              <p className="text-xs text-zinc-400 mb-1">You've opened:</p>
               <p className="text-sm font-medium text-white">{workflowTitle}</p>
             </div>
 
@@ -104,7 +104,7 @@ export function OnboardingOverlay({ workflowTitle }: OnboardingOverlayProps) {
                     <span className="text-xl">📝</span>
                   </div>
                   <p className="text-sm font-medium text-white">Fill in</p>
-                  <p className="text-xs text-zinc-500 mt-1 leading-tight">Answer a few questions about your task</p>
+                  <p className="text-xs text-zinc-400 mt-1 leading-tight">Answer a few questions about your task</p>
                 </div>
 
                 {/* Step 2 */}
@@ -113,7 +113,7 @@ export function OnboardingOverlay({ workflowTitle }: OnboardingOverlayProps) {
                     <span className="text-xl">⚡</span>
                   </div>
                   <p className="text-sm font-medium text-white">We build</p>
-                  <p className="text-xs text-zinc-500 mt-1 leading-tight">PromptFinder creates a best-practice prompt</p>
+                  <p className="text-xs text-zinc-400 mt-1 leading-tight">PromptFinder creates a best-practice prompt</p>
                 </div>
 
                 {/* Step 3 */}
@@ -122,7 +122,7 @@ export function OnboardingOverlay({ workflowTitle }: OnboardingOverlayProps) {
                     <span className="text-xl">🚀</span>
                   </div>
                   <p className="text-sm font-medium text-white">Copy & run</p>
-                  <p className="text-xs text-zinc-500 mt-1 leading-tight">Paste into ChatGPT & Co for instant results</p>
+                  <p className="text-xs text-zinc-400 mt-1 leading-tight">Paste into ChatGPT & Co for instant results</p>
                 </div>
               </div>
             </div>
@@ -137,7 +137,7 @@ export function OnboardingOverlay({ workflowTitle }: OnboardingOverlayProps) {
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
 
-            <p className="text-center text-xs text-zinc-500 mt-4">
+            <p className="text-center text-xs text-zinc-400 mt-4">
               No signup required. Your workflows are saved automatically.
             </p>
           </div>

@@ -113,7 +113,7 @@ export function HistoryItem({
               <div className="mb-2 flex items-center gap-2">
                 <CardTitle className="text-xl">{workflow.title}</CardTitle>
               </div>
-              <p className="text-sm text-zinc-500">Used {relativeTime}</p>
+              <p className="text-sm text-zinc-400">Used {relativeTime}</p>
             </div>
           </div>
         </CardHeader>

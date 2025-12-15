@@ -106,7 +106,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-zinc-800">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-zinc-500 text-center sm:text-left">
+            <p className="text-sm text-zinc-400 text-center sm:text-left">
               © 2025 PromptFinder. Built with ❤️ for professionals who need reliable AI.
             </p>
             <a 

@@ -122,14 +122,14 @@ export function WorkflowRating({ workflowId, userId }: WorkflowRatingProps) {
 
       {/* Stats (nur anzeigen wenn genug Ratings) */}
       {ratingCount >= 5 && (
-        <p className="text-xs text-zinc-500">
+        <p className="text-xs text-zinc-400">
           {averageRating.toFixed(1)} average · {ratingCount} ratings
         </p>
       )}
 
       {/* Login hint */}
       {!userId && (
-        <p className="text-xs text-zinc-500">
+        <p className="text-xs text-zinc-400">
           Sign in to rate this workflow
         </p>
       )}

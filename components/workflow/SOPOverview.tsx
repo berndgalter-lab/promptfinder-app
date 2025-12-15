@@ -55,24 +55,24 @@ export function SOPOverview({ workflow, onStart }: SOPOverviewProps) {
           Start This SOP
           <ArrowRight className="w-4 h-4" />
         </button>
-        <p className="text-xs text-zinc-500 mt-2">
+        <p className="text-xs text-zinc-400 mt-2">
           ~{workflow.estimated_minutes} min · Scroll down to see what's included
         </p>
       </div>
 
       {/* How this SOP works */}
       <div className="bg-zinc-800/50 border border-zinc-700 rounded-lg p-4">
-        <h3 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+        <p className="text-sm font-medium text-white mb-3 flex items-center gap-2">
           <Lightbulb className="w-4 h-4 text-yellow-400" />
           How this SOP works
-        </h3>
+        </p>
         <ol className="text-sm text-zinc-400 space-y-1.5 list-decimal list-inside">
           <li>Click "Start This SOP" above</li>
           <li>Open ChatGPT, Claude, or your preferred AI tool</li>
           <li>Keep the <strong className="text-white">same chat</strong> open for all {stepCount} steps</li>
           <li>Copy each prompt → Paste → Get response → Continue</li>
         </ol>
-        <p className="text-xs text-zinc-500 mt-3">
+        <p className="text-xs text-zinc-400 mt-3">
           💡 The AI builds on previous responses, so don't start a new chat between steps!
         </p>
       </div>
@@ -81,17 +81,17 @@ export function SOPOverview({ workflow, onStart }: SOPOverviewProps) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 text-center">
           <Users className="w-6 h-6 text-blue-400 mx-auto mb-2" />
-          <p className="text-sm text-zinc-500">For</p>
+          <p className="text-sm text-zinc-400">For</p>
           <p className="text-sm text-white font-medium">{sopDetails?.target_role ? String(sopDetails.target_role) : 'All roles'}</p>
         </div>
         <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 text-center">
           <Clock className="w-6 h-6 text-green-400 mx-auto mb-2" />
-          <p className="text-sm text-zinc-500">Duration</p>
+          <p className="text-sm text-zinc-400">Duration</p>
           <p className="text-sm text-white font-medium">~{workflow.estimated_minutes} min · {stepCount} Steps</p>
         </div>
         <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 text-center">
           <Package className="w-6 h-6 text-purple-400 mx-auto mb-2" />
-          <p className="text-sm text-zinc-500">Outcome</p>
+          <p className="text-sm text-zinc-400">Outcome</p>
           <p className="text-sm text-white font-medium">Ready-to-use content</p>
         </div>
       </div>
@@ -99,10 +99,10 @@ export function SOPOverview({ workflow, onStart }: SOPOverviewProps) {
       {/* Prerequisites */}
       {prerequisites.length > 0 && (
         <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <CheckCircle className="w-5 h-5 text-green-400" />
             Before you start
-          </h3>
+          </h2>
           <ul className="space-y-2">
             {prerequisites.map((prereq, index) => (
               <li key={index} className="flex items-start gap-3 text-zinc-300">
@@ -117,10 +117,10 @@ export function SOPOverview({ workflow, onStart }: SOPOverviewProps) {
       {/* What You'll Create */}
       {sopDetails?.outcome_description && (
         <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <Package className="w-5 h-5 text-purple-400" />
             What you'll create
-          </h3>
+          </h2>
           <p className="text-zinc-300">{sopDetails.outcome_description ? String(sopDetails.outcome_description) : ''}</p>
         </div>
       )}
@@ -128,10 +128,10 @@ export function SOPOverview({ workflow, onStart }: SOPOverviewProps) {
       {/* Steps Preview */}
       {workflow.steps && workflow.steps.length > 0 && (
         <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <ListChecks className="w-5 h-5 text-blue-400" />
             What's included ({workflow.steps.length} Steps)
-          </h3>
+          </h2>
           <div className="space-y-3">
             {workflow.steps.map((step, index) => (
               <div 
@@ -145,7 +145,7 @@ export function SOPOverview({ workflow, onStart }: SOPOverviewProps) {
                   <div className="flex items-center justify-between gap-2 mb-1">
                     <h4 className="font-medium text-white truncate">{step.title}</h4>
                     {'duration_minutes' in step && step.duration_minutes && (
-                      <span className="flex-shrink-0 text-xs text-zinc-500 flex items-center gap-1">
+                      <span className="flex-shrink-0 text-xs text-zinc-400 flex items-center gap-1">
                         <Clock className="w-3 h-3" />~{step.duration_minutes} min
                       </span>
                     )}
@@ -169,7 +169,7 @@ export function SOPOverview({ workflow, onStart }: SOPOverviewProps) {
           Start This SOP
           <ArrowRight className="w-5 h-5" />
         </button>
-        <p className="text-sm text-zinc-500 mt-3">
+        <p className="text-sm text-zinc-400 mt-3">
           Your progress will be saved automatically.
         </p>
       </div>
