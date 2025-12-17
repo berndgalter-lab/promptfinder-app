@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Copy, ExternalLink, Clock, Lightbulb, CheckCircle, AlertTriangle, Check } from 'lucide-react';
+import { Copy, ExternalLink, Clock, Lightbulb, CheckCircle, AlertTriangle, Check, ChevronDown, ChevronUp } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { type PromptStep } from '@/lib/types/workflow';
 import { WorkflowSectionLabel } from '@/components/workflow/WorkflowSectionLabel';
@@ -42,6 +42,9 @@ export function PromptStepComponent({
   tool = 'chatgpt',
   isSOP = false,
 }: PromptStepProps) {
+  // State for expanded/collapsed prompt view
+  const [isPromptExpanded, setIsPromptExpanded] = useState(false);
+
   // Check if there are any fields to display
   const hasFields = step.fields && step.fields.length > 0;
 
@@ -238,11 +241,40 @@ export function PromptStepComponent({
           
           <Card className="border-blue-500/30 bg-gradient-to-br from-blue-500/5 to-purple-500/5">
             <CardContent className="space-y-4 pt-6">
-              <div className="rounded-lg bg-zinc-950 border border-zinc-800 p-4">
-                <pre className="whitespace-pre-wrap text-sm text-zinc-300 font-mono">
-                  {displayPrompt}
-                </pre>
+              {/* Prompt Preview - compact with internal scroll, expandable */}
+              <div className="relative">
+                <div 
+                  className={`rounded-lg bg-zinc-950 border border-zinc-800 p-4 overflow-y-auto transition-all duration-300 ${
+                    isPromptExpanded ? 'max-h-[600px]' : 'max-h-[180px]'
+                  }`}
+                >
+                  <pre className="whitespace-pre-wrap text-sm text-zinc-300 font-mono">
+                    {displayPrompt}
+                  </pre>
+                </div>
+                {/* Fade indicator when collapsed */}
+                {!isPromptExpanded && (
+                  <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-zinc-950 to-transparent pointer-events-none rounded-b-lg" />
+                )}
               </div>
+              
+              {/* Expand/Collapse Button */}
+              <button
+                onClick={() => setIsPromptExpanded(!isPromptExpanded)}
+                className="w-full flex items-center justify-center gap-1 py-1.5 text-xs text-zinc-400 hover:text-zinc-300 transition-colors"
+              >
+                {isPromptExpanded ? (
+                  <>
+                    <ChevronUp className="w-4 h-4" />
+                    Show less
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="w-4 h-4" />
+                    Show full prompt
+                  </>
+                )}
+              </button>
 
               <div className="flex gap-3">
                 <Button
