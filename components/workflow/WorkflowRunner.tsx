@@ -564,43 +564,60 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   // Show completion screen if workflow is completed
   if (isWorkflowCompleted) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 px-4 text-center space-y-8">
-        {/* Success Icon */}
-        <div className="w-20 h-20 rounded-full bg-green-600/20 flex items-center justify-center">
-          <CheckCircle className="w-10 h-10 text-green-500" />
-        </div>
-        
-        {/* Success Message */}
-        <div className="space-y-2">
-          <h2 className="text-2xl font-bold text-white">Workflow Complete!</h2>
+      <div className="py-8 px-4">
+        {/* Success Header */}
+        <div className="flex flex-col items-center text-center mb-8">
+          <div className="w-16 h-16 rounded-full bg-green-600/20 flex items-center justify-center mb-4">
+            <CheckCircle className="w-8 h-8 text-green-500" />
+          </div>
+          <h2 className="text-2xl font-bold text-white mb-2">Workflow Complete! 🎉</h2>
           <p className="text-zinc-400 max-w-md">
-            You've successfully completed the {workflow.title}. Your prompts are ready to use.
+            Great job! You've completed all {totalSteps} steps.
           </p>
         </div>
-        
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Button
-            onClick={handleResetWorkflow}
-            variant="outline"
-            className="!border-zinc-700 !text-white hover:!bg-zinc-800"
-          >
-            <RotateCcw className="w-4 h-4 mr-2" />
-            Start Again
-          </Button>
-          
-          <Link href="/workflows">
-            <Button className="!bg-blue-600 hover:!bg-blue-700 !text-white">
-              <Layout className="w-4 h-4 mr-2" />
-              Browse Workflows
-            </Button>
-          </Link>
+
+        {/* Quick Stats */}
+        <div className="grid grid-cols-2 gap-3 mb-8 max-w-sm mx-auto">
+          <div className="bg-zinc-800/50 rounded-lg p-3 text-center">
+            <p className="text-2xl font-bold text-green-400">{totalSteps}</p>
+            <p className="text-xs text-zinc-500">Steps completed</p>
+          </div>
+          <div className="bg-zinc-800/50 rounded-lg p-3 text-center">
+            <p className="text-2xl font-bold text-blue-400">~{workflow.estimated_minutes}</p>
+            <p className="text-xs text-zinc-500">Minutes saved</p>
+          </div>
         </div>
-        
-        {/* Rating Section */}
-        <div className="pt-8 border-t border-zinc-800 w-full max-w-md">
-          <p className="text-zinc-400 mb-4">How helpful was this workflow?</p>
-          <WorkflowRating workflowId={workflow.id} userId={userId} />
+
+        {/* What's Next - Action Buttons */}
+        <div className="space-y-3 max-w-md mx-auto">
+          <button
+            onClick={handleResetWorkflow}
+            className="w-full flex items-center justify-center gap-2 p-4 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors"
+          >
+            <RotateCcw className="w-5 h-5" />
+            Run Again with Different Inputs
+          </button>
+          
+          <Link href="/workflows" className="block">
+            <button className="w-full flex items-center justify-center gap-2 p-4 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-white font-medium border border-zinc-700 transition-colors">
+              <Layout className="w-5 h-5" />
+              Explore More Workflows
+            </button>
+          </Link>
+          
+          {/* Upgrade CTA for free users */}
+          {!userId && (
+            <div className="mt-6 p-4 bg-gradient-to-r from-purple-900/30 to-pink-900/30 border border-purple-800/50 rounded-lg text-center">
+              <p className="text-sm text-zinc-300 mb-2">
+                💡 Create a free account to save your progress & favorites
+              </p>
+              <Link href="/signup">
+                <button className="text-sm text-purple-400 hover:text-purple-300 font-medium">
+                  Sign up free →
+                </button>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     );
