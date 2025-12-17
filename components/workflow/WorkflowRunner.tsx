@@ -257,22 +257,39 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
     }
   };
 
+  // Scroll to workflow section after step change
+  const scrollToWorkflow = () => {
+    // Small delay to let the new step render first
+    setTimeout(() => {
+      const workflowSection = document.getElementById('workflow-runner');
+      if (workflowSection) {
+        workflowSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        // Fallback: scroll to top of page
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }, 100);
+  };
+
   // Navigation
   const goToNextStep = () => {
     if (currentStep < totalSteps && isCurrentStepValid) {
       setCompletedSteps(prev => new Set([...prev, currentStep]));
       setCurrentStep(prev => prev + 1);
+      scrollToWorkflow();
     }
   };
 
   const goToPreviousStep = () => {
     if (currentStep > 1) {
       setCurrentStep(prev => prev - 1);
+      scrollToWorkflow();
     }
   };
 
   const goToStep = (stepNumber: number) => {
     setCurrentStep(stepNumber);
+    scrollToWorkflow();
   };
 
   // Toggle expanded step
