@@ -40,7 +40,7 @@ export function OnboardingOverlay({ workflowTitle }: OnboardingOverlayProps) {
 
   return (
     <div 
-      className={`fixed inset-0 z-[100] flex items-center justify-center p-4 transition-all duration-300 ${
+      className={`fixed inset-0 z-40 flex items-center justify-center p-4 transition-all duration-300 ${
         isAnimating ? 'bg-black/70 backdrop-blur-sm' : 'bg-transparent'
       }`}
       onClick={handleDismiss}

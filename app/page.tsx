@@ -125,7 +125,7 @@ export default function Home() {
 
                   </div>
                 </div>
-                
+
                 {/* Decorative blurs - reduced on mobile */}
                 <div className="absolute -top-6 -right-6 w-32 h-32 bg-blue-500/20 rounded-full blur-xl md:blur-2xl"></div>
                 <div className="absolute -bottom-6 -left-6 w-40 h-40 bg-purple-500/20 rounded-full blur-xl md:blur-2xl"></div>
