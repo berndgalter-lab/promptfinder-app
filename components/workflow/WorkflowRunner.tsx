@@ -324,6 +324,9 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
     // User should start fresh on next visit
     localStorage.removeItem(`workflow_progress_${workflow.slug}`);
     
+    // Scroll to top to show completion screen
+    scrollToWorkflow();
+    
     toast({
       title: '🎉 Workflow Complete!',
       description: 'You\'ve completed all steps',
@@ -342,6 +345,9 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
     
     // Clear localStorage for fresh start
     localStorage.removeItem(`workflow_progress_${workflow.slug}`);
+    
+    // Scroll to top to start fresh
+    scrollToWorkflow();
   };
 
   // ============================================
