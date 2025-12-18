@@ -19,14 +19,26 @@ export interface UserProfile {
 export interface ClientPreset {
   id: string;
   user_id: string;
+  
+  // Company
   client_company: string;
+  client_industry: string | null;
+  client_website: string | null;
+  
+  // Person (for content creation - e.g. LinkedIn ghostwriting)
+  client_name: string | null;
+  client_role: string | null;
+  
+  // Billing Contact (for proposals & invoices)
   client_contact_name: string | null;
   client_contact_email: string | null;
-  client_website: string | null;
-  client_industry: string | null;
+  
+  // Brand & Content
   client_tone: string | null;
   client_target_audience: string | null;
   client_brand_context: string | null;
+  
+  // Meta
   is_favorite: boolean;
   last_used_at: string | null;
   created_at: string;
@@ -54,14 +66,24 @@ export interface UserProfileFormData {
 }
 
 export interface ClientPresetFormData {
+  // Company
   client_company: string;
+  client_industry?: string;
+  client_website?: string;
+  
+  // Person (for content creation)
+  client_name?: string;
+  client_role?: string;
+  
+  // Billing Contact
   client_contact_name?: string;
   client_contact_email?: string;
-  client_website?: string;
-  client_industry?: string;
+  
+  // Brand & Content
   client_tone?: string;
   client_target_audience?: string;
   client_brand_context?: string;
+  
   is_favorite?: boolean;
 }
 
@@ -132,44 +154,80 @@ export const USER_PROFILE_FIELD_MAPPINGS: Record<string, keyof UserProfileFormDa
 };
 
 // Auto-fill field mappings for Client Presets ("For a client")
+// IMPORTANT: When "For a client" is selected, ALL fields come from the client preset
+// (no mixing with user profile)
 export const CLIENT_PRESET_FIELD_MAPPINGS: Record<string, keyof ClientPresetFormData> = {
-  // client_company variations
+  // === Person (for content creation - e.g. LinkedIn ghostwriting) ===
+  'your_name': 'client_name',           // Person you're creating content FOR
+  'name': 'client_name',
+  'author_name': 'client_name',
+  'host_name': 'client_name',
+  'sender_name': 'client_name',
+  
+  'your_role': 'client_role',
+  'role': 'client_role',
+  
+  // === Company ===
+  'your_company': 'client_company',     // Client's company when working for them
+  'company_name': 'client_company',
   'client_company': 'client_company',
-  'client_name': 'client_company',      // Client Proposal Generator SOP
-  'company_name': 'client_company',     // Sales Call Preparation SOP
+  'business_name': 'client_company',
+  'company_mention': 'client_company',
   'prospect_company': 'client_company',
   'customer_name': 'client_company',
   'company': 'client_company',
   'brand_name': 'client_company',
+  'my_company': 'client_company',
   
-  // client_contact_name variations
+  // === Billing Contact (for proposals & invoices) ===
   'client_contact_name': 'client_contact_name',
   'contact_name': 'client_contact_name',
   'main_contact': 'client_contact_name',
-  'prospect_name': 'client_contact_name',  // Sales Call Preparation SOP
+  'prospect_name': 'client_contact_name',
   'recipient_name': 'client_contact_name',
   
-  // client_contact_email variations
   'client_contact_email': 'client_contact_email',
   'contact_email': 'client_contact_email',
   'client_email': 'client_contact_email',
   
-  // client_website variations
+  // === Website ===
   'client_website': 'client_website',
+  'website': 'client_website',
+  'your_website': 'client_website',
+  'website_url': 'client_website',
   
-  // client_industry variations
+  // === Industry ===
   'client_industry': 'client_industry',
-  'industry': 'client_industry',        // Sales Call Preparation SOP
+  'industry': 'client_industry',
+  'your_industry': 'client_industry',
+  'niche': 'client_industry',
+  'sector': 'client_industry',
   
-  // client_tone variations
+  // === Tone / Voice ===
   'client_tone': 'client_tone',
+  'tone': 'client_tone',
+  'brand_voice': 'client_tone',
+  'your_tone': 'client_tone',
+  'personality_style': 'client_tone',
+  'voice': 'client_tone',
+  'writing_style': 'client_tone',
+  'proposal_tone': 'client_tone',
+  'style': 'client_tone',
   
-  // client_target_audience variations (for content workflows)
+  // === Target Audience ===
   'client_target_audience': 'client_target_audience',
-  'target_audience': 'client_target_audience',  // LinkedIn Content Strategy SOP
-  'target_reader': 'client_target_audience',    // Blog Post Creator SOP
+  'target_audience': 'client_target_audience',
+  'target_reader': 'client_target_audience',
   'audience': 'client_target_audience',
   'ideal_customer': 'client_target_audience',
+  
+  // === Services/Offering (maps to brand_context as fallback) ===
+  'your_services': 'client_brand_context',
+  'my_offering': 'client_brand_context',
+  'your_specialty': 'client_brand_context',
+  'services': 'client_brand_context',
+  'what_you_sell': 'client_brand_context',
+  'product_service': 'client_brand_context',
 };
 
 // Auto-fill tracking for UI indicators

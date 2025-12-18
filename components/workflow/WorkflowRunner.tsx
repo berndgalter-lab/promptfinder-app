@@ -182,7 +182,7 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
     if (type === 'self' && profile) {
       autoFillValues = getAutoFillFromUserProfile(profile, fieldNames);
       
-      // Track source for each field
+      // Track source for each field - all from profile
       for (const fieldName of Object.keys(autoFillValues)) {
         newAutoFilledFields.set(fieldName, {
           fieldName,
@@ -191,20 +191,15 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
         });
       }
     } else if (type === 'client' && client) {
-      // Pass profile for "your_*" fields (your name, company, etc.)
-      autoFillValues = getAutoFillFromClientPreset(client, fieldNames, profile);
+      // All fields come from client preset (no mixing with user profile)
+      autoFillValues = getAutoFillFromClientPreset(client, fieldNames);
       
-      // Track source for each field - determine if from client or profile
+      // Track source for each field - all from client
       for (const fieldName of Object.keys(autoFillValues)) {
-        const normalizedName = fieldName.toLowerCase().replace(/[^a-z_]/g, '');
-        const isFromClient = CLIENT_PRESET_FIELD_MAPPINGS[normalizedName] !== undefined;
-        
         newAutoFilledFields.set(fieldName, {
           fieldName,
-          source: isFromClient ? 'client' : 'profile',
-          sourceName: isFromClient 
-            ? `${client.client_company} preset`
-            : 'your profile'
+          source: 'client',
+          sourceName: client.client_company
         });
       }
     }
@@ -243,19 +238,17 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   ) => {
     const newAutoFilledFields = new Map<string, AutoFilledField>();
     
-    // Track source for each field
+    // Track source for each field - all from one source (no mixing)
     for (const fieldName of Object.keys(values)) {
       if (sourceType === 'client' && clientName) {
-        // Determine if field came from client or profile mapping
-        const normalizedName = fieldName.toLowerCase().replace(/[^a-z_]/g, '');
-        const isFromClient = CLIENT_PRESET_FIELD_MAPPINGS[normalizedName] !== undefined;
-        
+        // All fields from client when "For a client" is selected
         newAutoFilledFields.set(fieldName, {
           fieldName,
-          source: isFromClient ? 'client' : 'profile',
-          sourceName: isFromClient ? `${clientName} preset` : 'your profile'
+          source: 'client',
+          sourceName: clientName
         });
       } else {
+        // All fields from profile when "For myself" is selected
         newAutoFilledFields.set(fieldName, {
           fieldName,
           source: 'profile',

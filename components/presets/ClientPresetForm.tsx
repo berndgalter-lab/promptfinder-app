@@ -45,11 +45,17 @@ export function ClientPresetForm({
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [formData, setFormData] = useState<ClientPresetFormData>({
+    // Company
     client_company: '',
+    client_industry: '',
+    client_website: '',
+    // Person (for content creation)
+    client_name: '',
+    client_role: '',
+    // Billing Contact
     client_contact_name: '',
     client_contact_email: '',
-    client_website: '',
-    client_industry: '',
+    // Brand & Content
     client_tone: '',
     client_target_audience: '',
     client_brand_context: '',
@@ -68,11 +74,17 @@ export function ClientPresetForm({
         const preset = await getClientPreset(presetId);
         if (preset) {
           setFormData({
+            // Company
             client_company: preset.client_company,
+            client_industry: preset.client_industry || '',
+            client_website: preset.client_website || '',
+            // Person (for content creation)
+            client_name: preset.client_name || '',
+            client_role: preset.client_role || '',
+            // Billing Contact
             client_contact_name: preset.client_contact_name || '',
             client_contact_email: preset.client_contact_email || '',
-            client_website: preset.client_website || '',
-            client_industry: preset.client_industry || '',
+            // Brand & Content
             client_tone: preset.client_tone || '',
             client_target_audience: preset.client_target_audience || '',
             client_brand_context: preset.client_brand_context || '',
@@ -96,11 +108,17 @@ export function ClientPresetForm({
       } else {
         // Reset form for new client
         setFormData({
+          // Company
           client_company: '',
+          client_industry: '',
+          client_website: '',
+          // Person (for content creation)
+          client_name: '',
+          client_role: '',
+          // Billing Contact
           client_contact_name: '',
           client_contact_email: '',
-          client_website: '',
-          client_industry: '',
+          // Brand & Content
           client_tone: '',
           client_target_audience: '',
           client_brand_context: '',
@@ -173,7 +191,7 @@ export function ClientPresetForm({
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Company Name (Required) */}
+            {/* === COMPANY INFO === */}
             <div className="space-y-2">
               <Label className="text-zinc-300 flex items-center gap-2">
                 <Building2 className="w-4 h-4 text-zinc-500" />
@@ -186,36 +204,6 @@ export function ClientPresetForm({
                 className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
                 required
               />
-            </div>
-
-            {/* Contact Name & Email */}
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label className="text-zinc-300 flex items-center gap-2">
-                  <User className="w-4 h-4 text-zinc-500" />
-                  Contact Name
-                </Label>
-                <Input
-                  placeholder="Anna Schmidt"
-                  value={formData.client_contact_name}
-                  onChange={(e) => handleChange('client_contact_name', e.target.value)}
-                  className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-zinc-300 flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-zinc-500" />
-                  Email
-                </Label>
-                <Input
-                  type="email"
-                  placeholder="anna@techflow.de"
-                  value={formData.client_contact_email}
-                  onChange={(e) => handleChange('client_contact_email', e.target.value)}
-                  className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
-                />
-              </div>
             </div>
 
             {/* Website & Industry */}
@@ -246,6 +234,87 @@ export function ClientPresetForm({
                   className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
                 />
               </div>
+            </div>
+
+            {/* === CONTENT PERSON (for ghostwriting, etc.) === */}
+            <div className="border-t border-zinc-700 pt-4 mt-4">
+              <p className="text-sm font-medium text-zinc-400 mb-3">
+                Content Person (who you create content FOR)
+              </p>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label className="text-zinc-300 flex items-center gap-2">
+                  <User className="w-4 h-4 text-zinc-500" />
+                  Person Name
+                </Label>
+                <Input
+                  placeholder="Sarah Chen"
+                  value={formData.client_name}
+                  onChange={(e) => handleChange('client_name', e.target.value)}
+                  className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
+                />
+                <p className="text-xs text-zinc-500">
+                  For LinkedIn ghostwriting, blog posts, etc.
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-zinc-300 flex items-center gap-2">
+                  <Briefcase className="w-4 h-4 text-zinc-500" />
+                  Person Role / Title
+                </Label>
+                <Input
+                  placeholder="Founder & CEO at TechFlow"
+                  value={formData.client_role}
+                  onChange={(e) => handleChange('client_role', e.target.value)}
+                  className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
+                />
+              </div>
+            </div>
+
+            {/* === BILLING CONTACT (for proposals & invoices) === */}
+            <div className="border-t border-zinc-700 pt-4 mt-4">
+              <p className="text-sm font-medium text-zinc-400 mb-3">
+                Billing Contact (who you send invoices TO)
+              </p>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label className="text-zinc-300 flex items-center gap-2">
+                  <User className="w-4 h-4 text-zinc-500" />
+                  Contact Name
+                </Label>
+                <Input
+                  placeholder="Anna Schmidt (Marketing)"
+                  value={formData.client_contact_name}
+                  onChange={(e) => handleChange('client_contact_name', e.target.value)}
+                  className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-zinc-300 flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-zinc-500" />
+                  Contact Email
+                </Label>
+                <Input
+                  type="email"
+                  placeholder="anna@techflow.de"
+                  value={formData.client_contact_email}
+                  onChange={(e) => handleChange('client_contact_email', e.target.value)}
+                  className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
+                />
+              </div>
+            </div>
+
+            {/* === BRAND & CONTENT === */}
+            <div className="border-t border-zinc-700 pt-4 mt-4">
+              <p className="text-sm font-medium text-zinc-400 mb-3">
+                Brand & Content
+              </p>
             </div>
 
             {/* Tone */}
