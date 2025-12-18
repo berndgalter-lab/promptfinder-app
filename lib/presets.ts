@@ -233,11 +233,14 @@ export function getAutoFillFromUserProfile(
 }
 
 /**
- * Get auto-fill values from client preset for workflow fields
+ * Get auto-fill values from client preset for workflow fields.
+ * Also includes user profile data for "your_*" fields (your name, company, etc.)
+ * when working for a client.
  */
 export function getAutoFillFromClientPreset(
   preset: ClientPreset | null,
-  fieldNames: string[]
+  fieldNames: string[],
+  userProfile?: UserProfile | null
 ): Record<string, string> {
   if (!preset) return {};
   
@@ -245,12 +248,24 @@ export function getAutoFillFromClientPreset(
   
   for (const fieldName of fieldNames) {
     const normalizedName = fieldName.toLowerCase().replace(/[^a-z_]/g, '');
-    const mappedKey = clientMappings[normalizedName];
     
-    if (mappedKey) {
-      const value = preset[mappedKey as keyof ClientPreset];
+    // First: Check client preset mappings
+    const clientMappedKey = clientMappings[normalizedName];
+    if (clientMappedKey) {
+      const value = preset[clientMappedKey as keyof ClientPreset];
       if (value && typeof value === 'string') {
         result[fieldName] = value;
+        continue; // Got value from client, move to next field
+      }
+    }
+    
+    // Second: Check user profile mappings for "your_*" fields
+    // This allows user's own info (name, company, services) to be filled
+    // even when working for a client
+    if (userProfile) {
+      const userMappedKey = userMappings[normalizedName];
+      if (userMappedKey && userProfile[userMappedKey]) {
+        result[fieldName] = userProfile[userMappedKey] as string;
       }
     }
   }

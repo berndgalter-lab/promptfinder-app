@@ -82,7 +82,8 @@ export function PresetSelector({
     } else if (presetType === 'client' && selectedClientId) {
       const selectedClient = clientPresets.find(c => c.id === selectedClientId);
       if (selectedClient) {
-        values = getAutoFillFromClientPreset(selectedClient, fieldNames);
+        // Pass userProfile for "your_*" fields (your name, company, etc.)
+        values = getAutoFillFromClientPreset(selectedClient, fieldNames, userProfile);
         // Update last_used_at
         updateClientLastUsed(selectedClientId).catch(console.error);
       }

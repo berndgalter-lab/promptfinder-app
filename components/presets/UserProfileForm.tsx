@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Save, Loader2, User, Building2, Mail, Globe, Briefcase, Sparkles, FileText } from 'lucide-react';
+import { Save, Loader2, User, Building2, Mail, Globe, Briefcase, Sparkles, FileText, Target } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { getUserProfile, upsertUserProfile } from '@/lib/presets';
 import { TONE_OPTIONS, type UserProfileFormData } from '@/lib/types/presets';
@@ -34,6 +34,7 @@ export function UserProfileForm({ userId }: UserProfileFormProps) {
     your_industry: '',
     your_services: '',
     your_tone: '',
+    your_differentiator: '',
     your_brand_context: '',
   });
 
@@ -51,6 +52,7 @@ export function UserProfileForm({ userId }: UserProfileFormProps) {
             your_industry: profile.your_industry || '',
             your_services: profile.your_services || '',
             your_tone: profile.your_tone || '',
+            your_differentiator: profile.your_differentiator || '',
             your_brand_context: profile.your_brand_context || '',
           });
         }
@@ -233,6 +235,23 @@ export function UserProfileForm({ userId }: UserProfileFormProps) {
                 ))}
               </SelectContent>
             </Select>
+          </div>
+
+          {/* Differentiator / USP */}
+          <div className="space-y-2">
+            <Label className="text-zinc-300 flex items-center gap-2">
+              <Target className="w-4 h-4 text-zinc-500" />
+              Your Differentiator / USP
+            </Label>
+            <Textarea
+              placeholder="What makes you different from competitors? Your unique selling proposition..."
+              value={formData.your_differentiator}
+              onChange={(e) => handleChange('your_differentiator', e.target.value)}
+              className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500 min-h-[80px]"
+            />
+            <p className="text-xs text-zinc-500">
+              This will be used in proposals, pitches and sales materials.
+            </p>
           </div>
 
           {/* Brand Context */}

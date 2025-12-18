@@ -21,7 +21,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Save, Loader2, Building2, User, Mail, Globe, Briefcase, Star } from 'lucide-react';
+import { Save, Loader2, Building2, User, Mail, Globe, Briefcase, Star, Users } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { createClientPreset, updateClientPreset, getClientPreset } from '@/lib/presets';
 import { TONE_OPTIONS, type ClientPresetFormData, type ClientPreset } from '@/lib/types/presets';
@@ -51,6 +51,7 @@ export function ClientPresetForm({
     client_website: '',
     client_industry: '',
     client_tone: '',
+    client_target_audience: '',
     client_brand_context: '',
     is_favorite: false,
   });
@@ -73,6 +74,7 @@ export function ClientPresetForm({
             client_website: preset.client_website || '',
             client_industry: preset.client_industry || '',
             client_tone: preset.client_tone || '',
+            client_target_audience: preset.client_target_audience || '',
             client_brand_context: preset.client_brand_context || '',
             is_favorite: preset.is_favorite,
           });
@@ -100,6 +102,7 @@ export function ClientPresetForm({
           client_website: '',
           client_industry: '',
           client_tone: '',
+          client_target_audience: '',
           client_brand_context: '',
           is_favorite: false,
         });
@@ -267,6 +270,20 @@ export function ClientPresetForm({
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+
+            {/* Target Audience */}
+            <div className="space-y-2">
+              <Label className="text-zinc-300 flex items-center gap-2">
+                <Users className="w-4 h-4 text-zinc-500" />
+                Target Audience
+              </Label>
+              <Textarea
+                placeholder="Who are this client's customers? e.g. 'Small business owners aged 30-50 looking for HR software'"
+                value={formData.client_target_audience}
+                onChange={(e) => handleChange('client_target_audience', e.target.value)}
+                className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500 min-h-[60px]"
+              />
             </div>
 
             {/* Brand Context */}

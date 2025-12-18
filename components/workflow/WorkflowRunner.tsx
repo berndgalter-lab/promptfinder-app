@@ -179,7 +179,8 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
     if (type === 'self' && profile) {
       autoFillValues = getAutoFillFromUserProfile(profile, fieldNames);
     } else if (type === 'client' && client) {
-      autoFillValues = getAutoFillFromClientPreset(client, fieldNames);
+      // Pass profile for "your_*" fields (your name, company, etc.)
+      autoFillValues = getAutoFillFromClientPreset(client, fieldNames, profile);
     }
     
     if (Object.keys(autoFillValues).length > 0) {
