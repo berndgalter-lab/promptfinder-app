@@ -249,21 +249,14 @@ export function getAutoFillFromClientPreset(
     const normalizedName = fieldName.toLowerCase().replace(/[^a-z_]/g, '');
     
     const clientMappedKey = clientMappings[normalizedName];
-    
-    // Debug logging
-    console.log(`[ClientMapping] Field "${fieldName}" → normalized: "${normalizedName}" → mappedKey: "${clientMappedKey}"`);
-    
     if (clientMappedKey) {
       const value = preset[clientMappedKey as keyof ClientPreset];
-      console.log(`[ClientMapping] Value for ${clientMappedKey}:`, value);
-      
       if (value && typeof value === 'string') {
         result[fieldName] = value;
       }
     }
   }
   
-  console.log('[ClientMapping] Final result:', result);
   return result;
 }
 

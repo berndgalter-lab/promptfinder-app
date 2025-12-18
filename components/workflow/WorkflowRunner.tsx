@@ -236,11 +236,6 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
     sourceType?: 'self' | 'client',
     clientName?: string
   ) => {
-    console.log('[WorkflowRunner] handlePresetAutoFill called');
-    console.log('[WorkflowRunner] sourceType:', sourceType);
-    console.log('[WorkflowRunner] clientName:', clientName);
-    console.log('[WorkflowRunner] values received:', values);
-    
     const newAutoFilledFields = new Map<string, AutoFilledField>();
     
     // Track source for each field - all from one source (no mixing)
@@ -276,7 +271,6 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
           // Overwrite if we have a value from the preset
           if (values[field.name] !== undefined) {
             stepValues[field.name] = values[field.name];
-            console.log(`[WorkflowRunner] Set ${field.name} = "${values[field.name]}"`);
           }
         });
         
@@ -284,7 +278,6 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
       }
     });
     
-    console.log('[WorkflowRunner] New field values:', newFieldValues);
     setFieldValues(newFieldValues);
   };
 
