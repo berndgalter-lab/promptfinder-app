@@ -13,7 +13,7 @@ export interface Category {
 }
 
 // Step Types
-export type StepType = 'prompt' | 'instruction' | 'input';
+export type StepType = 'prompt' | 'instruction' | 'input' | 'checkpoint';
 
 // Tool Types
 export type ToolType = 'chatgpt' | 'claude' | 'cursor' | 'any';
@@ -78,8 +78,32 @@ export interface InputStep extends BaseStep {
   input_name?: string;  // Variable name for use in prompts, e.g. "meeting_notes" → {{meeting_notes}}
 }
 
+// Checkpoint Item (for checkpoint steps)
+export interface CheckpointItem {
+  label: string;
+  required: boolean;
+}
+
+// Checkpoint Step - checklist that user must complete before proceeding
+export interface CheckpointStep extends Omit<BaseStep, 'type'> {
+  number: number;
+  type: 'checkpoint';
+  title: string;
+  description?: string;
+  items: CheckpointItem[];
+  blocking?: boolean; // default true - must complete all required items to proceed
+}
+
+// Deliverable - output collected from a step
+export interface Deliverable {
+  step: number;
+  name: string;
+  format: 'text' | 'email' | 'checklist' | 'document';
+  description?: string;
+}
+
 // Union type for all steps
-export type WorkflowStep = PromptStep | InstructionStep | InputStep;
+export type WorkflowStep = PromptStep | InstructionStep | InputStep | CheckpointStep;
 
 // Workflow Type
 export type WorkflowType = 'combined' | 'sequential';
@@ -122,6 +146,9 @@ export interface Workflow {
   example_output: string | null;
   long_description: string | null;
   sop_details: SOPDetails | null;
+  // SOP Features
+  deliverables?: Deliverable[];
+  suggested_next_actions?: string[];
 }
 
 // User's progress through a workflow
@@ -143,5 +170,9 @@ export function isInstructionStep(step: WorkflowStep): step is InstructionStep {
 
 export function isInputStep(step: WorkflowStep): step is InputStep {
   return step.type === 'input';
+}
+
+export function isCheckpointStep(step: WorkflowStep): step is CheckpointStep {
+  return step.type === 'checkpoint';
 }
 

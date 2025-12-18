@@ -189,6 +189,10 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
         input_placeholder: step.input_placeholder,
         input_description: step.input_description,
       }),
+      ...(step.type === 'checkpoint' && {
+        items: step.items || [],
+        blocking: step.blocking !== false,
+      }),
     })) as WorkflowStep[],
     created_at: rawWorkflow.created_at,
     // Extended fields
@@ -245,6 +249,9 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
     })(),
     // Category from join
     category: rawWorkflow.category ?? null,
+    // SOP Features
+    deliverables: rawWorkflow.deliverables ?? undefined,
+    suggested_next_actions: rawWorkflow.suggested_next_actions ?? undefined,
   };
 
   // Fetch current user

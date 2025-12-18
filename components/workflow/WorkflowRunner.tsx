@@ -24,15 +24,20 @@ import {
   type Workflow,
   type WorkflowStep,
   type PromptStep,
+  type CheckpointStep,
   isPromptStep,
   isInstructionStep,
   isInputStep,
+  isCheckpointStep,
 } from '@/lib/types/workflow';
 import {
   PromptStepComponent,
   InstructionStepComponent,
   InputStepComponent,
 } from '@/components/workflow/steps';
+import { CheckpointStepComponent } from '@/components/workflow/steps/CheckpointStep';
+import { Deliverables } from '@/components/workflow/Deliverables';
+import { SuggestedNextActions } from '@/components/workflow/SuggestedNextActions';
 
 interface WorkflowRunnerProps {
   workflow: Workflow;
@@ -59,6 +64,8 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   const [isCompleted, setIsCompleted] = useState(false); // Single mode completion
   const [isWorkflowCompleted, setIsWorkflowCompleted] = useState(false); // Multi-step completion
   const [hasBeenUsed, setHasBeenUsed] = useState(false); // Track if history entry already created
+  const [checkpointStatus, setCheckpointStatus] = useState<Record<number, boolean>>({}); // Track checkpoint completion
+  const [stepOutputs, setStepOutputs] = useState<Record<number, string>>({}); // Track outputs for deliverables
 
   // Auto-detect mode: Single (1 prompt) vs Multi-Step (everything else)
   const isSingleMode = workflow.steps.length === 1 && isPromptStep(workflow.steps[0]);
@@ -175,8 +182,13 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
       return (inputValues[currentStep] || '').trim().length > 0;
     }
 
+    if (isCheckpointStep(currentStepObj)) {
+      // Checkpoint is valid if all required items are checked
+      return checkpointStatus[currentStep] === true;
+    }
+
     return false;
-  }, [currentStepObj, currentStep, fieldValues, completedSteps, inputValues]);
+  }, [currentStepObj, currentStep, fieldValues, completedSteps, inputValues, checkpointStatus]);
 
   // Handle field change for PromptStep
   const handleFieldChange = (stepNumber: number, fieldName: string, value: string) => {
@@ -202,6 +214,19 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
     setCompletedSteps(prev => new Set([...prev, stepNumber]));
   };
 
+  // Handle checkpoint completion
+  const handleCheckpointComplete = (stepNumber: number, isComplete: boolean) => {
+    setCheckpointStatus(prev => ({ ...prev, [stepNumber]: isComplete }));
+    if (isComplete) {
+      setCompletedSteps(prev => new Set([...prev, stepNumber]));
+    }
+  };
+
+  // Store step output for deliverables (called when copying prompt or completing a step)
+  const storeStepOutput = (stepNumber: number, output: string) => {
+    setStepOutputs(prev => ({ ...prev, [stepNumber]: output }));
+  };
+
   // Handle Single Mode completion (triggered by Copy or Open)
   const handleSingleModeComplete = () => {
     if (!isCompleted) {
@@ -213,6 +238,9 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   // Copy prompt to clipboard
   const handleCopyPrompt = (prompt: string) => {
     navigator.clipboard.writeText(prompt);
+    
+    // Store output for deliverables
+    storeStepOutput(currentStep, prompt);
     
     // Don't track usage here - only create history entry on "Complete Workflow"
     
@@ -619,6 +647,28 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
             </div>
           )}
         </div>
+
+        {/* Deliverables Section (if workflow has deliverables) */}
+        {workflow.deliverables && workflow.deliverables.length > 0 && (
+          <div className="mt-8 max-w-xl mx-auto">
+            <Deliverables
+              deliverables={workflow.deliverables}
+              completedSteps={Array.from(completedSteps)}
+              outputs={stepOutputs}
+              workflowTitle={workflow.title}
+            />
+          </div>
+        )}
+
+        {/* Suggested Next Actions (if workflow has them) */}
+        {workflow.suggested_next_actions && workflow.suggested_next_actions.length > 0 && (
+          <div className="mt-6 max-w-xl mx-auto">
+            <SuggestedNextActions
+              actions={workflow.suggested_next_actions}
+              isVisible={true}
+            />
+          </div>
+        )}
       </div>
     );
   }
@@ -749,6 +799,15 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
               onContinue={goToNextStep}
               onBack={goToPreviousStep}
               showBackButton={currentStep > 1}
+            />
+          )}
+
+          {isCheckpointStep(currentStepObj) && (
+            <CheckpointStepComponent
+              step={currentStepObj}
+              onComplete={() => handleCheckpointComplete(currentStep, true)}
+              isCompleted={checkpointStatus[currentStep] === true}
+              isSOP={isSOP}
             />
           )}
         </div>
