@@ -37,6 +37,15 @@ import {
 } from '@/components/workflow/steps';
 import { CheckpointStepComponent } from '@/components/workflow/steps/CheckpointStep';
 import { SuggestedNextActions } from '@/components/workflow/SuggestedNextActions';
+import { PresetSelector } from '@/components/presets/PresetSelector';
+import { 
+  getUserProfile, 
+  getClientPresets, 
+  getAutoFillFromUserProfile,
+  getAutoFillFromClientPreset,
+  updateClientLastUsed 
+} from '@/lib/presets';
+import type { UserProfile, ClientPreset, PresetType } from '@/lib/types/presets';
 
 interface WorkflowRunnerProps {
   workflow: Workflow;
@@ -64,6 +73,15 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   const [isWorkflowCompleted, setIsWorkflowCompleted] = useState(false); // Multi-step completion
   const [hasBeenUsed, setHasBeenUsed] = useState(false); // Track if history entry already created
   const [checkpointStatus, setCheckpointStatus] = useState<Record<number, boolean>>({}); // Track checkpoint completion
+  
+  // Brand Presets State
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [clientPresets, setClientPresets] = useState<ClientPreset[]>([]);
+  const [showPresetSelector, setShowPresetSelector] = useState(false);
+  const [selectedPresetType, setSelectedPresetType] = useState<PresetType>('self');
+  const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
+  const [presetsLoaded, setPresetsLoaded] = useState(false);
+  const [autoFilledFields, setAutoFilledFields] = useState<Set<string>>(new Set());
 
   // Auto-detect mode: Single (1 prompt) vs Multi-Step (everything else)
   const isSingleMode = workflow.steps.length === 1 && isPromptStep(workflow.steps[0]);
@@ -100,6 +118,120 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
       }
     }
   }, [workflow.slug, isWorkflowCompleted, isSOP]);
+
+  // Load Brand Presets and apply auto-fill
+  useEffect(() => {
+    async function loadPresets() {
+      if (!userId) {
+        setPresetsLoaded(true);
+        return;
+      }
+
+      try {
+        const [profile, clients] = await Promise.all([
+          getUserProfile(userId),
+          getClientPresets(userId),
+        ]);
+        
+        setUserProfile(profile);
+        setClientPresets(clients || []);
+        
+        // Smart Display: Only show PresetSelector if user has clients
+        setShowPresetSelector((clients?.length || 0) > 0);
+        
+        // Initial Auto-Fill from user profile (default: "for myself")
+        if (profile) {
+          applyPresetAutoFill('self', profile, null);
+        }
+        
+        setPresetsLoaded(true);
+      } catch (error) {
+        console.error('Error loading presets:', error);
+        setPresetsLoaded(true);
+      }
+    }
+
+    loadPresets();
+  }, [userId]);
+
+  // Helper function to get all field names from workflow
+  const getAllFieldNames = (): string[] => {
+    const fieldNames: string[] = [];
+    workflow.steps.forEach(step => {
+      if (isPromptStep(step)) {
+        step.fields.forEach(field => {
+          fieldNames.push(field.name);
+        });
+      }
+    });
+    return fieldNames;
+  };
+
+  // Apply auto-fill from preset selection
+  const applyPresetAutoFill = (
+    type: PresetType, 
+    profile: UserProfile | null, 
+    client: ClientPreset | null
+  ) => {
+    const fieldNames = getAllFieldNames();
+    let autoFillValues: Record<string, string> = {};
+    
+    if (type === 'self' && profile) {
+      autoFillValues = getAutoFillFromUserProfile(profile, fieldNames);
+    } else if (type === 'client' && client) {
+      autoFillValues = getAutoFillFromClientPreset(client, fieldNames);
+    }
+    
+    if (Object.keys(autoFillValues).length > 0) {
+      // Track which fields were auto-filled
+      setAutoFilledFields(new Set(Object.keys(autoFillValues)));
+      
+      // Apply auto-fill to all steps that have matching fields
+      const newFieldValues: Record<number, Record<string, string>> = { ...fieldValues };
+      
+      workflow.steps.forEach(step => {
+        if (isPromptStep(step)) {
+          const stepValues: Record<string, string> = { ...(newFieldValues[step.number] || {}) };
+          
+          step.fields.forEach(field => {
+            // Only auto-fill if field is empty
+            if (!stepValues[field.name] && autoFillValues[field.name]) {
+              stepValues[field.name] = autoFillValues[field.name];
+            }
+          });
+          
+          newFieldValues[step.number] = stepValues;
+        }
+      });
+      
+      setFieldValues(newFieldValues);
+    }
+  };
+
+  // Handle preset selection change
+  const handlePresetAutoFill = (values: Record<string, string>) => {
+    // Track which fields were auto-filled
+    setAutoFilledFields(new Set(Object.keys(values)));
+    
+    // Apply auto-fill to all steps that have matching fields
+    const newFieldValues: Record<number, Record<string, string>> = { ...fieldValues };
+    
+    workflow.steps.forEach(step => {
+      if (isPromptStep(step)) {
+        const stepValues: Record<string, string> = { ...(newFieldValues[step.number] || {}) };
+        
+        step.fields.forEach(field => {
+          if (values[field.name]) {
+            stepValues[field.name] = values[field.name];
+          }
+        });
+        
+        newFieldValues[step.number] = stepValues;
+      }
+    });
+    
+    setFieldValues(newFieldValues);
+  };
 
   // Save progress to localStorage (but not after completion)
   useEffect(() => {
@@ -404,6 +536,16 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
 
     return (
       <div className="space-y-6">
+        {/* Brand Presets Selector (only if user has clients) */}
+        {userId && showPresetSelector && (
+          <PresetSelector
+            userId={userId}
+            fieldNames={getAllFieldNames()}
+            onAutoFill={handlePresetAutoFill}
+            compact={true}
+          />
+        )}
+
         {/* Fields Card */}
         <Card className="border-zinc-800 bg-zinc-900/50">
           <CardHeader className="pb-4">
@@ -662,6 +804,16 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
 
   return (
     <div className="space-y-6">
+      {/* Brand Presets Selector (only if user has clients, shown on step 1) */}
+      {userId && showPresetSelector && currentStep === 1 && (
+        <PresetSelector
+          userId={userId}
+          fieldNames={getAllFieldNames()}
+          onAutoFill={handlePresetAutoFill}
+          compact={false}
+        />
+      )}
+
       {/* Progress Bar */}
       <Card className="border-zinc-800 bg-zinc-900">
         <CardHeader>
