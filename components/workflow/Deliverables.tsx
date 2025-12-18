@@ -34,7 +34,6 @@ export function Deliverables({ deliverables, completedSteps, outputs, workflowTi
       toast({
         title: 'Copy failed',
         description: 'Please try again',
-        variant: 'destructive',
       });
     }
   };
@@ -49,7 +48,6 @@ export function Deliverables({ deliverables, completedSteps, outputs, workflowTi
       toast({
         title: 'Nothing to download',
         description: 'Complete some steps first',
-        variant: 'destructive',
       });
       return;
     }
