@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { Menu, ShieldCheck, Settings, CreditCard, LogOut, LayoutDashboard } from 'lucide-react';
+import { Menu, ShieldCheck, Settings, CreditCard, LogOut, LayoutDashboard, Tag } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   Sheet,
@@ -170,6 +170,14 @@ export function NavLinks({ isLoggedIn, isAdmin = false, userEmail = '', isPro = 
                   >
                     <LayoutDashboard className="w-5 h-5" />
                     Dashboard
+                  </Link>
+                  <Link
+                    href="/dashboard/brand-presets/profile"
+                    onClick={() => setOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3 text-zinc-300 hover:bg-zinc-800 rounded-lg transition-colors"
+                  >
+                    <Tag className="w-5 h-5" />
+                    Brand Presets
                   </Link>
                   <Link
                     href="/settings"

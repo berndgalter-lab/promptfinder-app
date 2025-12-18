@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ACHIEVEMENTS, getAchievementIcon } from '@/lib/achievements';
 import Link from 'next/link';
 import { getUserPlan } from '@/lib/subscription';
-import { Star, Clock, BarChart3, Trophy } from 'lucide-react';
+import { Star, Clock, BarChart3, Trophy, Tag, User, Building2 } from 'lucide-react';
 
 // Force dynamic rendering - no caching for subscription status
 export const dynamic = 'force-dynamic';
@@ -188,7 +188,55 @@ export default async function DashboardPage() {
           </section>
 
           {/* ============================================ */}
-          {/* 4. PRO / UPGRADE BOX (COMPACT) */}
+          {/* 4. BRAND PRESETS */}
+          {/* ============================================ */}
+          <section>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold flex items-center gap-2">
+                <Tag className="w-5 h-5 text-purple-400" />
+                Brand Presets
+              </h2>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <Link 
+                href="/dashboard/brand-presets/profile"
+                className="p-4 rounded-lg bg-zinc-900/50 border border-zinc-800 hover:border-blue-600/50 hover:bg-blue-900/10 transition-all group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-blue-600/20 flex items-center justify-center group-hover:bg-blue-600/30 transition-colors">
+                    <User className="w-5 h-5 text-blue-400" />
+                  </div>
+                  <div>
+                    <div className="font-medium group-hover:text-blue-400 transition-colors">My Profile</div>
+                    <div className="text-xs text-zinc-500">Your personal brand data</div>
+                  </div>
+                </div>
+              </Link>
+              
+              <Link 
+                href="/dashboard/brand-presets/clients"
+                className="p-4 rounded-lg bg-zinc-900/50 border border-zinc-800 hover:border-purple-600/50 hover:bg-purple-900/10 transition-all group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-purple-600/20 flex items-center justify-center group-hover:bg-purple-600/30 transition-colors">
+                    <Building2 className="w-5 h-5 text-purple-400" />
+                  </div>
+                  <div>
+                    <div className="font-medium group-hover:text-purple-400 transition-colors">Clients</div>
+                    <div className="text-xs text-zinc-500">Saved client presets</div>
+                  </div>
+                </div>
+              </Link>
+            </div>
+            
+            <p className="text-xs text-zinc-500 mt-3">
+              Save your brand data once, auto-fill workflows forever.
+            </p>
+          </section>
+
+          {/* ============================================ */}
+          {/* 5. PRO / UPGRADE BOX (COMPACT) */}
           {/* ============================================ */}
           {currentPlan === 'free' ? (
             // Free user: Upgrade box
@@ -232,7 +280,7 @@ export default async function DashboardPage() {
               )}
 
           {/* ============================================ */}
-          {/* 5. STATS & ACHIEVEMENTS (2-column grid) */}
+          {/* 6. STATS & ACHIEVEMENTS (2-column grid) */}
           {/* ============================================ */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             
