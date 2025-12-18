@@ -172,3 +172,10 @@ export const CLIENT_PRESET_FIELD_MAPPINGS: Record<string, keyof ClientPresetForm
   'ideal_customer': 'client_target_audience',
 };
 
+// Auto-fill tracking for UI indicators
+export interface AutoFilledField {
+  fieldName: string;
+  source: 'profile' | 'client';
+  sourceName: string; // "your profile" or "TechFlow GmbH preset"
+}
+

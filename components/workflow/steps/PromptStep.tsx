@@ -16,10 +16,12 @@ import {
 import { Copy, ExternalLink, Clock, Lightbulb, CheckCircle, AlertTriangle, Check, ChevronDown, ChevronUp } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { type PromptStep } from '@/lib/types/workflow';
+import type { AutoFilledField } from '@/lib/types/presets';
 import { WorkflowSectionLabel } from '@/components/workflow/WorkflowSectionLabel';
 import { PromptReadyBanner } from '@/components/workflow/PromptReadyBanner';
 import { ProTip } from '@/components/workflow/ProTip';
 import { ChatInstructionHint } from '@/components/workflow/ChatInstructionHint';
+import { AutoFillHint } from '@/components/presets/AutoFillHint';
 
 interface PromptStepProps {
   step: PromptStep;
@@ -31,6 +33,7 @@ interface PromptStepProps {
   tool?: 'chatgpt' | 'claude' | 'cursor' | 'any';
   isSOP?: boolean;
   isFirstPromptStep?: boolean;
+  autoFilledFields?: Map<string, AutoFilledField>;
 }
 
 export function PromptStepComponent({
@@ -43,6 +46,7 @@ export function PromptStepComponent({
   tool = 'chatgpt',
   isSOP = false,
   isFirstPromptStep = true,
+  autoFilledFields = new Map(),
 }: PromptStepProps) {
   // State for expanded/collapsed prompt view
   const [isPromptExpanded, setIsPromptExpanded] = useState(false);
@@ -135,51 +139,60 @@ export function PromptStepComponent({
 
               {/* Text Input */}
               {field.type === 'text' && (
-                <Input
-                  id={field.name}
-                  type="text"
-                  placeholder={field.placeholder}
-                  value={fieldValues[field.name] || ''}
-                  onChange={(e) => onFieldChange(field.name, e.target.value)}
-                  required={field.required}
-                  className="bg-zinc-950 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-blue-500"
-                />
+                <>
+                  <Input
+                    id={field.name}
+                    type="text"
+                    placeholder={field.placeholder}
+                    value={fieldValues[field.name] || ''}
+                    onChange={(e) => onFieldChange(field.name, e.target.value)}
+                    required={field.required}
+                    className="bg-zinc-950 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-blue-500"
+                  />
+                  <AutoFillHint fieldName={field.name} autoFilledFields={autoFilledFields} />
+                </>
               )}
 
               {/* Textarea */}
               {field.type === 'textarea' && (
-                <Textarea
-                  id={field.name}
-                  placeholder={field.placeholder}
-                  value={fieldValues[field.name] || ''}
-                  onChange={(e) => onFieldChange(field.name, e.target.value)}
-                  required={field.required}
-                  rows={4}
-                  className="bg-zinc-950 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-blue-500"
-                />
+                <>
+                  <Textarea
+                    id={field.name}
+                    placeholder={field.placeholder}
+                    value={fieldValues[field.name] || ''}
+                    onChange={(e) => onFieldChange(field.name, e.target.value)}
+                    required={field.required}
+                    rows={4}
+                    className="bg-zinc-950 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-blue-500"
+                  />
+                  <AutoFillHint fieldName={field.name} autoFilledFields={autoFilledFields} />
+                </>
               )}
 
               {/* Select Dropdown */}
               {field.type === 'select' && field.options && (
-                <Select
-                  value={fieldValues[field.name] || ''}
-                  onValueChange={(value) => onFieldChange(field.name, value)}
-                >
-                  <SelectTrigger className="bg-zinc-950 border-zinc-700 text-white focus:border-blue-500">
-                    <SelectValue placeholder={field.placeholder || 'Select an option'} />
-                  </SelectTrigger>
-                  <SelectContent className="bg-zinc-900 border-zinc-700">
-                    {field.options.map((option) => (
-                      <SelectItem 
-                        key={option} 
-                        value={option}
-                        className="text-white focus:bg-zinc-800 focus:text-white"
-                      >
-                        {option}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <>
+                  <Select
+                    value={fieldValues[field.name] || ''}
+                    onValueChange={(value) => onFieldChange(field.name, value)}
+                  >
+                    <SelectTrigger className="bg-zinc-950 border-zinc-700 text-white focus:border-blue-500">
+                      <SelectValue placeholder={field.placeholder || 'Select an option'} />
+                    </SelectTrigger>
+                    <SelectContent className="bg-zinc-900 border-zinc-700">
+                      {field.options.map((option) => (
+                        <SelectItem 
+                          key={option} 
+                          value={option}
+                          className="text-white focus:bg-zinc-800 focus:text-white"
+                        >
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <AutoFillHint fieldName={field.name} autoFilledFields={autoFilledFields} />
+                </>
               )}
 
               {/* Multiselect Checkbox Group */}
@@ -223,6 +236,7 @@ export function PromptStepComponent({
                       {(fieldValues[field.name] || '').split(',').filter(Boolean).length} selected
                     </p>
                   )}
+                  <AutoFillHint fieldName={field.name} autoFilledFields={autoFilledFields} />
                 </div>
               )}
             </div>

@@ -28,7 +28,11 @@ import type {
 interface PresetSelectorProps {
   userId: string | null;
   fieldNames: string[]; // List of field names in the workflow
-  onAutoFill: (values: Record<string, string>) => void;
+  onAutoFill: (
+    values: Record<string, string>, 
+    sourceType?: 'self' | 'client',
+    clientName?: string
+  ) => void;
   compact?: boolean; // Compact mode for inline display
 }
 
@@ -76,12 +80,14 @@ export function PresetSelector({
 
   const handleApplyPreset = async () => {
     let values: Record<string, string> = {};
+    let clientName: string | undefined;
     
     if (presetType === 'self' && userProfile) {
       values = getAutoFillFromUserProfile(userProfile, fieldNames);
     } else if (presetType === 'client' && selectedClientId) {
       const selectedClient = clientPresets.find(c => c.id === selectedClientId);
       if (selectedClient) {
+        clientName = selectedClient.client_company;
         // Pass userProfile for "your_*" fields (your name, company, etc.)
         values = getAutoFillFromClientPreset(selectedClient, fieldNames, userProfile);
         // Update last_used_at
@@ -90,7 +96,8 @@ export function PresetSelector({
     }
     
     if (Object.keys(values).length > 0) {
-      onAutoFill(values);
+      // Pass source info for auto-fill indicators
+      onAutoFill(values, presetType, clientName);
       setHasApplied(true);
       // Reset applied state after 2 seconds
       setTimeout(() => setHasApplied(false), 2000);

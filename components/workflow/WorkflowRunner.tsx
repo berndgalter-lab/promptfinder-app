@@ -45,7 +45,9 @@ import {
   getAutoFillFromClientPreset,
   updateClientLastUsed 
 } from '@/lib/presets';
-import type { UserProfile, ClientPreset, PresetType } from '@/lib/types/presets';
+import type { UserProfile, ClientPreset, PresetType, AutoFilledField } from '@/lib/types/presets';
+import { CLIENT_PRESET_FIELD_MAPPINGS } from '@/lib/types/presets';
+import { AutoFillHint } from '@/components/presets/AutoFillHint';
 
 interface WorkflowRunnerProps {
   workflow: Workflow;
@@ -81,7 +83,7 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   const [selectedPresetType, setSelectedPresetType] = useState<PresetType>('self');
   const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
   const [presetsLoaded, setPresetsLoaded] = useState(false);
-  const [autoFilledFields, setAutoFilledFields] = useState<Set<string>>(new Set());
+  const [autoFilledFields, setAutoFilledFields] = useState<Map<string, AutoFilledField>>(new Map());
 
   // Auto-detect mode: Single (1 prompt) vs Multi-Step (everything else)
   const isSingleMode = workflow.steps.length === 1 && isPromptStep(workflow.steps[0]);
@@ -100,8 +102,8 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
         // User must re-enter fields - this is safer
         // Only restore if workflow hasn't been completed yet
         if (!isWorkflowCompleted) {
-          if (parsed.currentStep) setCurrentStep(parsed.currentStep);
-          if (parsed.completedSteps) setCompletedSteps(new Set(parsed.completedSteps));
+        if (parsed.currentStep) setCurrentStep(parsed.currentStep);
+        if (parsed.completedSteps) setCompletedSteps(new Set(parsed.completedSteps));
           
           // If there's saved progress, user has already started the SOP
           if (isSOP && (parsed.currentStep || (parsed.completedSteps && parsed.completedSteps.length > 0))) {
@@ -175,17 +177,41 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   ) => {
     const fieldNames = getAllFieldNames();
     let autoFillValues: Record<string, string> = {};
+    const newAutoFilledFields = new Map<string, AutoFilledField>();
     
     if (type === 'self' && profile) {
       autoFillValues = getAutoFillFromUserProfile(profile, fieldNames);
+      
+      // Track source for each field
+      for (const fieldName of Object.keys(autoFillValues)) {
+        newAutoFilledFields.set(fieldName, {
+          fieldName,
+          source: 'profile',
+          sourceName: 'your profile'
+        });
+      }
     } else if (type === 'client' && client) {
       // Pass profile for "your_*" fields (your name, company, etc.)
       autoFillValues = getAutoFillFromClientPreset(client, fieldNames, profile);
+      
+      // Track source for each field - determine if from client or profile
+      for (const fieldName of Object.keys(autoFillValues)) {
+        const normalizedName = fieldName.toLowerCase().replace(/[^a-z_]/g, '');
+        const isFromClient = CLIENT_PRESET_FIELD_MAPPINGS[normalizedName] !== undefined;
+        
+        newAutoFilledFields.set(fieldName, {
+          fieldName,
+          source: isFromClient ? 'client' : 'profile',
+          sourceName: isFromClient 
+            ? `${client.client_company} preset`
+            : 'your profile'
+        });
+      }
     }
     
     if (Object.keys(autoFillValues).length > 0) {
-      // Track which fields were auto-filled
-      setAutoFilledFields(new Set(Object.keys(autoFillValues)));
+      // Track which fields were auto-filled with source info
+      setAutoFilledFields(newAutoFilledFields);
       
       // Apply auto-fill to all steps that have matching fields
       const newFieldValues: Record<number, Record<string, string>> = { ...fieldValues };
@@ -209,10 +235,36 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
     }
   };
 
-  // Handle preset selection change
-  const handlePresetAutoFill = (values: Record<string, string>) => {
-    // Track which fields were auto-filled
-    setAutoFilledFields(new Set(Object.keys(values)));
+  // Handle preset selection change from PresetSelector
+  const handlePresetAutoFill = (
+    values: Record<string, string>, 
+    sourceType?: 'self' | 'client',
+    clientName?: string
+  ) => {
+    const newAutoFilledFields = new Map<string, AutoFilledField>();
+    
+    // Track source for each field
+    for (const fieldName of Object.keys(values)) {
+      if (sourceType === 'client' && clientName) {
+        // Determine if field came from client or profile mapping
+        const normalizedName = fieldName.toLowerCase().replace(/[^a-z_]/g, '');
+        const isFromClient = CLIENT_PRESET_FIELD_MAPPINGS[normalizedName] !== undefined;
+        
+        newAutoFilledFields.set(fieldName, {
+          fieldName,
+          source: isFromClient ? 'client' : 'profile',
+          sourceName: isFromClient ? `${clientName} preset` : 'your profile'
+        });
+      } else {
+        newAutoFilledFields.set(fieldName, {
+          fieldName,
+          source: 'profile',
+          sourceName: 'your profile'
+        });
+      }
+    }
+    
+    setAutoFilledFields(newAutoFilledFields);
     
     // Apply auto-fill to all steps that have matching fields
     const newFieldValues: Record<number, Record<string, string>> = { ...fieldValues };
@@ -339,6 +391,16 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
         [fieldName]: value,
       },
     }));
+    
+    // Remove auto-fill indicator when user manually edits a field
+    setAutoFilledFields(prev => {
+      if (prev.has(fieldName)) {
+        const newMap = new Map(prev);
+        newMap.delete(fieldName);
+        return newMap;
+      }
+      return prev;
+    });
   };
 
   // Handle input change for InputStep
@@ -564,39 +626,48 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
                 </Label>
                 
                 {field.type === 'text' && (
-                  <Input
-                    placeholder={field.placeholder}
-                    value={values[field.name] || ''}
-                    onChange={(e) => handleFieldChange(singleStep.number, field.name, e.target.value)}
-                    className="mt-1.5 bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
-                  />
+                  <>
+                    <Input
+                      placeholder={field.placeholder}
+                      value={values[field.name] || ''}
+                      onChange={(e) => handleFieldChange(singleStep.number, field.name, e.target.value)}
+                      className="mt-1.5 bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
+                    />
+                    <AutoFillHint fieldName={field.name} autoFilledFields={autoFilledFields} />
+                  </>
                 )}
                 
                 {field.type === 'textarea' && (
-                  <Textarea
-                    placeholder={field.placeholder}
-                    value={values[field.name] || ''}
-                    onChange={(e) => handleFieldChange(singleStep.number, field.name, e.target.value)}
-                    className="mt-1.5 bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500 min-h-[100px]"
-                  />
+                  <>
+                    <Textarea
+                      placeholder={field.placeholder}
+                      value={values[field.name] || ''}
+                      onChange={(e) => handleFieldChange(singleStep.number, field.name, e.target.value)}
+                      className="mt-1.5 bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500 min-h-[100px]"
+                    />
+                    <AutoFillHint fieldName={field.name} autoFilledFields={autoFilledFields} />
+                  </>
                 )}
                 
                 {field.type === 'select' && field.options && (
-                  <Select
-                    value={values[field.name] || ''}
-                    onValueChange={(value) => handleFieldChange(singleStep.number, field.name, value)}
-                  >
-                    <SelectTrigger className="mt-1.5 bg-zinc-800 border-zinc-700 text-white">
-                      <SelectValue placeholder={`Select ${field.label.toLowerCase()}`} />
-                    </SelectTrigger>
-                    <SelectContent className="bg-zinc-800 border-zinc-700">
-                      {field.options.map(option => (
-                        <SelectItem key={option} value={option} className="text-white hover:bg-zinc-700">
-                          {option}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <>
+                    <Select
+                      value={values[field.name] || ''}
+                      onValueChange={(value) => handleFieldChange(singleStep.number, field.name, value)}
+                    >
+                      <SelectTrigger className="mt-1.5 bg-zinc-800 border-zinc-700 text-white">
+                        <SelectValue placeholder={`Select ${field.label.toLowerCase()}`} />
+                      </SelectTrigger>
+                      <SelectContent className="bg-zinc-800 border-zinc-700">
+                        {field.options.map(option => (
+                          <SelectItem key={option} value={option} className="text-white hover:bg-zinc-700">
+                            {option}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <AutoFillHint fieldName={field.name} autoFilledFields={autoFilledFields} />
+                  </>
                 )}
                 
                 {/* Multiselect Checkbox Group */}
@@ -633,6 +704,7 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
                         </div>
                       );
                     })}
+                    <AutoFillHint fieldName={field.name} autoFilledFields={autoFilledFields} />
                   </div>
                 )}
               </div>
@@ -920,6 +992,7 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
               tool={workflow.tool}
               isSOP={isSOP}
               isFirstPromptStep={isFirstPromptStep}
+              autoFilledFields={autoFilledFields}
             />
           )}
 
