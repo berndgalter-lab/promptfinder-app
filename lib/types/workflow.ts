@@ -85,13 +85,16 @@ export interface CheckpointItem {
 }
 
 // Checkpoint Step - checklist that user must complete before proceeding
-export interface CheckpointStep extends Omit<BaseStep, 'type'> {
+export interface CheckpointStep {
   number: number;
   type: 'checkpoint';
   title: string;
-  description?: string;
+  description?: string; // Optional for checkpoint steps
   items: CheckpointItem[];
   blocking?: boolean; // default true - must complete all required items to proceed
+  // SOP-specific fields (optional)
+  why?: string;
+  duration_minutes?: number;
 }
 
 // Deliverable - output collected from a step
