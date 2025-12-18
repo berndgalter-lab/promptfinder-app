@@ -36,7 +36,6 @@ import {
   InputStepComponent,
 } from '@/components/workflow/steps';
 import { CheckpointStepComponent } from '@/components/workflow/steps/CheckpointStep';
-import { Deliverables } from '@/components/workflow/Deliverables';
 import { SuggestedNextActions } from '@/components/workflow/SuggestedNextActions';
 
 interface WorkflowRunnerProps {
@@ -65,7 +64,6 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   const [isWorkflowCompleted, setIsWorkflowCompleted] = useState(false); // Multi-step completion
   const [hasBeenUsed, setHasBeenUsed] = useState(false); // Track if history entry already created
   const [checkpointStatus, setCheckpointStatus] = useState<Record<number, boolean>>({}); // Track checkpoint completion
-  const [stepOutputs, setStepOutputs] = useState<Record<number, string>>({}); // Track outputs for deliverables
 
   // Auto-detect mode: Single (1 prompt) vs Multi-Step (everything else)
   const isSingleMode = workflow.steps.length === 1 && isPromptStep(workflow.steps[0]);
@@ -222,11 +220,6 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
     }
   };
 
-  // Store step output for deliverables (called when copying prompt or completing a step)
-  const storeStepOutput = (stepNumber: number, output: string) => {
-    setStepOutputs(prev => ({ ...prev, [stepNumber]: output }));
-  };
-
   // Handle Single Mode completion (triggered by Copy or Open)
   const handleSingleModeComplete = () => {
     if (!isCompleted) {
@@ -238,9 +231,6 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   // Copy prompt to clipboard
   const handleCopyPrompt = (prompt: string) => {
     navigator.clipboard.writeText(prompt);
-    
-    // Store output for deliverables
-    storeStepOutput(currentStep, prompt);
     
     // Don't track usage here - only create history entry on "Complete Workflow"
     
@@ -647,18 +637,6 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
             </div>
           )}
         </div>
-
-        {/* Deliverables Section (if workflow has deliverables) */}
-        {workflow.deliverables && workflow.deliverables.length > 0 && (
-          <div className="mt-8 max-w-xl mx-auto">
-            <Deliverables
-              deliverables={workflow.deliverables}
-              completedSteps={Array.from(completedSteps)}
-              outputs={stepOutputs}
-              workflowTitle={workflow.title}
-            />
-          </div>
-        )}
 
         {/* Suggested Next Actions (if workflow has them) */}
         {workflow.suggested_next_actions && workflow.suggested_next_actions.length > 0 && (

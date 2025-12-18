@@ -250,7 +250,6 @@ export default async function WorkflowDetailPage({ params }: PageProps) {
     // Category from join
     category: rawWorkflow.category ?? null,
     // SOP Features
-    deliverables: rawWorkflow.deliverables ?? undefined,
     suggested_next_actions: rawWorkflow.suggested_next_actions ?? undefined,
   };
 

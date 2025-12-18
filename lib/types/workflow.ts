@@ -97,14 +97,6 @@ export interface CheckpointStep {
   duration_minutes?: number;
 }
 
-// Deliverable - output collected from a step
-export interface Deliverable {
-  step: number;
-  name: string;
-  format: 'text' | 'email' | 'checklist' | 'document';
-  description?: string;
-}
-
 // Union type for all steps
 export type WorkflowStep = PromptStep | InstructionStep | InputStep | CheckpointStep;
 
@@ -150,7 +142,6 @@ export interface Workflow {
   long_description: string | null;
   sop_details: SOPDetails | null;
   // SOP Features
-  deliverables?: Deliverable[];
   suggested_next_actions?: string[];
 }
 
