@@ -30,6 +30,7 @@ interface PromptStepProps {
   generatedPrompt: string;
   tool?: 'chatgpt' | 'claude' | 'cursor' | 'any';
   isSOP?: boolean;
+  isFirstPromptStep?: boolean;
 }
 
 export function PromptStepComponent({
@@ -41,6 +42,7 @@ export function PromptStepComponent({
   generatedPrompt,
   tool = 'chatgpt',
   isSOP = false,
+  isFirstPromptStep = true,
 }: PromptStepProps) {
   // State for expanded/collapsed prompt view
   const [isPromptExpanded, setIsPromptExpanded] = useState(false);
@@ -298,7 +300,11 @@ export function PromptStepComponent({
                 )}
               </div>
 
-              <ProTip tool={tool} />
+              <ProTip 
+                tool={tool} 
+                chatInstruction={step.chat_instruction}
+                isFirstPromptStep={isFirstPromptStep}
+              />
             </CardContent>
           </Card>
         </div>

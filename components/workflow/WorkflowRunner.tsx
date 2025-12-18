@@ -161,6 +161,15 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
   // Get current step object
   const currentStepObj = workflow.steps.find(s => s.number === currentStep);
 
+  // Find the first prompt step number (for determining if current step is first prompt)
+  const firstPromptStepNumber = useMemo(() => {
+    const firstPrompt = workflow.steps.find(s => isPromptStep(s));
+    return firstPrompt?.number ?? 1;
+  }, [workflow.steps]);
+
+  // Check if current step is the first prompt step
+  const isFirstPromptStep = currentStep === firstPromptStepNumber;
+
   // Check if current step is valid/complete
   const isCurrentStepValid = useMemo(() => {
     if (!currentStepObj) return false;
@@ -757,6 +766,7 @@ export function WorkflowRunner({ workflow, userId, onComplete }: WorkflowRunnerP
               generatedPrompt={buildPrompt(currentStepObj)}
               tool={workflow.tool}
               isSOP={isSOP}
+              isFirstPromptStep={isFirstPromptStep}
             />
           )}
 
