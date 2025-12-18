@@ -84,12 +84,25 @@ export function PresetSelector({
     
     if (presetType === 'self' && userProfile) {
       values = getAutoFillFromUserProfile(userProfile, fieldNames);
+      console.log('[PresetSelector] Self mode - values:', values);
     } else if (presetType === 'client' && selectedClientId) {
       const selectedClient = clientPresets.find(c => c.id === selectedClientId);
       if (selectedClient) {
         clientName = selectedClient.client_company;
+        
+        // Debug: Log what's in the client preset
+        console.log('[PresetSelector] Client mode - selectedClient:', {
+          client_company: selectedClient.client_company,
+          client_name: selectedClient.client_name,
+          client_role: selectedClient.client_role,
+        });
+        console.log('[PresetSelector] fieldNames:', fieldNames);
+        
         // All fields come from client preset when "For a client" is selected
         values = getAutoFillFromClientPreset(selectedClient, fieldNames);
+        
+        console.log('[PresetSelector] Auto-fill values from client:', values);
+        
         // Update last_used_at
         updateClientLastUsed(selectedClientId).catch(console.error);
       }
