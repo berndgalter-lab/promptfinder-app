@@ -47,23 +47,19 @@ interface CleanWorkflowRunnerProps {
   }) => void;
 }
 
-// Preset-relevant field patterns for auto-detection
-const PRESET_FIELD_PATTERNS = [
-  /^your_/,      // your_name, your_company, etc.
-  /^user_/,      // user_name, user_company, etc.
-  /^client_/,    // client_company, client_name, etc.
-  /^my_/,        // my_company, my_offering, etc.
-  /^(tone|brand_voice|personality_style|writing_style)$/,
-  /^(company|company_name|business_name)$/,
-  /^(name|author_name|sender_name|host_name)$/,
-];
-
+/**
+ * Check if workflow has fields that can actually be auto-filled from presets.
+ * Only returns true if at least one field has a mapping in the preset dictionaries.
+ */
 function hasPresetRelevantFields(fields: { name: string }[]): boolean {
-  return fields.some(field => 
-    PRESET_FIELD_PATTERNS.some(pattern => pattern.test(field.name)) ||
-    Object.keys(USER_PROFILE_FIELD_MAPPINGS).includes(field.name) ||
-    Object.keys(CLIENT_PRESET_FIELD_MAPPINGS).includes(field.name)
-  );
+  return fields.some(field => {
+    const normalizedName = field.name.toLowerCase().replace(/[^a-z_]/g, '');
+    // Check if field has an actual mapping (not just pattern match)
+    return (
+      Object.keys(USER_PROFILE_FIELD_MAPPINGS).includes(normalizedName) ||
+      Object.keys(CLIENT_PRESET_FIELD_MAPPINGS).includes(normalizedName)
+    );
+  });
 }
 
 export function CleanWorkflowRunner({ workflow, userId, onComplete }: CleanWorkflowRunnerProps) {
