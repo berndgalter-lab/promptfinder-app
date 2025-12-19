@@ -226,19 +226,28 @@ export function getAutoFillFromUserProfile(
   profile: UserProfile | null,
   fieldNames: string[]
 ): Record<string, string> {
-  if (!profile) return {};
+  if (!profile) {
+    console.log('[AutoFill] No profile provided');
+    return {};
+  }
   
   const result: Record<string, string> = {};
+  
+  console.log('[AutoFill] Profile data:', profile);
+  console.log('[AutoFill] Field names to fill:', fieldNames);
   
   for (const fieldName of fieldNames) {
     const normalizedName = fieldName.toLowerCase().replace(/[^a-z_]/g, '');
     const mappedKey = userMappings[normalizedName];
+    
+    console.log(`[AutoFill] Field "${fieldName}" → normalized: "${normalizedName}" → mappedKey: "${mappedKey}" → value: "${mappedKey ? profile[mappedKey] : 'N/A'}"`);
     
     if (mappedKey && profile[mappedKey]) {
       result[fieldName] = profile[mappedKey] as string;
     }
   }
   
+  console.log('[AutoFill] Result:', result);
   return result;
 }
 
