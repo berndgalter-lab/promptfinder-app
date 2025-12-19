@@ -30,6 +30,7 @@ export function UserProfileForm({ userId }: UserProfileFormProps) {
     your_name: '',
     your_email: '',
     your_company: '',
+    your_role: '',
     your_website: '',
     your_industry: '',
     your_services: '',
@@ -48,6 +49,7 @@ export function UserProfileForm({ userId }: UserProfileFormProps) {
             your_name: profile.your_name || '',
             your_email: profile.your_email || '',
             your_company: profile.your_company || '',
+            your_role: profile.your_role || '',
             your_website: profile.your_website || '',
             your_industry: profile.your_industry || '',
             your_services: profile.your_services || '',
@@ -150,7 +152,7 @@ export function UserProfileForm({ userId }: UserProfileFormProps) {
             </div>
           </div>
 
-          {/* Company Row */}
+          {/* Company & Role Row */}
           <div className="grid gap-6 md:grid-cols-2">
             {/* Company */}
             <div className="space-y-2">
@@ -166,6 +168,23 @@ export function UserProfileForm({ userId }: UserProfileFormProps) {
               />
             </div>
 
+            {/* Role / Title */}
+            <div className="space-y-2">
+              <Label className="text-zinc-300 flex items-center gap-2">
+                <Briefcase className="w-4 h-4 text-zinc-500" />
+                Your Role / Title
+              </Label>
+              <Input
+                placeholder="Founder & CEO"
+                value={formData.your_role}
+                onChange={(e) => handleChange('your_role', e.target.value)}
+                className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
+              />
+            </div>
+          </div>
+
+          {/* Website & Industry Row */}
+          <div className="grid gap-6 md:grid-cols-2">
             {/* Website */}
             <div className="space-y-2">
               <Label className="text-zinc-300 flex items-center gap-2">
@@ -180,10 +199,7 @@ export function UserProfileForm({ userId }: UserProfileFormProps) {
                 className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
               />
             </div>
-          </div>
 
-          {/* Industry & Services Row */}
-          <div className="grid gap-6 md:grid-cols-2">
             {/* Industry */}
             <div className="space-y-2">
               <Label className="text-zinc-300 flex items-center gap-2">
@@ -197,20 +213,20 @@ export function UserProfileForm({ userId }: UserProfileFormProps) {
                 className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
               />
             </div>
+          </div>
 
-            {/* Services */}
-            <div className="space-y-2">
-              <Label className="text-zinc-300 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-zinc-500" />
-                Your Services
-              </Label>
-              <Input
-                placeholder="Webdesign, Web-Apps, Landing Pages"
-                value={formData.your_services}
-                onChange={(e) => handleChange('your_services', e.target.value)}
-                className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
-              />
-            </div>
+          {/* Services */}
+          <div className="space-y-2">
+            <Label className="text-zinc-300 flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-zinc-500" />
+              Your Services / Offering
+            </Label>
+            <Input
+              placeholder="Webdesign, Web-Apps, Landing Pages"
+              value={formData.your_services}
+              onChange={(e) => handleChange('your_services', e.target.value)}
+              className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
+            />
           </div>
 
           {/* Tone */}

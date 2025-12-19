@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -21,6 +21,22 @@ import {
   type PromptStep,
   isPromptStep,
 } from '@/lib/types/workflow';
+import { PresetSelector } from '@/components/presets/PresetSelector';
+import { AutoFillHint } from '@/components/presets/AutoFillHint';
+import { 
+  getUserProfile, 
+  getClientPresets, 
+  getAutoFillFromUserProfile,
+  getAutoFillFromClientPreset,
+} from '@/lib/presets';
+import { 
+  type UserProfile, 
+  type ClientPreset,
+  type PresetType,
+  type AutoFilledField,
+  USER_PROFILE_FIELD_MAPPINGS,
+  CLIENT_PRESET_FIELD_MAPPINGS,
+} from '@/lib/types/presets';
 
 interface CleanWorkflowRunnerProps {
   workflow: Workflow;
@@ -31,15 +47,99 @@ interface CleanWorkflowRunnerProps {
   }) => void;
 }
 
+// Preset-relevant field patterns for auto-detection
+const PRESET_FIELD_PATTERNS = [
+  /^your_/,      // your_name, your_company, etc.
+  /^user_/,      // user_name, user_company, etc.
+  /^client_/,    // client_company, client_name, etc.
+  /^my_/,        // my_company, my_offering, etc.
+  /^(tone|brand_voice|personality_style|writing_style)$/,
+  /^(company|company_name|business_name)$/,
+  /^(name|author_name|sender_name|host_name)$/,
+];
+
+function hasPresetRelevantFields(fields: { name: string }[]): boolean {
+  return fields.some(field => 
+    PRESET_FIELD_PATTERNS.some(pattern => pattern.test(field.name)) ||
+    Object.keys(USER_PROFILE_FIELD_MAPPINGS).includes(field.name) ||
+    Object.keys(CLIENT_PRESET_FIELD_MAPPINGS).includes(field.name)
+  );
+}
+
 export function CleanWorkflowRunner({ workflow, userId, onComplete }: CleanWorkflowRunnerProps) {
   const { toast } = useToast();
   const [fieldValues, setFieldValues] = useState<Record<string, string>>({});
   const [promptGenerated, setPromptGenerated] = useState(false);
   const [generatedPrompt, setGeneratedPrompt] = useState('');
   const [hasBeenUsed, setHasBeenUsed] = useState(false);
+  
+  // Brand Presets State
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [clientPresets, setClientPresets] = useState<ClientPreset[]>([]);
+  const [showPresetSelector, setShowPresetSelector] = useState(false);
+  const [autoFilledFields, setAutoFilledFields] = useState<Map<string, AutoFilledField>>(new Map());
+  const [presetsLoaded, setPresetsLoaded] = useState(false);
 
   // Get the first prompt step (for single-mode workflows)
   const promptStep = workflow.steps.find(isPromptStep) as PromptStep | undefined;
+  
+  // Check if this workflow has fields that benefit from presets (auto-detection)
+  const workflowHasPresetFields = useMemo(() => {
+    if (!promptStep) return false;
+    return hasPresetRelevantFields(promptStep.fields);
+  }, [promptStep]);
+
+  // Load presets if user is logged in and workflow has preset-relevant fields
+  useEffect(() => {
+    async function loadPresets() {
+      if (!userId || !workflowHasPresetFields) {
+        setPresetsLoaded(true);
+        return;
+      }
+
+      try {
+        const [profile, clients] = await Promise.all([
+          getUserProfile(userId),
+          getClientPresets(userId),
+        ]);
+        
+        setUserProfile(profile);
+        setClientPresets(clients || []);
+        
+        // Show PresetSelector if user has clients OR if there are preset fields
+        // (even without clients, user can use "For myself" with their profile)
+        setShowPresetSelector((clients?.length || 0) > 0);
+        
+        // Initial Auto-Fill from user profile (default: "for myself")
+        if (profile && promptStep) {
+          const fieldNames = promptStep.fields.map(f => f.name);
+          const autoFillValues = getAutoFillFromUserProfile(profile, fieldNames);
+          
+          if (Object.keys(autoFillValues).length > 0) {
+            setFieldValues(prev => ({ ...prev, ...autoFillValues }));
+            
+            // Track auto-filled fields for UI indicator
+            const newAutoFilled = new Map<string, AutoFilledField>();
+            Object.keys(autoFillValues).forEach(fieldName => {
+              newAutoFilled.set(fieldName, {
+                fieldName,
+                source: 'profile',
+                sourceName: 'your profile',
+              });
+            });
+            setAutoFilledFields(newAutoFilled);
+          }
+        }
+        
+        setPresetsLoaded(true);
+      } catch (error) {
+        console.error('Error loading presets:', error);
+        setPresetsLoaded(true);
+      }
+    }
+
+    loadPresets();
+  }, [userId, workflowHasPresetFields, promptStep]);
 
   if (!promptStep) {
     return (
@@ -62,11 +162,54 @@ export function CleanWorkflowRunner({ workflow, userId, onComplete }: CleanWorkf
       ...prev,
       [fieldName]: value,
     }));
+    
+    // Remove auto-fill indicator when user manually changes a field
+    if (autoFilledFields.has(fieldName)) {
+      setAutoFilledFields(prev => {
+        const newMap = new Map(prev);
+        newMap.delete(fieldName);
+        return newMap;
+      });
+    }
+    
     // Reset generated state when user changes input
     if (promptGenerated) {
       setPromptGenerated(false);
       setGeneratedPrompt('');
     }
+  };
+
+  // Handle preset selection change from PresetSelector
+  const handlePresetAutoFill = (
+    values: Record<string, string>, 
+    sourceType?: 'self' | 'client',
+    clientName?: string
+  ) => {
+    setFieldValues(prev => ({ ...prev, ...values }));
+    
+    // Track auto-filled fields for UI indicators
+    const newAutoFilled = new Map<string, AutoFilledField>();
+    Object.keys(values).forEach(fieldName => {
+      newAutoFilled.set(fieldName, {
+        fieldName,
+        source: sourceType === 'client' ? 'client' : 'profile',
+        sourceName: sourceType === 'client' && clientName 
+          ? `${clientName} preset` 
+          : 'your profile',
+      });
+    });
+    setAutoFilledFields(newAutoFilled);
+    
+    // Reset generated state when presets change
+    if (promptGenerated) {
+      setPromptGenerated(false);
+      setGeneratedPrompt('');
+    }
+  };
+
+  // Get all field names for PresetSelector
+  const getAllFieldNames = (): string[] => {
+    return promptStep.fields.map(f => f.name);
   };
 
   // Generate prompt by replacing {{variables}} with values
@@ -204,6 +347,16 @@ export function CleanWorkflowRunner({ workflow, userId, onComplete }: CleanWorkf
   return (
     <>
       <div className="space-y-6">
+        {/* Brand Presets Selector (only if user has clients AND workflow has preset fields) */}
+        {userId && showPresetSelector && workflowHasPresetFields && (
+          <PresetSelector
+            userId={userId}
+            fieldNames={getAllFieldNames()}
+            onAutoFill={handlePresetAutoFill}
+            compact={true}
+          />
+        )}
+
         {/* Input Section */}
         <Card className="border-zinc-800 bg-zinc-900/50">
           <CardHeader className="pb-4">
@@ -308,6 +461,9 @@ export function CleanWorkflowRunner({ workflow, userId, onComplete }: CleanWorkf
                     )}
                   </div>
                 )}
+                
+                {/* Auto-fill indicator (shown if field was auto-filled from preset) */}
+                <AutoFillHint autoFilledField={autoFilledFields.get(field.name)} />
               </div>
             ))}
 

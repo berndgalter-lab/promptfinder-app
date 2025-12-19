@@ -6,6 +6,7 @@ export interface UserProfile {
   your_name: string | null;
   your_email: string | null;
   your_company: string | null;
+  your_role: string | null;           // Founder & CEO, Marketing Manager, etc.
   your_website: string | null;
   your_industry: string | null;
   your_services: string | null;
@@ -57,6 +58,7 @@ export interface UserProfileFormData {
   your_name?: string;
   your_email?: string;
   your_company?: string;
+  your_role?: string;                  // Founder & CEO, Marketing Manager, etc.
   your_website?: string;
   your_industry?: string;
   your_services?: string;
@@ -101,54 +103,71 @@ export const TONE_OPTIONS = [
 
 // Auto-fill field mappings for User Profile ("For myself")
 export const USER_PROFILE_FIELD_MAPPINGS: Record<string, keyof UserProfileFormData> = {
-  // your_name variations
+  // === user_* Felder (Playbook Standard) ===
+  'user_name': 'your_name',
+  'user_email': 'your_email',
+  'user_company': 'your_company',
+  'user_role': 'your_role',
+  'user_website': 'your_website',
+  'user_industry': 'your_industry',
+  'user_services': 'your_services',
+  'user_tone': 'your_tone',
+  'user_differentiator': 'your_differentiator',
+  
+  // === Legacy your_* Felder (für bestehende Workflows) ===
   'your_name': 'your_name',
+  'your_email': 'your_email',
+  'your_company': 'your_company',
+  'your_role': 'your_role',
+  'your_website': 'your_website',
+  'your_industry': 'your_industry',
+  'your_services': 'your_services',
+  'your_tone': 'your_tone',
+  'your_differentiator': 'your_differentiator',
+  
+  // === Name Varianten ===
   'sender_name': 'your_name',
   'host_name': 'your_name',
   'author_name': 'your_name',
   
-  // your_email variations
-  'your_email': 'your_email',
+  // === Email Varianten ===
   'email': 'your_email',
   'contact_email': 'your_email',
   
-  // your_company variations
-  'your_company': 'your_company',
-  'company_mention': 'your_company',  // Blog Post Creator SOP
+  // === Company Varianten ===
+  'company_mention': 'your_company',
   'my_company': 'your_company',
-  'business_name': 'your_company',
+  'business_name': 'your_company',    // Nur wenn kein client_* Kontext
   
-  // your_website variations
-  'your_website': 'your_website',
+  // === Role Varianten ===
+  'role': 'your_role',
+  'job_title': 'your_role',
+  'title': 'your_role',
+  
+  // === Website Varianten ===
   'website': 'your_website',
   'website_url': 'your_website',
   
-  // your_industry variations
-  'your_industry': 'your_industry',
-  
-  // your_services variations
-  'your_services': 'your_services',
-  'your_specialty': 'your_services',  // Client Proposal Generator SOP
-  'my_offering': 'your_services',     // Sales Call Preparation SOP
+  // === Services Varianten ===
+  'your_specialty': 'your_services',
+  'my_offering': 'your_services',
   'services': 'your_services',
   'what_you_sell': 'your_services',
   'product_service': 'your_services',
   'offerings': 'your_services',
   'products': 'your_services',
   
-  // your_tone variations
-  'your_tone': 'your_tone',
+  // === Tone Varianten ===
   'tone': 'your_tone',
-  'brand_voice': 'your_tone',         // Blog Post Creator SOP
-  'proposal_tone': 'your_tone',       // Client Proposal Generator SOP
-  'personality_style': 'your_tone',   // LinkedIn Content Strategy SOP
+  'brand_voice': 'your_tone',
+  'proposal_tone': 'your_tone',
+  'personality_style': 'your_tone',
   'voice': 'your_tone',
   'writing_style': 'your_tone',
   'style': 'your_tone',
   
-  // your_differentiator variations
-  'your_differentiator': 'your_differentiator',
-  'differentiator': 'your_differentiator',  // Sales Call Preparation SOP
+  // === Differentiator Varianten ===
+  'differentiator': 'your_differentiator',
   'unique_value': 'your_differentiator',
   'usps': 'your_differentiator',
 };
@@ -157,20 +176,37 @@ export const USER_PROFILE_FIELD_MAPPINGS: Record<string, keyof UserProfileFormDa
 // IMPORTANT: When "For a client" is selected, ALL fields come from the client preset
 // (no mixing with user profile)
 export const CLIENT_PRESET_FIELD_MAPPINGS: Record<string, keyof ClientPresetFormData> = {
-  // === Person (for content creation - e.g. LinkedIn ghostwriting) ===
-  'your_name': 'client_name',           // Person you're creating content FOR
+  // === user_* Felder bei "Für Kunde" → Client Preset ===
+  // (Wenn User Content FÜR Kunden erstellt)
+  'user_name': 'client_name',
+  'user_role': 'client_role',
+  'user_company': 'client_company',
+  'user_website': 'client_website',
+  'user_industry': 'client_industry',
+  'user_tone': 'client_tone',
+  
+  // === Legacy your_* → client_* (für bestehende Workflows) ===
+  'your_name': 'client_name',
+  'your_role': 'client_role',
+  'your_company': 'client_company',
+  'your_website': 'client_website',
+  'your_industry': 'client_industry',
+  'your_tone': 'client_tone',
+  
+  // === Name Varianten ===
   'name': 'client_name',
   'author_name': 'client_name',
   'host_name': 'client_name',
   'sender_name': 'client_name',
   
-  'your_role': 'client_role',
+  // === Role Varianten ===
   'role': 'client_role',
+  'job_title': 'client_role',
+  'title': 'client_role',
   
-  // === Company ===
-  'your_company': 'client_company',     // Client's company when working for them
-  'company_name': 'client_company',
+  // === Company Varianten ===
   'client_company': 'client_company',
+  'company_name': 'client_company',
   'business_name': 'client_company',
   'company_mention': 'client_company',
   'prospect_company': 'client_company',
@@ -189,25 +225,23 @@ export const CLIENT_PRESET_FIELD_MAPPINGS: Record<string, keyof ClientPresetForm
   'client_contact_email': 'client_contact_email',
   'contact_email': 'client_contact_email',
   'client_email': 'client_contact_email',
+  'email': 'client_contact_email',
   
-  // === Website ===
+  // === Website Varianten ===
   'client_website': 'client_website',
   'website': 'client_website',
-  'your_website': 'client_website',
   'website_url': 'client_website',
   
-  // === Industry ===
+  // === Industry Varianten ===
   'client_industry': 'client_industry',
   'industry': 'client_industry',
-  'your_industry': 'client_industry',
   'niche': 'client_industry',
   'sector': 'client_industry',
   
-  // === Tone / Voice ===
+  // === Tone / Voice Varianten ===
   'client_tone': 'client_tone',
   'tone': 'client_tone',
   'brand_voice': 'client_tone',
-  'your_tone': 'client_tone',
   'personality_style': 'client_tone',
   'voice': 'client_tone',
   'writing_style': 'client_tone',
@@ -223,6 +257,7 @@ export const CLIENT_PRESET_FIELD_MAPPINGS: Record<string, keyof ClientPresetForm
   
   // === Services/Offering (maps to brand_context as fallback) ===
   'your_services': 'client_brand_context',
+  'user_services': 'client_brand_context',
   'my_offering': 'client_brand_context',
   'your_specialty': 'client_brand_context',
   'services': 'client_brand_context',
