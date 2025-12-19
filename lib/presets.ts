@@ -44,10 +44,12 @@ export async function upsertUserProfile(
       your_name: formData.your_name || null,
       your_email: formData.your_email || null,
       your_company: formData.your_company || null,
+      your_role: formData.your_role || null,
       your_website: formData.your_website || null,
       your_industry: formData.your_industry || null,
       your_services: formData.your_services || null,
       your_tone: formData.your_tone || null,
+      your_differentiator: formData.your_differentiator || null,
       your_brand_context: formData.your_brand_context || null,
       updated_at: new Date().toISOString(),
     }, {
@@ -114,13 +116,20 @@ export async function createClientPreset(
     .from('client_presets')
     .insert({
       user_id: userId,
+      // Basic Info
+      client_name: formData.client_name || null,
+      client_role: formData.client_role || null,
       client_company: formData.client_company,
-      client_contact_name: formData.client_contact_name || null,
-      client_contact_email: formData.client_contact_email || null,
       client_website: formData.client_website || null,
       client_industry: formData.client_industry || null,
+      // Contact
+      client_contact_name: formData.client_contact_name || null,
+      client_contact_email: formData.client_contact_email || null,
+      // Brand & Content
       client_tone: formData.client_tone || null,
+      client_target_audience: formData.client_target_audience || null,
       client_brand_context: formData.client_brand_context || null,
+      // Meta
       is_favorite: formData.is_favorite || false,
     })
     .select()

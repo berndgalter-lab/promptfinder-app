@@ -191,183 +191,189 @@ export function ClientPresetForm({
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* === COMPANY INFO === */}
-            <div className="space-y-2">
-              <Label className="text-zinc-300 flex items-center gap-2">
-                <Building2 className="w-4 h-4 text-zinc-500" />
-                Company Name <span className="text-red-400">*</span>
-              </Label>
-              <Input
-                placeholder="TechFlow GmbH"
-                value={formData.client_company}
-                onChange={(e) => handleChange('client_company', e.target.value)}
-                className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
-                required
-              />
-            </div>
-
-            {/* Website & Industry */}
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label className="text-zinc-300 flex items-center gap-2">
-                  <Globe className="w-4 h-4 text-zinc-500" />
-                  Website
-                </Label>
-                <Input
-                  type="url"
-                  placeholder="https://techflow.de"
-                  value={formData.client_website}
-                  onChange={(e) => handleChange('client_website', e.target.value)}
-                  className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-zinc-300 flex items-center gap-2">
-                  <Briefcase className="w-4 h-4 text-zinc-500" />
-                  Industry
-                </Label>
-                <Input
-                  placeholder="E-Commerce"
-                  value={formData.client_industry}
-                  onChange={(e) => handleChange('client_industry', e.target.value)}
-                  className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
-                />
-              </div>
-            </div>
-
-            {/* === CONTENT PERSON (for ghostwriting, etc.) === */}
-            <div className="border-t border-zinc-700 pt-4 mt-4">
-              <p className="text-sm font-medium text-zinc-400 mb-3">
-                Content Person (who you create content FOR)
+            
+            {/* ═══════════════════════════════════════════════════════════════
+                GRUPPE 1: BASIC INFO
+            ═══════════════════════════════════════════════════════════════ */}
+            <div className="space-y-3">
+              <p className="text-sm font-medium text-zinc-400 flex items-center gap-2">
+                <Building2 className="w-4 h-4" />
+                Basic Info
               </p>
-            </div>
+              
+              {/* Row 1: Name + Role */}
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label className="text-zinc-300">
+                    Client Name
+                  </Label>
+                  <Input
+                    placeholder="Sarah Miller"
+                    value={formData.client_name}
+                    onChange={(e) => handleChange('client_name', e.target.value)}
+                    className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
+                  />
+                </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label className="text-zinc-300 flex items-center gap-2">
-                  <User className="w-4 h-4 text-zinc-500" />
-                  Person Name
-                </Label>
-                <Input
-                  placeholder="Sarah Chen"
-                  value={formData.client_name}
-                  onChange={(e) => handleChange('client_name', e.target.value)}
-                  className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
-                />
-                <p className="text-xs text-zinc-500">
-                  For LinkedIn ghostwriting, blog posts, etc.
-                </p>
+                <div className="space-y-2">
+                  <Label className="text-zinc-300">
+                    Role / Title
+                  </Label>
+                  <Input
+                    placeholder="CEO & Founder"
+                    value={formData.client_role}
+                    onChange={(e) => handleChange('client_role', e.target.value)}
+                    className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
+                  />
+                </div>
               </div>
 
-              <div className="space-y-2">
-                <Label className="text-zinc-300 flex items-center gap-2">
-                  <Briefcase className="w-4 h-4 text-zinc-500" />
-                  Person Role / Title
-                </Label>
-                <Input
-                  placeholder="Founder & CEO at TechFlow"
-                  value={formData.client_role}
-                  onChange={(e) => handleChange('client_role', e.target.value)}
-                  className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
-                />
+              {/* Row 2: Company + Website */}
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label className="text-zinc-300">
+                    Company <span className="text-red-400">*</span>
+                  </Label>
+                  <Input
+                    placeholder="TechFlow Solutions"
+                    value={formData.client_company}
+                    onChange={(e) => handleChange('client_company', e.target.value)}
+                    className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-zinc-300">
+                    Website
+                  </Label>
+                  <Input
+                    type="url"
+                    placeholder="https://techflow.io"
+                    value={formData.client_website}
+                    onChange={(e) => handleChange('client_website', e.target.value)}
+                    className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
+                  />
+                </div>
+              </div>
+
+              {/* Row 3: Industry (half width) */}
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label className="text-zinc-300">
+                    Industry
+                  </Label>
+                  <Input
+                    placeholder="B2B SaaS"
+                    value={formData.client_industry}
+                    onChange={(e) => handleChange('client_industry', e.target.value)}
+                    className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
+                  />
+                </div>
               </div>
             </div>
 
-            {/* === BILLING CONTACT (for proposals & invoices) === */}
-            <div className="border-t border-zinc-700 pt-4 mt-4">
-              <p className="text-sm font-medium text-zinc-400 mb-3">
-                Billing Contact (who you send invoices TO)
+            {/* ═══════════════════════════════════════════════════════════════
+                GRUPPE 2: CONTACT
+            ═══════════════════════════════════════════════════════════════ */}
+            <div className="border-t border-zinc-700 pt-4 space-y-3">
+              <p className="text-sm font-medium text-zinc-400 flex items-center gap-2">
+                <Mail className="w-4 h-4" />
+                Contact (for invoices & proposals)
               </p>
+              
+              {/* Row 1: Contact Name + Contact Email */}
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label className="text-zinc-300">
+                    Contact Name
+                  </Label>
+                  <Input
+                    placeholder="Billing contact name"
+                    value={formData.client_contact_name}
+                    onChange={(e) => handleChange('client_contact_name', e.target.value)}
+                    className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-zinc-300">
+                    Contact Email
+                  </Label>
+                  <Input
+                    type="email"
+                    placeholder="billing@company.com"
+                    value={formData.client_contact_email}
+                    onChange={(e) => handleChange('client_contact_email', e.target.value)}
+                    className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
+                  />
+                </div>
+              </div>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label className="text-zinc-300 flex items-center gap-2">
-                  <User className="w-4 h-4 text-zinc-500" />
-                  Contact Name
-                </Label>
-                <Input
-                  placeholder="Anna Schmidt (Marketing)"
-                  value={formData.client_contact_name}
-                  onChange={(e) => handleChange('client_contact_name', e.target.value)}
-                  className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-zinc-300 flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-zinc-500" />
-                  Contact Email
-                </Label>
-                <Input
-                  type="email"
-                  placeholder="anna@techflow.de"
-                  value={formData.client_contact_email}
-                  onChange={(e) => handleChange('client_contact_email', e.target.value)}
-                  className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500"
-                />
-              </div>
-            </div>
-
-            {/* === BRAND & CONTENT === */}
-            <div className="border-t border-zinc-700 pt-4 mt-4">
-              <p className="text-sm font-medium text-zinc-400 mb-3">
+            {/* ═══════════════════════════════════════════════════════════════
+                GRUPPE 3: BRAND & CONTENT
+            ═══════════════════════════════════════════════════════════════ */}
+            <div className="border-t border-zinc-700 pt-4 space-y-3">
+              <p className="text-sm font-medium text-zinc-400 flex items-center gap-2">
+                <Users className="w-4 h-4" />
                 Brand & Content
               </p>
-            </div>
 
-            {/* Tone */}
-            <div className="space-y-2">
-              <Label className="text-zinc-300">Brand Voice / Tone</Label>
-              <Select
-                value={formData.client_tone || ''}
-                onValueChange={(value) => handleChange('client_tone', value)}
-              >
-                <SelectTrigger className="bg-zinc-800 border-zinc-700 text-white">
-                  <SelectValue placeholder="Select tone..." />
-                </SelectTrigger>
-                <SelectContent className="bg-zinc-800 border-zinc-700">
-                  {TONE_OPTIONS.map((option) => (
-                    <SelectItem 
-                      key={option.value} 
-                      value={option.value}
-                      className="text-white hover:bg-zinc-700"
-                    >
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+              {/* Tone / Voice - Select */}
+              <div className="space-y-2">
+                <Label className="text-zinc-300">Tone / Voice</Label>
+                <Select
+                  value={formData.client_tone || ''}
+                  onValueChange={(value) => handleChange('client_tone', value)}
+                >
+                  <SelectTrigger className="bg-zinc-800 border-zinc-700 text-white">
+                    <SelectValue placeholder="Select tone..." />
+                  </SelectTrigger>
+                  <SelectContent className="bg-zinc-800 border-zinc-700">
+                    {TONE_OPTIONS.map((option) => (
+                      <SelectItem 
+                        key={option.value} 
+                        value={option.value}
+                        className="text-white hover:bg-zinc-700"
+                      >
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-            {/* Target Audience */}
-            <div className="space-y-2">
-              <Label className="text-zinc-300 flex items-center gap-2">
-                <Users className="w-4 h-4 text-zinc-500" />
-                Target Audience
-              </Label>
-              <Textarea
-                placeholder="Who are this client's customers? e.g. 'Small business owners aged 30-50 looking for HR software'"
-                value={formData.client_target_audience}
-                onChange={(e) => handleChange('client_target_audience', e.target.value)}
-                className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500 min-h-[60px]"
-              />
-            </div>
+              {/* Target Audience - Textarea */}
+              <div className="space-y-2">
+                <Label className="text-zinc-300">
+                  Target Audience
+                </Label>
+                <Textarea
+                  placeholder="Marketing managers at mid-size B2B companies who struggle with..."
+                  value={formData.client_target_audience}
+                  onChange={(e) => handleChange('client_target_audience', e.target.value)}
+                  className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500 min-h-[70px]"
+                />
+              </div>
 
-            {/* Brand Context */}
-            <div className="space-y-2">
-              <Label className="text-zinc-300">About the Client (Free text)</Label>
-              <Textarea
-                placeholder="Describe the client's business, target audience, brand style, products/services..."
-                value={formData.client_brand_context}
-                onChange={(e) => handleChange('client_brand_context', e.target.value)}
-                className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500 min-h-[100px]"
-              />
+              {/* Brand Context - Textarea */}
+              <div className="space-y-2">
+                <Label className="text-zinc-300">Brand Context</Label>
+                <Textarea
+                  placeholder="TechFlow helps companies automate their workflows..."
+                  value={formData.client_brand_context}
+                  onChange={(e) => handleChange('client_brand_context', e.target.value)}
+                  className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500 min-h-[100px]"
+                />
+                <p className="text-xs text-zinc-500">
+                  Describe the business, products, unique selling points, brand philosophy...
+                </p>
+              </div>
             </div>
 
             {/* Favorite Checkbox */}
-            <div className="flex items-center space-x-2 pt-2">
+            <div className="flex items-center space-x-2 pt-2 border-t border-zinc-700">
               <Checkbox
                 id="is_favorite"
                 checked={formData.is_favorite}

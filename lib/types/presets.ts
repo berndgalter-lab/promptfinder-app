@@ -91,14 +91,15 @@ export interface ClientPresetFormData {
 
 // Tone options for dropdowns
 export const TONE_OPTIONS = [
-  { value: 'professional', label: 'Professional' },
-  { value: 'casual', label: 'Casual' },
-  { value: 'friendly', label: 'Friendly' },
-  { value: 'authoritative', label: 'Authoritative' },
-  { value: 'playful', label: 'Playful' },
-  { value: 'bold', label: 'Bold' },
-  { value: 'empathetic', label: 'Empathetic' },
-  { value: 'direct', label: 'Direct' },
+  { value: 'professional', label: 'Professional & Formal' },
+  { value: 'friendly', label: 'Friendly & Conversational' },
+  { value: 'casual', label: 'Casual & Relaxed' },
+  { value: 'bold', label: 'Bold & Provocative' },
+  { value: 'playful', label: 'Witty & Playful' },
+  { value: 'inspirational', label: 'Inspirational & Motivating' },
+  { value: 'educational', label: 'Educational & Informative' },
+  { value: 'empathetic', label: 'Empathetic & Caring' },
+  { value: 'direct', label: 'Direct & No-Nonsense' },
 ] as const;
 
 // Auto-fill field mappings for User Profile ("For myself")
