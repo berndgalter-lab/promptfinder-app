@@ -49,6 +49,7 @@ export async function upsertUserProfile(
       your_industry: formData.your_industry || null,
       your_services: formData.your_services || null,
       your_tone: formData.your_tone || null,
+      your_target_audience: formData.your_target_audience || null,
       your_differentiator: formData.your_differentiator || null,
       your_brand_context: formData.your_brand_context || null,
       updated_at: new Date().toISOString(),

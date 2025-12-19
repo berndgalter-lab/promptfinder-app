@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Save, Loader2, User, Building2, Mail, Globe, Briefcase, Sparkles, FileText, Target } from 'lucide-react';
+import { Save, Loader2, User, Building2, Mail, Globe, Briefcase, Sparkles, FileText, Target, Users } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { getUserProfile, upsertUserProfile } from '@/lib/presets';
 import { TONE_OPTIONS, type UserProfileFormData } from '@/lib/types/presets';
@@ -35,6 +35,7 @@ export function UserProfileForm({ userId }: UserProfileFormProps) {
     your_industry: '',
     your_services: '',
     your_tone: '',
+    your_target_audience: '',
     your_differentiator: '',
     your_brand_context: '',
   });
@@ -54,6 +55,7 @@ export function UserProfileForm({ userId }: UserProfileFormProps) {
             your_industry: profile.your_industry || '',
             your_services: profile.your_services || '',
             your_tone: profile.your_tone || '',
+            your_target_audience: profile.your_target_audience || '',
             your_differentiator: profile.your_differentiator || '',
             your_brand_context: profile.your_brand_context || '',
           });
@@ -251,6 +253,23 @@ export function UserProfileForm({ userId }: UserProfileFormProps) {
                 ))}
               </SelectContent>
             </Select>
+          </div>
+
+          {/* Target Audience */}
+          <div className="space-y-2">
+            <Label className="text-zinc-300 flex items-center gap-2">
+              <Users className="w-4 h-4 text-zinc-500" />
+              Your Target Audience
+            </Label>
+            <Textarea
+              placeholder="Marketing managers at mid-size B2B companies who struggle with..."
+              value={formData.your_target_audience}
+              onChange={(e) => handleChange('your_target_audience', e.target.value)}
+              className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500 min-h-[80px]"
+            />
+            <p className="text-xs text-zinc-500">
+              Who are you trying to reach with your content?
+            </p>
           </div>
 
           {/* Differentiator / USP */}

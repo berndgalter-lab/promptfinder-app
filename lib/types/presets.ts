@@ -11,6 +11,7 @@ export interface UserProfile {
   your_industry: string | null;
   your_services: string | null;
   your_tone: string | null;
+  your_target_audience: string | null;
   your_differentiator: string | null;
   your_brand_context: string | null;
   created_at: string;
@@ -63,6 +64,7 @@ export interface UserProfileFormData {
   your_industry?: string;
   your_services?: string;
   your_tone?: string;
+  your_target_audience?: string;
   your_differentiator?: string;
   your_brand_context?: string;
 }
@@ -166,6 +168,11 @@ export const USER_PROFILE_FIELD_MAPPINGS: Record<string, keyof UserProfileFormDa
   'voice': 'your_tone',
   'writing_style': 'your_tone',
   'style': 'your_tone',
+  
+  // === Target Audience Varianten ===
+  'your_target_audience': 'your_target_audience',
+  'user_target_audience': 'your_target_audience',
+  'my_audience': 'your_target_audience',
   
   // === Differentiator Varianten ===
   'differentiator': 'your_differentiator',
