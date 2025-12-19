@@ -181,7 +181,14 @@ export function CleanWorkflowRunner({ workflow, userId, onComplete }: CleanWorkf
     sourceType?: 'self' | 'client',
     clientName?: string
   ) => {
-    setFieldValues(prev => ({ ...prev, ...values }));
+    console.log('[CleanWorkflowRunner] handlePresetAutoFill called with:', values);
+    console.log('[CleanWorkflowRunner] Current fieldValues before update:', fieldValues);
+    
+    setFieldValues(prev => {
+      const newValues = { ...prev, ...values };
+      console.log('[CleanWorkflowRunner] New fieldValues after update:', newValues);
+      return newValues;
+    });
     
     // Track auto-filled fields for UI indicators
     const newAutoFilled = new Map<string, AutoFilledField>();

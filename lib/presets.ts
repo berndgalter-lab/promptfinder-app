@@ -216,8 +216,18 @@ export async function updateClientLastUsed(presetId: string): Promise<void> {
 
 import { 
   USER_PROFILE_FIELD_MAPPINGS as userMappings, 
-  CLIENT_PRESET_FIELD_MAPPINGS as clientMappings 
+  CLIENT_PRESET_FIELD_MAPPINGS as clientMappings,
+  TONE_OPTIONS,
 } from '@/lib/types/presets';
+
+/**
+ * Convert tone value to label for Select fields
+ * e.g., "casual" → "Casual & Relaxed"
+ */
+function toneValueToLabel(value: string): string {
+  const option = TONE_OPTIONS.find(opt => opt.value === value.toLowerCase());
+  return option ? option.label : value;
+}
 
 /**
  * Get auto-fill values from user profile for workflow fields
@@ -240,10 +250,16 @@ export function getAutoFillFromUserProfile(
     const normalizedName = fieldName.toLowerCase().replace(/[^a-z_]/g, '');
     const mappedKey = userMappings[normalizedName];
     
-    console.log(`[AutoFill] Field "${fieldName}" → normalized: "${normalizedName}" → mappedKey: "${mappedKey}" → value: "${mappedKey ? profile[mappedKey] : 'N/A'}"`);
-    
     if (mappedKey && profile[mappedKey]) {
-      result[fieldName] = profile[mappedKey] as string;
+      let value = profile[mappedKey] as string;
+      
+      // Convert tone values to labels for Select compatibility
+      if (mappedKey === 'your_tone' || normalizedName.includes('tone')) {
+        value = toneValueToLabel(value);
+      }
+      
+      console.log(`[AutoFill] Field "${fieldName}" → mappedKey: "${mappedKey}" → value: "${value}"`);
+      result[fieldName] = value;
     }
   }
   
@@ -269,8 +285,12 @@ export function getAutoFillFromClientPreset(
     
     const clientMappedKey = clientMappings[normalizedName];
     if (clientMappedKey) {
-      const value = preset[clientMappedKey as keyof ClientPreset];
+      let value = preset[clientMappedKey as keyof ClientPreset];
       if (value && typeof value === 'string') {
+        // Convert tone values to labels for Select compatibility
+        if (clientMappedKey === 'client_tone' || normalizedName.includes('tone')) {
+          value = toneValueToLabel(value);
+        }
         result[fieldName] = value;
       }
     }
