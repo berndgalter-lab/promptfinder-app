@@ -463,7 +463,7 @@ export function CleanWorkflowRunner({ workflow, userId, onComplete }: CleanWorkf
                 )}
                 
                 {/* Auto-fill indicator (shown if field was auto-filled from preset) */}
-                <AutoFillHint autoFilledField={autoFilledFields.get(field.name)} />
+                <AutoFillHint fieldName={field.name} autoFilledFields={autoFilledFields} />
               </div>
             ))}
 
