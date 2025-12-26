@@ -1,0 +1,579 @@
+# PromptFinder Workflow Playbook v1.0
+
+> **Dieses Dokument ist die Single Source of Truth für alle Workflows.**
+> Lade es in jeden Chat hoch, wenn wir an Workflows arbeiten.
+
+---
+
+## 🌍 REGEL #0: Sprache
+
+**Alles ist auf Englisch.**
+
+| Element | Sprache |
+|---------|---------|
+| Workflow Title | English |
+| Workflow Description | English |
+| Field Labels | English |
+| Field Placeholders | English |
+| Prompt Templates | English |
+| UI Copy | English |
+| Checkbox Labels | English |
+| Error Messages | English |
+
+**Keine Ausnahmen.** Auch wenn der User auf Deutsch fragt, sind alle Workflow-Inhalte auf Englisch.
+
+---
+
+## 🎯 REGEL #1: Der goldene Standard
+
+### Jeder Workflow MUSS einen fertigen, nutzbaren Output liefern.
+
+**Das Versprechen an den User:**
+> "Nach diesem Workflow hast du ein Dokument, das du sofort nutzen oder mit minimalen Anpassungen finalisieren kannst."
+
+| ✅ RICHTIG | ❌ FALSCH |
+|-----------|----------|
+| Fertiger Blog Post | Tipps zum Blog schreiben |
+| Fertiges Proposal PDF-ready | Checkliste für Proposals |
+| Fertige Job Description zum Posten | Guidelines für Stellenanzeigen |
+| Fertiger Onboarding-Plan für Tag 1 | Best Practices für Onboarding |
+| 30 fertige LinkedIn Posts mit Hooks | "So schreibst du gute Posts" |
+
+### Der Test
+
+Frage dich bei jedem Workflow:
+
+1. **Kann ein Chef das sofort seinem Team geben?**
+2. **Kann ein Freelancer das sofort dem Kunden schicken?**
+3. **Kann ein Marketer das sofort veröffentlichen?**
+
+Wenn NEIN → Workflow ist nicht gut genug.
+
+---
+
+## 📦 Zwei Workflow-Typen
+
+### 1. Quick Workflows (`is_sop: false`)
+
+**Zweck:** Schneller Output für eine einzelne Aufgabe
+**Dauer:** 2-5 Minuten
+**Struktur:** 1 Prompt, sofortiger Output
+
+**Beispiele:**
+- LinkedIn Post Generator
+- Email Reply Generator
+- Ad Copy Generator
+
+**Aufbau:**
+```json
+{
+  "workflow_type": "combined",
+  "steps": [
+    {
+      "type": "prompt",
+      "fields": [...],
+      "prompt_template": "..."
+    }
+  ]
+}
+```
+
+### 2. SOPs (`is_sop: true`)
+
+**Zweck:** Komplexer Output der mehrere Schritte braucht
+**Dauer:** 10-45 Minuten
+**Struktur:** 3-5 Steps mit Pre-Flight, Prompts, Final Review
+
+**Beispiele:**
+- Blog Post Creator (Research → Outline → Draft)
+- Client Proposal Generator (Analyse → Proposal → Review)
+- LinkedIn Content Strategy (Pillars → Calendar → Review)
+
+**Aufbau:**
+```json
+{
+  "workflow_type": "sequential",
+  "steps": [
+    { "type": "checkpoint", "title": "Pre-Flight Check", "blocking": true },
+    { "type": "prompt", "chat_instruction": "new_chat", ... },
+    { "type": "prompt", "chat_instruction": "same_chat", ... },
+    { "type": "checkpoint", "title": "Final Review", "blocking": true }
+  ]
+}
+```
+
+---
+
+## 🏗️ SOP Struktur-Standards
+
+### Pflicht-Elemente für jeden SOP
+
+| Element | Wo | Warum |
+|---------|-----|-------|
+| **Pre-Flight Check** | Step 1 | Stellt sicher dass User vorbereitet ist |
+| **"Why" bei jedem Step** | Alle Steps | User versteht den Sinn |
+| **Quality Requirements** | In Prompt-Templates | AI weiß was "gut" bedeutet |
+| **same_chat Flow** | Ab Step 2 | Kontext bleibt erhalten |
+| **Final Review** | Letzter Step | Qualitätskontrolle |
+| **Deliverables** | sop_details | Klar was rauskommt |
+| **Next Actions** | suggested_next_actions | User weiß was als nächstes |
+
+### Pre-Flight Check Template
+
+```json
+{
+  "number": 1,
+  "type": "checkpoint",
+  "title": "Pre-Flight Check",
+  "description": "Make sure you have everything ready",
+  "duration_minutes": 2,
+  "why": "2 Minuten Vorbereitung sparen 30 Minuten Nacharbeit.",
+  "items": [
+    {"label": "Ich habe X klar definiert", "required": true},
+    {"label": "Ich habe Y zur Hand", "required": true},
+    {"label": "Ich habe Z Minuten Zeit", "required": true},
+    {"label": "Optional: ...", "required": false}
+  ],
+  "blocking": true
+}
+```
+
+### Prompt Step Template
+
+```json
+{
+  "number": 2,
+  "type": "prompt",
+  "title": "Create [Deliverable]",
+  "description": "Was in diesem Step passiert",
+  "duration_minutes": 5,
+  "why": "Warum dieser Step wichtig ist",
+  "chat_instruction": "new_chat",
+  "fields": [...],
+  "prompt_template": "...",
+  "quality_checks": [
+    "Check 1",
+    "Check 2"
+  ],
+  "common_mistakes": [
+    "Fehler 1",
+    "Fehler 2"
+  ]
+}
+```
+
+### Final Review Template
+
+```json
+{
+  "number": 4,
+  "type": "checkpoint",
+  "title": "Final Review",
+  "description": "Quick quality check before you're done",
+  "duration_minutes": 3,
+  "why": "3 Minuten Review verhindern peinliche Fehler.",
+  "items": [
+    {"label": "Output ist vollständig", "required": true},
+    {"label": "Keine Platzhalter mehr drin", "required": true},
+    {"label": "Ich würde das so abschicken/veröffentlichen", "required": true}
+  ],
+  "blocking": true
+}
+```
+
+---
+
+## 🏷️ Feld-Naming-Standards
+
+### Prefix-Regel (IMMER befolgen)
+
+| Prefix | Bedeutung | Preset-Quelle |
+|--------|-----------|---------------|
+| `user_*` | Daten des Users | User Profile |
+| `client_*` | Daten des Kunden | Client Preset |
+| Kein Prefix | Projekt-spezifisch | Manuell eingeben |
+
+### User Profile Felder
+
+| Feldname | Label | Typ | Beschreibung |
+|----------|-------|-----|--------------|
+| `user_name` | Your Name | text | Name des Users |
+| `user_email` | Your Email | text | E-Mail |
+| `user_company` | Your Company | text | Firmenname |
+| `user_role` | Your Role | text | Rolle/Titel |
+| `user_website` | Your Website | text | Website |
+| `user_industry` | Your Industry | text | Branche |
+| `user_services` | Your Services | textarea | Leistungen/Angebot |
+| `user_tone` | Your Tone | select | Schreibstil |
+| `user_differentiator` | Your USP | textarea | Was macht dich anders |
+
+### Client Preset Felder
+
+| Feldname | Label | Typ | Beschreibung |
+|----------|-------|-----|--------------|
+| `client_name` | Client Name | text | Person für Content |
+| `client_role` | Client Role | text | Rolle der Person |
+| `client_company` | Client Company | text | Firmenname |
+| `client_website` | Client Website | text | Website |
+| `client_industry` | Client Industry | text | Branche |
+| `client_contact_name` | Contact Name | text | Ansprechpartner (Billing) |
+| `client_contact_email` | Contact Email | text | E-Mail |
+| `client_tone` | Client Tone | select | Brand Voice |
+| `client_target_audience` | Target Audience | textarea | Zielgruppe |
+
+### Projekt-spezifische Felder (Beispiele)
+
+| Feldname | Wann verwenden |
+|----------|----------------|
+| `topic` | Thema/Keyword |
+| `goal` | Ziel des Outputs |
+| `context` | Zusätzlicher Kontext |
+| `deadline` | Zeitrahmen |
+| `budget` | Budget |
+| `word_count` | Gewünschte Länge |
+| `format` | Format-Auswahl |
+| `num_items` | Anzahl (z.B. "5 Posts") |
+
+---
+
+## 📝 Prompt-Template Standards
+
+### Struktur eines guten Prompts
+
+```markdown
+[Kontext: Wer du bist, was du brauchst]
+
+## Input
+- Feld 1: {{field_1}}
+- Feld 2: {{field_2}}
+
+## Aufgabe
+[Klar beschreiben was der Output sein soll]
+
+## Output-Anforderungen
+1. [Spezifische Anforderung]
+2. [Spezifische Anforderung]
+3. [Spezifische Anforderung]
+
+## Format
+[Wie der Output strukturiert sein soll]
+
+## Wichtig
+- [Kritische Regel 1]
+- [Kritische Regel 2]
+```
+
+### Quality Requirements (immer einbauen)
+
+**In jedem Prompt-Template müssen Quality Requirements stehen:**
+
+```markdown
+## QUALITY REQUIREMENTS
+The output MUST:
+1. Be immediately usable (no placeholders like [INSERT HERE])
+2. Be specific to the inputs provided (not generic)
+3. Follow the requested format exactly
+4. Be professional and polished
+5. [Workflow-spezifische Requirements]
+```
+
+### Anti-Patterns (NIEMALS)
+
+| ❌ Nicht | ✅ Stattdessen |
+|---------|---------------|
+| "Give me some ideas for..." | "Create 10 specific [items] with..." |
+| "What should I consider..." | "Write the complete [document]..." |
+| "Help me think about..." | "Generate the final [output]..." |
+| Generische Tipps | Fertiger, spezifischer Output |
+| Platzhalter im Output | Vollständig ausgefüllter Output |
+
+---
+
+## ✅ Beispiel: Guter Quick Workflow
+
+```json
+{
+  "slug": "linkedin-post-generator",
+  "title": "LinkedIn Post Generator",
+  "is_sop": false,
+  "workflow_type": "combined",
+  "estimated_minutes": 3,
+  "time_saved_minutes": 20,
+  "steps": [
+    {
+      "type": "prompt",
+      "fields": [
+        {
+          "name": "topic",
+          "label": "Post Topic",
+          "type": "text",
+          "required": true,
+          "placeholder": "Lessons from my first failed startup"
+        },
+        {
+          "name": "client_target_audience",
+          "label": "Target Audience",
+          "type": "text",
+          "required": true,
+          "placeholder": "B2B founders, startup employees"
+        },
+        {
+          "name": "client_tone",
+          "label": "Tone",
+          "type": "select",
+          "required": true,
+          "options": ["Professional", "Casual", "Provocative", "Vulnerable"]
+        },
+        {
+          "name": "goal",
+          "label": "Post Goal",
+          "type": "select",
+          "required": true,
+          "options": ["Engagement", "Authority", "Lead Generation", "Hiring"]
+        }
+      ],
+      "prompt_template": "Write a LinkedIn post that's ready to copy and publish.\n\n## Input\n- Topic: {{topic}}\n- Target Audience: {{client_target_audience}}\n- Tone: {{client_tone}}\n- Goal: {{goal}}\n\n## QUALITY REQUIREMENTS\nThe post MUST:\n1. Start with a hook (first line that stops the scroll)\n2. Be 150-200 words (optimal for LinkedIn)\n3. Use short paragraphs (1-2 sentences max)\n4. End with a clear call-to-action or question\n5. NOT use hashtags in the main text (add 3-5 at the very end)\n6. Be ready to post AS-IS (no placeholders)\n\n## Format\n[Hook line]\n\n[2-3 short paragraphs with the story/insight]\n\n[Call-to-action or question]\n\n---\n#hashtag1 #hashtag2 #hashtag3"
+    }
+  ]
+}
+```
+
+---
+
+## ✅ Beispiel: Guter SOP
+
+```json
+{
+  "slug": "ai-client-proposal-generator",
+  "title": "Client Proposal Generator",
+  "is_sop": true,
+  "workflow_type": "sequential",
+  "estimated_minutes": 15,
+  "time_saved_minutes": 90,
+  "sop_details": {
+    "target_role": "Freelancer, Agency, Consultant",
+    "prerequisites": [
+      "Client inquiry or project brief",
+      "Your service offerings and pricing"
+    ],
+    "outcome_description": "A complete, professional proposal ready to send to the client.",
+    "example_output": "[Vollständiges Beispiel-Proposal hier]"
+  },
+  "steps": [
+    {
+      "number": 1,
+      "type": "checkpoint",
+      "title": "Pre-Flight Check",
+      "description": "Make sure you have all information needed",
+      "duration_minutes": 2,
+      "why": "Missing info = generic proposal = lost deal.",
+      "items": [
+        {"label": "I have the client's inquiry/brief", "required": true},
+        {"label": "I know my pricing for this type of project", "required": true},
+        {"label": "I have 15 minutes to complete this", "required": true}
+      ],
+      "blocking": true
+    },
+    {
+      "number": 2,
+      "type": "prompt",
+      "title": "Generate Proposal",
+      "description": "Create the complete proposal document",
+      "duration_minutes": 10,
+      "why": "One comprehensive prompt creates the full proposal.",
+      "chat_instruction": "new_chat",
+      "fields": [
+        {"name": "client_company", "label": "Client/Company Name", "type": "text", "required": true},
+        {"name": "client_industry", "label": "Client Industry", "type": "text", "required": true},
+        {"name": "inquiry_text", "label": "Client's Inquiry/Brief", "type": "textarea", "required": true},
+        {"name": "user_company", "label": "Your Company", "type": "text", "required": true},
+        {"name": "user_services", "label": "Your Services", "type": "textarea", "required": true},
+        {"name": "price_range", "label": "Price Range", "type": "text", "required": true},
+        {"name": "timeline", "label": "Estimated Timeline", "type": "text", "required": true}
+      ],
+      "prompt_template": "Create a complete, professional client proposal.\n\n## Client Information\n- Company: {{client_company}}\n- Industry: {{client_industry}}\n- Their Request: {{inquiry_text}}\n\n## My Information\n- Company: {{user_company}}\n- Services: {{user_services}}\n- Price Range: {{price_range}}\n- Timeline: {{timeline}}\n\n## QUALITY REQUIREMENTS\nThe proposal MUST:\n1. Be ready to send AS-IS (no [INSERT] placeholders)\n2. Address the client's specific request/pain points\n3. Include clear scope, deliverables, timeline, and pricing\n4. Sound professional but not robotic\n5. Have a clear next step / call-to-action\n\n## Format\n# Proposal for {{client_company}}\n\n## Executive Summary\n[2-3 sentences: What we'll do and why we're the right fit]\n\n## Understanding Your Needs\n[Show we understood their request]\n\n## Proposed Solution\n[What we'll deliver]\n\n## Scope & Deliverables\n[Bullet list of concrete deliverables]\n\n## Timeline\n[Week-by-week or phase breakdown]\n\n## Investment\n[Pricing with what's included]\n\n## Why Us\n[2-3 reasons to choose us]\n\n## Next Steps\n[Clear CTA]\n\nWrite the complete proposal now.",
+      "quality_checks": [
+        "No placeholder text remaining",
+        "Addresses client's specific needs",
+        "Pricing is clear",
+        "Has clear next steps"
+      ]
+    },
+    {
+      "number": 3,
+      "type": "checkpoint",
+      "title": "Final Review",
+      "description": "Quick check before sending",
+      "duration_minutes": 3,
+      "why": "One typo or wrong number can cost you the deal.",
+      "items": [
+        {"label": "Client name is spelled correctly", "required": true},
+        {"label": "Pricing is accurate", "required": true},
+        {"label": "Timeline is realistic", "required": true},
+        {"label": "No placeholder text remaining", "required": true},
+        {"label": "I would send this as-is", "required": true}
+      ],
+      "blocking": true
+    }
+  ],
+  "deliverables": [
+    {"name": "Client Proposal", "format": "document", "step": 2}
+  ],
+  "suggested_next_actions": [
+    "Export to PDF",
+    "Send to client",
+    "Set follow-up reminder for 3 days"
+  ]
+}
+```
+
+---
+
+## ❌ Anti-Patterns
+
+### 1. Checklisten statt Output
+
+**Schlecht:**
+```
+"Hier ist eine Checkliste was in einem Proposal enthalten sein sollte:
+- Executive Summary
+- Scope
+- Timeline
+..."
+```
+
+**Gut:**
+```
+"# Proposal für TechCorp GmbH
+
+## Executive Summary
+Wir werden für TechCorp eine moderne E-Commerce Plattform entwickeln..."
+[Vollständiges Proposal]
+```
+
+### 2. Generische Tipps
+
+**Schlecht:**
+```
+"Um gute LinkedIn Posts zu schreiben, solltest du:
+1. Mit einem Hook starten
+2. Kurze Absätze nutzen
+..."
+```
+
+**Gut:**
+```
+"Ich habe letzte Woche meinen größten Kunden verloren.
+
+Nicht wegen schlechter Arbeit.
+Nicht wegen des Preises.
+
+Sondern weil ich eine E-Mail nicht beantwortet habe.
+
+[Fertiger Post zum Kopieren]"
+```
+
+### 3. Zu viele Felder
+
+**Schlecht:** 20 Felder die der User ausfüllen muss
+
+**Gut:** 5-8 Felder, der Rest wird durch Presets gefüllt
+
+### 4. Vage Prompts
+
+**Schlecht:**
+```
+"Help me write a blog post about {{topic}}"
+```
+
+**Gut:**
+```
+"Write a complete 1,500-word blog post about {{topic}}.
+
+## REQUIREMENTS
+1. Start with a hook that calls out the reader's pain
+2. Include 3-5 subheadings
+3. End with clear takeaways
+4. Be ready to publish AS-IS
+..."
+```
+
+---
+
+## 🔄 Preset-Mapping Logik
+
+### Wie Auto-Fill funktioniert
+
+**Wenn User "Für mich selbst" wählt:**
+- `user_*` Felder → aus User Profile
+- `client_*` Felder → LEER (oder aus User Profile als Fallback)
+
+**Wenn User "Für Kunde: X" wählt:**
+- `user_*` Felder → aus User Profile (Absender-Daten)
+- `client_*` Felder → aus Client Preset
+
+### Spezialfall: Content für Kunden
+
+Bei Content-Workflows (LinkedIn, Blog) wo du ALS Kunde schreibst:
+
+- `client_name` = Name der Person für die du schreibst
+- `client_tone` = Deren Schreibstil
+- `client_target_audience` = Deren Zielgruppe
+
+---
+
+## 📊 Workflow-Kategorien
+
+| ID | Kategorie | Beispiele |
+|----|-----------|-----------|
+| 1 | Content & Writing | Blog Post, Ebook, Video Script |
+| 2 | Marketing | Ads, Email, Social Media, SEO |
+| 3 | Business & Ops | Proposals, HR, Finance, Strategy |
+| 4 | Productivity | Meeting Notes, Summaries |
+| 5 | Career | Resume, Cover Letter, Interview |
+| 6 | Development | Code Review, Documentation |
+
+---
+## ✅ Quick Workflow Checkliste
+
+- [ ] 1 Step, 1 Prompt
+- [ ] 4-7 Felder (nicht mehr)
+- [ ] Preset-Felder nutzen wo sinnvoll (`user_*`, `client_*`)
+- [ ] Prompt hat Quality Requirements
+- [ ] Output ist sofort nutzbar (keine Tipps)
+- [ ] estimated_minutes: 2-8
+- [ ] time_saved_minutes: realistisch (3-5x estimated)
+- [ ] Gute Placeholder-Texte mit konkreten Beispielen
+---
+
+## 🚀 Workflow erstellen: Checkliste
+
+Bevor du einen Workflow als fertig markierst:
+
+- [ ] **Output ist fertig nutzbar** (keine Platzhalter, keine Tipps)
+- [ ] **Felder nutzen korrekte Prefixe** (`user_*` oder `client_*`)
+- [ ] **Preset-relevante Felder sind gemappt**
+- [ ] **estimated_minutes ist realistisch**
+- [ ] **time_saved_minutes ist glaubwürdig**
+- [ ] **Bei SOP: Pre-Flight Check vorhanden**
+- [ ] **Bei SOP: Final Review vorhanden**
+- [ ] **Bei SOP: same_chat ab Step 2**
+- [ ] **Prompt hat Quality Requirements**
+- [ ] **Placeholder-Texte sind hilfreich**
+
+---
+
+## 📌 Zusammenfassung
+
+1. **Regel #1:** Immer fertigen, nutzbaren Output liefern
+2. **Prefixe:** `user_*` = User, `client_*` = Kunde, ohne = manuell
+3. **SOPs:** Pre-Flight → Prompts (same_chat) → Final Review
+4. **Quick Workflows:** Ein Prompt, sofortiger Output
+5. **Prompts:** Immer Quality Requirements einbauen
+6. **Test:** "Würde ein Chef das sofort seinem Team geben?"
+
+---
+
+
+
+*Playbook Version 1.0 – Stand: Dezember 2025*
