@@ -1,0 +1,560 @@
+# PromptFinder Migration Plan - Cursor Context Document
+
+## 🎯 Project Overview
+
+**PromptFinder** is a Next.js application that provides structured AI workflows ("Prompt SOPs") for tools like ChatGPT, Claude, and Cursor.
+
+**Current State:** Working MVP with auth, workflows, subscriptions, and usage tracking.
+
+**Goal:** Pivot from "SOP Library" to "AI Workflow Platform with Brand Presets" to capture the team/agency market.
+
+---
+
+## 🏗️ Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Framework | Next.js 14+ (App Router) |
+| Language | TypeScript |
+| Database | Supabase (PostgreSQL) |
+| Auth | Supabase Auth (Google OAuth, Magic Link, Password) |
+| Payments | LemonSqueezy |
+| Styling | Tailwind CSS + shadcn/ui |
+| Hosting | Vercel (assumed) |
+
+---
+
+## 📁 Project Structure
+
+```
+/app                    # Next.js App Router pages
+  /dashboard           # User dashboard
+  /workflows           # Workflow listing and detail pages
+  /settings            # User settings
+  /admin               # Admin panel
+  /api                 # API routes
+  
+/components
+  /auth                # AuthButton, SignInModal
+  /dashboard           # AccountSettings, SubscriptionManagement, UpgradeToPro
+  /workflow            # WorkflowRunner, WorkflowCard, step components
+  /ui                  # shadcn/ui components (Button, Card, Input, etc.)
+  /nav                 # NavLinks, UserDropdown
+  
+/lib
+  /supabase            # Supabase client
+  /types               # TypeScript types (workflow.ts)
+  /hooks               # Custom hooks (useWorkflowLimit)
+  achievements.ts      # Achievement system
+  subscription.ts      # Subscription logic
+  usage-tracking.ts    # Usage tracking (GDPR-safe)
+```
+
+---
+
+## 🗄️ Current Database Schema (Supabase)
+
+### Existing Tables (confirmed from code):
+
+```sql
+-- User profiles
+profiles (
+  id UUID PRIMARY KEY REFERENCES auth.users,
+  -- other profile fields
+)
+
+-- Workflows (the SOP library)
+workflows (
+  id UUID PRIMARY KEY,
+  slug TEXT UNIQUE,
+  title TEXT,
+  description TEXT,
+  icon TEXT,
+  time_saved_minutes INT,
+  estimated_minutes INT,
+  featured BOOLEAN,
+  tags TEXT[],
+  workflow_type TEXT, -- 'single' | 'sequential'
+  tool TEXT, -- 'chatgpt' | 'claude' | 'cursor' | 'any'
+  steps JSONB, -- Array of step objects
+  sop_details JSONB, -- SOP-specific metadata
+  deliverables JSONB,
+  suggested_next_actions TEXT[],
+  category_id INT REFERENCES categories,
+  updated_at TIMESTAMP,
+  created_at TIMESTAMP
+)
+
+-- Categories
+categories (
+  id SERIAL PRIMARY KEY,
+  slug TEXT UNIQUE,
+  name TEXT,
+  icon TEXT
+)
+
+-- User usage tracking (GDPR-safe)
+user_usage (
+  id UUID PRIMARY KEY,
+  user_id UUID REFERENCES auth.users,
+  workflow_id UUID REFERENCES workflows,
+  input_values JSONB, -- Only select field values, no free text
+  used_at TIMESTAMP
+)
+
+-- User favorites
+user_favorites (
+  id UUID PRIMARY KEY,
+  user_id UUID REFERENCES auth.users,
+  workflow_id UUID REFERENCES workflows,
+  created_at TIMESTAMP
+)
+
+-- User stats
+user_stats (
+  user_id UUID PRIMARY KEY REFERENCES auth.users,
+  total_workflows INT,
+  last_used_at TIMESTAMP
+)
+
+-- User achievements
+user_achievements (
+  id UUID PRIMARY KEY,
+  user_id UUID REFERENCES auth.users,
+  achievement_code TEXT,
+  unlocked_at TIMESTAMP
+)
+
+-- Subscriptions (LemonSqueezy)
+subscriptions (
+  id UUID PRIMARY KEY,
+  user_id UUID REFERENCES auth.users,
+  status TEXT, -- 'active' | 'canceled' | 'past_due' | 'paused'
+  plan TEXT, -- 'free' | 'monthly' | 'annual'
+  -- other LemonSqueezy fields
+)
+```
+
+---
+
+## 🔐 Authentication System
+
+### Current Implementation:
+- **Supabase Auth** with multiple providers
+- **Google OAuth** - Primary sign-in method
+- **Magic Link** - Email-based passwordless login
+- **Email + Password** - Traditional login
+
+### Key Files:
+- `components/auth/SignInModal.tsx` - Main auth modal
+- `components/auth/AuthButton.tsx` - Nav sign-in button
+- `lib/supabase/client.ts` - Supabase client
+
+### Auth Flow:
+1. User clicks "Sign In" → Opens `SignInModal`
+2. User chooses auth method
+3. Successful auth → Redirect to `/dashboard` or previous page
+4. Session managed by Supabase
+
+---
+
+## 💳 Subscription System
+
+### Current Implementation:
+- **LemonSqueezy** integration
+- **Plans:** Free (5 workflows/month), Pro Monthly ($19), Pro Annual ($190)
+- **Customer Portal:** External link to LemonSqueezy billing
+
+### Key Files:
+- `components/dashboard/UpgradeToPro.tsx` - Upgrade CTA
+- `components/dashboard/SubscriptionManagement.tsx` - Pro user management
+- `lib/subscription.ts` - Subscription helper functions
+
+### Checkout URLs:
+```typescript
+const MONTHLY_CHECKOUT = 'https://promptfinder.lemonsqueezy.com/buy/8339284b-...';
+const ANNUAL_CHECKOUT = 'https://promptfinder.lemonsqueezy.com/buy/5f3367e2-...';
+const CUSTOMER_PORTAL = 'https://promptfinder.lemonsqueezy.com/billing';
+```
+
+---
+
+## 🔄 Workflow System
+
+### Workflow Types:
+1. **Single Mode** - One prompt step, immediate use
+2. **Multi-Step** - Sequential steps with progress
+3. **SOP Mode** - Multi-step with overview, prerequisites, deliverables
+
+### Step Types (from `lib/types/workflow.ts`):
+```typescript
+type StepType = 'prompt' | 'instruction' | 'input' | 'checkpoint';
+
+interface PromptStep {
+  type: 'prompt';
+  number: number;
+  title: string;
+  description?: string;
+  prompt_template: string;
+  fields: PromptField[];
+  duration_minutes?: number;
+  why?: string; // SOP-specific
+  quality_checks?: string[];
+  common_mistakes?: string[];
+  chat_instruction?: 'new_chat' | 'same_chat' | 'paste_previous';
+}
+
+interface InstructionStep {
+  type: 'instruction';
+  number: number;
+  title: string;
+  description?: string;
+  instruction_text: string;
+  instruction_icon?: string;
+  duration_minutes?: number;
+  why?: string;
+  common_mistakes?: string[];
+}
+
+interface InputStep {
+  type: 'input';
+  number: number;
+  title: string;
+  description?: string;
+  input_label: string;
+  input_placeholder?: string;
+  input_description?: string;
+  input_name?: string; // Variable name for cross-step reference
+}
+
+interface CheckpointStep {
+  type: 'checkpoint';
+  number: number;
+  title: string;
+  description?: string;
+  items: { label: string; required: boolean }[];
+  blocking?: boolean;
+}
+```
+
+### Key Components:
+- `WorkflowRunner.tsx` - Main workflow execution engine
+- `CleanWorkflowRunner.tsx` - Simplified single-mode runner
+- `SOPOverview.tsx` - SOP landing page before starting
+- `steps/PromptStep.tsx` - Prompt step UI
+- `steps/InstructionStep.tsx` - Instruction step UI
+- `steps/InputStep.tsx` - Input step UI
+- `steps/CheckpointStep.tsx` - Checkpoint step UI
+
+---
+
+## 🚀 MIGRATION PLAN: New Features
+
+### Phase 1: My Prompts Library (Week 1)
+
+**Goal:** Users can save, organize, and reuse their own prompts.
+
+#### New Database Table:
+```sql
+CREATE TABLE user_prompts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users ON DELETE CASCADE,
+  
+  -- Content
+  title TEXT NOT NULL,
+  prompt TEXT NOT NULL,
+  description TEXT,
+  
+  -- Organization
+  category TEXT, -- User-defined category
+  tags TEXT[],
+  is_favorite BOOLEAN DEFAULT false,
+  
+  -- Usage tracking
+  use_count INT DEFAULT 0,
+  last_used_at TIMESTAMP,
+  
+  -- Brand preset (Phase 2)
+  brand_preset_id UUID REFERENCES brand_presets,
+  
+  -- Timestamps
+  created_at TIMESTAMP DEFAULT now(),
+  updated_at TIMESTAMP DEFAULT now()
+);
+
+-- Index for faster queries
+CREATE INDEX idx_user_prompts_user_id ON user_prompts(user_id);
+CREATE INDEX idx_user_prompts_category ON user_prompts(user_id, category);
+```
+
+#### New Components Needed:
+1. `components/prompts/MyPromptsPage.tsx` - Main prompts library page
+2. `components/prompts/PromptCard.tsx` - Individual prompt card
+3. `components/prompts/CreatePromptModal.tsx` - Create/edit prompt
+4. `components/prompts/PromptCategoryFilter.tsx` - Category sidebar
+
+#### New Routes:
+- `/prompts` - My Prompts library
+- `/prompts/new` - Create new prompt
+- `/prompts/[id]` - View/edit single prompt
+
+#### API Endpoints:
+- `GET /api/prompts` - List user prompts
+- `POST /api/prompts` - Create prompt
+- `PUT /api/prompts/[id]` - Update prompt
+- `DELETE /api/prompts/[id]` - Delete prompt
+
+---
+
+### Phase 2: Brand Presets (Week 2)
+
+**Goal:** Users define brand voice once, auto-inject into all prompts.
+
+#### New Database Table:
+```sql
+CREATE TABLE brand_presets (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users ON DELETE CASCADE,
+  
+  -- Basic Info
+  name TEXT NOT NULL, -- e.g., "Acme Corp", "Personal Blog"
+  is_default BOOLEAN DEFAULT false,
+  
+  -- Brand Voice Settings
+  tone TEXT, -- e.g., "Professional", "Casual", "Friendly"
+  audience TEXT, -- e.g., "B2B Decision Makers", "Gen Z Consumers"
+  company_description TEXT,
+  
+  -- Writing Style
+  writing_style TEXT, -- e.g., "Concise", "Detailed", "Storytelling"
+  vocabulary_level TEXT, -- e.g., "Simple", "Technical", "Academic"
+  
+  -- Do's and Don'ts
+  avoid_words TEXT[], -- Words to never use
+  preferred_words TEXT[], -- Preferred terminology
+  
+  -- Brand Specifics
+  unique_selling_points TEXT[],
+  brand_values TEXT[],
+  
+  -- Additional Guidelines
+  additional_guidelines TEXT, -- Free-form instructions
+  
+  -- Timestamps
+  created_at TIMESTAMP DEFAULT now(),
+  updated_at TIMESTAMP DEFAULT now()
+);
+
+-- Only one default per user
+CREATE UNIQUE INDEX idx_brand_presets_default 
+ON brand_presets(user_id) 
+WHERE is_default = true;
+```
+
+#### New Components Needed:
+1. `components/brand/BrandPresetsPage.tsx` - Brand presets list
+2. `components/brand/BrandPresetCard.tsx` - Individual preset card
+3. `components/brand/CreateBrandPresetModal.tsx` - Create/edit preset
+4. `components/brand/BrandPresetSelector.tsx` - Dropdown to select preset
+
+#### Auto-Inject Logic:
+```typescript
+// When generating a prompt, prepend brand context
+function injectBrandPreset(prompt: string, preset: BrandPreset): string {
+  const brandContext = `
+[Brand Context]
+Company: ${preset.company_description || 'Not specified'}
+Tone: ${preset.tone || 'Professional'}
+Audience: ${preset.audience || 'General'}
+Writing Style: ${preset.writing_style || 'Clear and concise'}
+${preset.avoid_words?.length ? `Avoid these words: ${preset.avoid_words.join(', ')}` : ''}
+${preset.preferred_words?.length ? `Prefer these terms: ${preset.preferred_words.join(', ')}` : ''}
+${preset.additional_guidelines ? `Additional guidelines: ${preset.additional_guidelines}` : ''}
+
+---
+
+`;
+  return brandContext + prompt;
+}
+```
+
+---
+
+### Phase 3: Dashboard Updates
+
+**Goal:** Integrate new features into existing dashboard.
+
+#### Current Dashboard Sections:
+1. Usage Stats
+2. Favorites
+3. History
+4. Upgrade CTA (Free users)
+5. Subscription Management (Pro users)
+
+#### New Dashboard Sections:
+1. **Quick Actions** - "New Prompt", "New Brand Preset"
+2. **Recent Prompts** - Last 5 user prompts
+3. **Brand Presets** - List with "Set Default" option
+
+#### Navigation Updates:
+Add to `NavLinks.tsx`:
+```typescript
+const authLinks = [
+  { href: '/workflows', label: 'Workflows' },
+  { href: '/prompts', label: 'My Prompts' },    // NEW
+  { href: '/brands', label: 'Brand Presets' },   // NEW
+  { href: '/dashboard', label: 'Dashboard' },
+];
+```
+
+---
+
+## 📋 Implementation Checklist
+
+### Week 1: My Prompts
+- [ ] Create `user_prompts` table in Supabase
+- [ ] Build API routes for CRUD operations
+- [ ] Create `MyPromptsPage` component
+- [ ] Create `PromptCard` component
+- [ ] Create `CreatePromptModal` component
+- [ ] Add "Save as Prompt" button to workflow completion screen
+- [ ] Update navigation
+
+### Week 2: Brand Presets
+- [ ] Create `brand_presets` table in Supabase
+- [ ] Build API routes for CRUD operations
+- [ ] Create `BrandPresetsPage` component
+- [ ] Create `BrandPresetCard` component
+- [ ] Create `CreateBrandPresetModal` component
+- [ ] Implement auto-inject logic
+- [ ] Add brand selector to prompt creation
+- [ ] Update My Prompts to show brand preset
+
+### Week 3: Integration & Polish
+- [ ] Update dashboard with new sections
+- [ ] Add "New Prompt" and "New Brand Preset" quick actions
+- [ ] Test all flows end-to-end
+- [ ] Performance optimization
+- [ ] Mobile responsiveness check
+
+---
+
+## 🎨 Design System Reference
+
+### Colors (from existing code):
+```css
+/* Backgrounds */
+bg-zinc-950  /* Page background */
+bg-zinc-900  /* Card background */
+bg-zinc-800  /* Input background */
+
+/* Borders */
+border-zinc-800  /* Default border */
+border-zinc-700  /* Hover border */
+
+/* Text */
+text-white       /* Primary text */
+text-zinc-400    /* Secondary text */
+text-zinc-500    /* Muted text */
+
+/* Accents */
+bg-blue-600      /* Primary button */
+bg-green-600     /* Success */
+bg-purple-600    /* Premium/Pro */
+bg-yellow-500    /* Featured/Star */
+bg-red-600       /* Destructive */
+```
+
+### Component Patterns:
+- Use `Card` from shadcn/ui for content containers
+- Use `Button` with `!bg-` prefix to override default styles
+- Use `Input`, `Textarea`, `Select` from shadcn/ui
+- Toast notifications via `useToast` hook
+
+---
+
+## 🔧 Key Files to Modify
+
+### For My Prompts:
+1. Create `/app/prompts/page.tsx`
+2. Create `/app/prompts/[id]/page.tsx`
+3. Create `/app/api/prompts/route.ts`
+4. Create `/components/prompts/` folder with components
+5. Update `/components/nav/NavLinks.tsx`
+
+### For Brand Presets:
+1. Create `/app/brands/page.tsx`
+2. Create `/app/api/brands/route.ts`
+3. Create `/components/brand/` folder with components
+4. Update prompt generation logic in `WorkflowRunner.tsx`
+
+### For Dashboard:
+1. Update `/app/dashboard/page.tsx`
+2. Add new dashboard sections
+
+---
+
+## ⚠️ Important Notes
+
+### GDPR Compliance:
+- User prompts contain personal content → Ensure proper data deletion on account delete
+- Brand presets may contain company info → Same deletion policy
+- Use CASCADE on foreign keys for automatic cleanup
+
+### Performance:
+- Index `user_id` on all new tables
+- Paginate prompt lists (max 50 per page)
+- Cache brand presets client-side
+
+### Security:
+- All API routes must verify `user_id` matches session
+- Use Supabase RLS (Row Level Security) policies
+- Never expose other users' prompts or presets
+
+---
+
+## 🚦 Start Here
+
+**Immediate next step:** Create the `user_prompts` table in Supabase and build the first API route.
+
+```sql
+-- Run this in Supabase SQL Editor
+CREATE TABLE user_prompts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  prompt TEXT NOT NULL,
+  description TEXT,
+  category TEXT,
+  tags TEXT[],
+  is_favorite BOOLEAN DEFAULT false,
+  use_count INT DEFAULT 0,
+  last_used_at TIMESTAMP,
+  brand_preset_id UUID,
+  created_at TIMESTAMP DEFAULT now(),
+  updated_at TIMESTAMP DEFAULT now()
+);
+
+-- Enable RLS
+ALTER TABLE user_prompts ENABLE ROW LEVEL SECURITY;
+
+-- Policy: Users can only see their own prompts
+CREATE POLICY "Users can view own prompts" ON user_prompts
+  FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert own prompts" ON user_prompts
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own prompts" ON user_prompts
+  FOR UPDATE USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete own prompts" ON user_prompts
+  FOR DELETE USING (auth.uid() = user_id);
+
+-- Index for performance
+CREATE INDEX idx_user_prompts_user_id ON user_prompts(user_id);
+```
+
+---
+
+**This document serves as the complete context for Cursor to understand the project and implement the new features.**
