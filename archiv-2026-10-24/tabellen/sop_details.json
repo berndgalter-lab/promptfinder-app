@@ -1,0 +1,1967 @@
+[
+ {
+  "created_at": "2025-12-13 08:39:13.41776+00",
+  "id": 1,
+  "next_steps": "Copy content to your CMS (WordPress, Webflow, etc.) → Add relevant images → Set meta title and description → Schedule or publish → Share social snippets on LinkedIn/Twitter",
+  "outcome_description": "A complete, ready-to-publish blog post including: SEO-optimized outline, compelling introduction with hook, full article body with sections, conclusion with CTA, and 3 social media snippets for promotion.",
+  "platform_instructions": "This SOP works with any AI assistant. Simply copy each generated prompt, paste it into ChatGPT or Claude, and copy the response back before continuing to the next step.",
+  "prerequisites": [
+   "Topic or keyword identified",
+   "Target audience defined",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Basic understanding of your brand voice"
+  ],
+  "target_role": "Content Writer, Marketing Manager, Content Team Lead",
+  "updated_at": "2025-12-13 08:39:13.41776+00",
+  "workflow_id": 22
+ },
+ {
+  "created_at": "2025-12-13 11:15:55.836863+00",
+  "id": 3,
+  "next_steps": "Copy calendar to Notion/Sheets → Block time for content creation → Batch create similar content types → Schedule posts in your social media tool → Review performance at month end",
+  "outcome_description": "A complete monthly content calendar with 15-30 content ideas, organized by week, with specific titles, formats, and channels assigned. Ready to copy into your planning tool.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps so the AI remembers your pillars and channel strategy.",
+  "prerequisites": [
+   "Know your target audience",
+   "Have access to your social media accounts",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "45 minutes of focused time"
+  ],
+  "target_role": "Social Media Manager, Content Marketer, Marketing Team Lead, Freelancer",
+  "updated_at": "2025-12-13 11:15:55.836863+00",
+  "workflow_id": 207
+ },
+ {
+  "created_at": "2025-12-13 12:11:51.214115+00",
+  "id": 4,
+  "next_steps": "Share brief with writer → Writer creates first draft → Review against SEO checklist → Optimize and publish → Monitor rankings after 2-4 weeks",
+  "outcome_description": "A complete SEO content brief including: validated primary keyword, keyword cluster with 20+ terms, search intent analysis, full article outline with H2/H3 structure, meta title and description, and a writer-ready document with checklist.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps to build on the keyword research and intent analysis.",
+  "prerequisites": [
+   "Topic or keyword idea in mind",
+   "Basic understanding of SEO concepts",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Optional: SEO tool like Ahrefs, SEMrush for validation"
+  ],
+  "target_role": "SEO Manager, Content Strategist, Content Team Lead, Freelance SEO Specialist",
+  "updated_at": "2025-12-13 12:11:51.214115+00",
+  "workflow_id": 208
+ },
+ {
+  "created_at": "2025-12-13 12:24:12.788749+00",
+  "id": 6,
+  "next_steps": "Start with pillar page outline → Create MVP pillar (2000+ words) → Publish first 3 quick-win clusters → Add internal links → Track rankings after 30 days → Continue roadmap → Review and optimize at 90 days",
+  "outcome_description": "A complete pillar-cluster content strategy including: validated pillar topic, 10-15 cluster article ideas with keywords and priorities, visual content map, internal linking blueprint, and week-by-week implementation roadmap for 3 months.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps to build a cohesive strategy. For best results, validate keyword data with an SEO tool like Ahrefs or Ubersuggest.",
+  "prerequisites": [
+   "Clear understanding of your business and target audience",
+   "Basic knowledge of SEO concepts (keywords, search intent)",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Optional: SEO tool like Ahrefs, SEMrush, or Ubersuggest for keyword validation"
+  ],
+  "target_role": "Content Strategist, SEO Manager, Marketing Manager, Founder",
+  "updated_at": "2025-12-13 12:24:12.788749+00",
+  "workflow_id": 210
+ },
+ {
+  "created_at": "2025-12-13 12:37:31.716363+00",
+  "id": 7,
+  "next_steps": "Copy content pieces to your scheduling tool → Set up 2-week drip schedule → Track engagement on each platform → Identify top performers → Save templates for next time → Set reminder to recycle evergreen pieces in 30 days",
+  "outcome_description": "A complete repurposing package including: content audit with extractable elements, 10-15 platform-specific content pieces ready to post, reusable templates for future repurposing, and a 2-week distribution schedule.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. For best results, paste the full original content in Step 1 so the AI has maximum context to work with.",
+  "prerequisites": [
+   "One piece of existing content (blog post, video, podcast, etc.)",
+   "Know which platforms you are active on",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Optional: Social media scheduling tool"
+  ],
+  "target_role": "Content Manager, Social Media Manager, Solo Creator, Marketing Team",
+  "updated_at": "2025-12-13 12:37:31.716363+00",
+  "workflow_id": 211
+ },
+ {
+  "created_at": "2025-12-13 12:41:22.245614+00",
+  "id": 8,
+  "next_steps": "Review and edit AI draft → Add your unique examples and insights → Create or source visuals → Optimize for SEO → Format for your CMS → Proofread → Publish → Promote on social media → Add internal links from other content → Monitor rankings",
+  "outcome_description": "A complete long-form guide (3,000-5,000+ words) including: compelling title and meta description, structured outline, engaging introduction, fully drafted main sections with examples, strong conclusion with CTA, optional FAQ section, and SEO optimization checklist.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. For very long guides (5,000+ words), you may want to draft sections in batches and review between each. The AI draft is a starting point – add your expertise and examples to make it unique.",
+  "prerequisites": [
+   "Topic idea for your comprehensive guide",
+   "Understanding of your target audience",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Optional: Keyword research data for your topic"
+  ],
+  "target_role": "Content Writer, SEO Manager, Blogger, Marketing Team",
+  "updated_at": "2025-12-13 12:41:22.245614+00",
+  "workflow_id": 212
+ },
+ {
+  "created_at": "2025-12-13 12:43:50.374372+00",
+  "id": 9,
+  "next_steps": "Copy content to your email platform → Set subject line and preview text → Add any images or formatting → Send test email to yourself → Check on mobile → Schedule or send → Track open rates after 24 hours → Note what worked for next time",
+  "outcome_description": "A complete, ready-to-send newsletter including: 10 subject line options with best recommendation, compelling preview text, structured body content, optimized CTA, engagement elements, and pre-send checklist. Copy-paste ready for your email platform.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Works for any email platform (Mailchimp, ConvertKit, Substack, etc.). The AI draft is your starting point – personalize with your voice and examples before sending.",
+  "prerequisites": [
+   "A topic or theme for this newsletter",
+   "Access to your email marketing platform",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Know your audience and brand voice"
+  ],
+  "target_role": "Email Marketer, Content Creator, Solopreneur, Marketing Manager",
+  "updated_at": "2025-12-13 12:43:50.374372+00",
+  "workflow_id": 213
+ },
+ {
+  "created_at": "2025-12-13 12:46:26.034755+00",
+  "id": 10,
+  "next_steps": "Get client approval on draft → Publish to website → Create PDF version → Share with sales team → Post on LinkedIn → Add to proposals and sales deck → Track performance → Update with improved results if applicable",
+  "outcome_description": "A complete case study package including: compelling narrative (800-1800 words), supporting assets (LinkedIn post, sales snippet, PDF summary, slide, social content), SEO optimization, and distribution checklist. Ready for website, sales, and social media.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. For best results, gather all project data and metrics before starting. If you do not have a client quote yet, the SOP will help you craft questions to get one.",
+  "prerequisites": [
+   "A completed client project with measurable results",
+   "Client permission to share their story",
+   "Specific numbers and metrics from the project",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Optional: Client quote or willingness to provide one"
+  ],
+  "target_role": "Marketing Manager, Agency Owner, B2B Sales, Freelancer",
+  "updated_at": "2025-12-13 12:46:26.034755+00",
+  "workflow_id": 214
+ },
+ {
+  "created_at": "2025-12-13 12:49:56.392475+00",
+  "id": 11,
+  "next_steps": "Review and edit AI draft → Add your proprietary data and insights → Send to designer for formatting → Create landing page → Set up lead capture form → Launch promotional campaign → Brief sales team → Track downloads and leads",
+  "outcome_description": "A complete B2B whitepaper (2,500-5,000+ words) including: executive summary, full content sections with evidence, conclusion with recommendations, about page, landing page copy, and promotional assets (email, LinkedIn post, Twitter thread). Ready for design and publication.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. For long whitepapers (5,000+ words), you may want to draft sections in multiple sessions. Add your own research data and expert insights to make the content unique and authoritative.",
+  "prerequisites": [
+   "Clear topic that addresses industry pain point",
+   "Your unique expertise or angle on the topic",
+   "Access to supporting data or research",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Optional: Case studies or examples to include"
+  ],
+  "target_role": "B2B Marketing Manager, Content Lead, Demand Generation, Thought Leadership",
+  "updated_at": "2025-12-13 12:49:56.392475+00",
+  "workflow_id": 215
+ },
+ {
+  "created_at": "2025-12-13 12:52:48.67021+00",
+  "id": 12,
+  "next_steps": "Finalize and proofread press release → Prepare all assets (images, logos) → Build targeted media list → Send exclusive/embargo pitches first → Submit to wire service (if budget allows) → Launch day: pitches, social, stakeholder email → Follow up with journalists → Track and report coverage",
+  "outcome_description": "A complete press release package including: AP-style press release (400-600 words), 5 headline options, personalized media pitch email template, social media announcements, and distribution checklist with launch day timeline.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. For best results, have all facts and quotes ready before starting. Customize the pitch email for each journalist - generic blasts do not work.",
+  "prerequisites": [
+   "Newsworthy announcement or company news",
+   "Key facts, dates, and quotes for the release",
+   "Company boilerplate and contact information",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Optional: Media list or target publications"
+  ],
+  "target_role": "PR Manager, Communications, Startup Founder, Marketing Manager",
+  "updated_at": "2025-12-13 12:52:48.67021+00",
+  "workflow_id": 216
+ },
+ {
+  "created_at": "2025-12-13 12:55:42.070559+00",
+  "id": 13,
+  "next_steps": "Review and personalize AI draft → Add your brand voice → Optimize images with alt text → Upload to your platform → A/B test headlines if possible → Monitor conversion rate → Refine based on customer feedback → Use template for similar products",
+  "outcome_description": "A complete product description package including: benefit-driven full description, SEO-optimized title and meta, 5 bullet points, short version for ads, social media copy, and a reusable template for future products.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. For best results, have your product in front of you while writing. The more specific you are about features, the better the benefit translation will be.",
+  "prerequisites": [
+   "Product information (features, specs, materials)",
+   "Understanding of target customer",
+   "Product images (helpful for context)",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Know which platform you are selling on"
+  ],
+  "target_role": "E-Commerce Owner, Copywriter, Product Manager, Amazon/Etsy Seller",
+  "updated_at": "2025-12-13 12:55:42.070559+00",
+  "workflow_id": 217
+ },
+ {
+  "created_at": "2025-12-14 06:33:22.719178+00",
+  "id": 14,
+  "next_steps": "Review and refine AI copy → Hand to designer/developer → Set up tracking (heatmaps, analytics) → Launch with A/B tests → Monitor conversion rate → Iterate based on data",
+  "outcome_description": "Complete landing page copy including: hero section (headline, subhead, CTA), body sections (problem, solution, benefits, how it works, objections), social proof sections, and optimized final CTA with A/B test suggestions.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. The awareness level of your traffic significantly impacts messaging strategy - cold traffic needs more education, warm traffic can go straight to offer.",
+  "prerequisites": [
+   "Clear offer or product to promote",
+   "Understanding of target audience",
+   "Any existing testimonials or social proof",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Know where traffic is coming from"
+  ],
+  "target_role": "Copywriter, Marketing Manager, Startup Founder, Growth Marketer",
+  "updated_at": "2025-12-14 06:33:22.719178+00",
+  "workflow_id": 218
+ },
+ {
+  "created_at": "2025-12-14 07:22:44.684829+00",
+  "id": 15,
+  "next_steps": "Read script aloud for speakability → Revise awkward phrasing → Set up teleprompter or notes → Record with multiple takes on tricky sections → Capture planned B-roll → Edit with timestamps in mind → Add end screen and cards → Write description from template",
+  "outcome_description": "A complete video script including: hook and intro (first 30 seconds), structured main content with timing, full word-for-word or bullet script with speaker notes, CTAs strategically placed, end screen script, video description template with timestamps, and recording prep checklist.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Read the final script OUT LOUD before recording - writing and speaking are different. Adjust for your natural speaking style after AI generates the draft.",
+  "prerequisites": [
+   "Clear video topic or concept",
+   "Understanding of target audience",
+   "Target video length in mind",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Know your on-camera speaking style"
+  ],
+  "target_role": "YouTuber, Video Producer, Content Creator, Course Creator, Marketing Team",
+  "updated_at": "2025-12-14 07:22:44.684829+00",
+  "workflow_id": 219
+ },
+ {
+  "created_at": "2025-12-14 07:25:38.930809+00",
+  "id": 16,
+  "next_steps": "Review and customize the plan → Brief guest if applicable → Record episode → Update timestamps with actual times → Finalize show notes with links → Schedule social posts → Create audiogram clips → Publish and promote",
+  "outcome_description": "A complete episode plan including: refined episode concept with title options, time-based episode structure, intro script and talking points, interview questions with follow-ups (if applicable), show notes template, timestamps placeholder, and social media promotional posts ready to customize.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. For interview episodes, research your guest beforehand and customize the questions. Update timestamps and links after recording before publishing show notes.",
+  "prerequisites": [
+   "Episode topic or theme",
+   "Target episode length",
+   "Guest information (if interview format)",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Know your podcast format and style"
+  ],
+  "target_role": "Podcaster, Content Creator, Business Owner, Marketing Team",
+  "updated_at": "2025-12-14 07:25:38.930809+00",
+  "workflow_id": 220
+ },
+ {
+  "created_at": "2025-12-14 07:30:20.755159+00",
+  "id": 17,
+  "next_steps": "Edit and polish AI drafts → Add your personal stories and examples → Design cover (Canva or designer) → Format as PDF → Build landing page → Set up email delivery → Create thank you page → Launch and promote → Track downloads and conversions",
+  "outcome_description": "A complete ebook package including: refined concept with title, full chapter-by-chapter outline, introduction and all chapter drafts with exercises, conclusion with CTA, landing page copy, email promo sequence, social media posts, cover concept brief, and launch checklist.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. For best results, write in batches - the AI drafts are starting points. Add your unique insights, stories, and examples to make the content truly yours. Plan for 2-3 editing passes before publishing.",
+  "prerequisites": [
+   "Clear topic and target audience",
+   "Understanding of your business goal for the ebook",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Optional: Existing content to repurpose",
+   "Designer for cover and formatting (or DIY with Canva)"
+  ],
+  "target_role": "Content Marketer, Coach, Consultant, Course Creator, Business Owner",
+  "updated_at": "2025-12-14 07:30:20.755159+00",
+  "workflow_id": 221
+ },
+ {
+  "created_at": "2025-12-14 15:14:42.124456+00",
+  "id": 19,
+  "next_steps": "Set up content planning tool → Create first week of content → Schedule posts → Follow engagement routine daily → Review analytics weekly → Adjust based on what performs → Repeat monthly planning",
+  "outcome_description": "A complete Instagram content plan including: clear goals and positioning, 4-5 content pillars, weekly posting schedule, 4 weeks of specific content ideas with caption hooks, caption templates and hook library, hashtag strategy with saved sets, and batching workflow.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Instagram rewards consistency - start with what is manageable and increase over time. Reels are currently the best format for reach. Do not skip Stories - they build connection with existing followers.",
+  "prerequisites": [
+   "Instagram account set up",
+   "Understanding of your niche and audience",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Content creation tools (phone camera, Canva, CapCut)"
+  ],
+  "target_role": "Social Media Manager, Small Business Owner, Creator, Marketing Team",
+  "updated_at": "2025-12-14 15:14:42.124456+00",
+  "workflow_id": 223
+ },
+ {
+  "created_at": "2025-12-14 15:18:56.133685+00",
+  "id": 20,
+  "next_steps": "Proofread final thread → Schedule for optimal time → Post as connected thread → Engage with all replies quickly → Retweet with comment after 4-6 hours → Track performance → Repurpose to other platforms → Pin to profile if it performs well",
+  "outcome_description": "A complete Twitter/X thread including: 7 hook variations with recommendation, structured outline, full thread with all tweets written (under 280 chars each), optimized CTA, and repurposing assets for LinkedIn, Instagram, and other platforms.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Post threads when your audience is most active. Engage heavily in the first hour after posting - the algorithm rewards quick engagement. Best thread lengths are typically 7-12 tweets.",
+  "prerequisites": [
+   "Clear topic with enough depth for a thread",
+   "Understanding of your target audience",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Twitter/X account to post from"
+  ],
+  "target_role": "Thought Leader, Founder, Content Creator, Marketing Professional",
+  "updated_at": "2025-12-14 15:18:56.133685+00",
+  "workflow_id": 224
+ },
+ {
+  "created_at": "2025-12-14 15:22:03.27764+00",
+  "id": 21,
+  "next_steps": "Set up TikTok profile → Save hook library → Schedule batch filming day → Film first week of content → Post at optimal times → Engage heavily after posting → Track performance → Double down on what works → Stay consistent",
+  "outcome_description": "A complete TikTok strategy including: niche positioning, understanding of TikTok formats and trends, 4-5 content pillars, 4 weeks of video ideas with hooks, comprehensive hook library (40+ hooks), posting schedule, hashtag strategy, and engagement routine.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. TikTok rewards consistency and volume - start posting even if it is not perfect. The algorithm needs 10-20+ videos to understand your content. Engage heavily in the first hour after posting.",
+  "prerequisites": [
+   "TikTok account created",
+   "Clear niche or topic area",
+   "Phone or camera for filming",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Basic video editing (CapCut, TikTok native)"
+  ],
+  "target_role": "Creator, Small Business Owner, Brand Marketing Team, Personal Brand Builder",
+  "updated_at": "2025-12-14 15:22:03.27764+00",
+  "workflow_id": 225
+ },
+ {
+  "created_at": "2025-12-14 15:27:01.604359+00",
+  "id": 22,
+  "next_steps": "Optimize channel page (banner, about, trailer) → Film first 3 videos → Create thumbnails using templates → Write optimized descriptions → Upload on schedule → Analyze first month performance → Double down on what works → Stay consistent",
+  "outcome_description": "A complete YouTube channel strategy including: clear positioning statement, understanding of algorithm factors, 4-5 content pillars, 3 months of video ideas with titles, thumbnail strategy and templates, title formulas, SEO description template, and upload checklist.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. YouTube rewards consistency over perfection. The first 10-20 videos are about learning what works for your audience. Focus on improving 1% each video rather than being perfect from the start.",
+  "prerequisites": [
+   "YouTube channel created",
+   "Clear topic or niche",
+   "Equipment for filming (phone minimum)",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Video editing capability (basic)"
+  ],
+  "target_role": "YouTuber, Business Owner, Content Creator, Marketing Team",
+  "updated_at": "2025-12-14 15:27:01.604359+00",
+  "workflow_id": 226
+ },
+ {
+  "created_at": "2025-12-14 15:30:17.791451+00",
+  "id": 23,
+  "next_steps": "Present findings to stakeholders → Prioritize top 3 recommendations → Assign owners and deadlines → Implement quick wins first → Set up tracking for key metrics → Schedule follow-up audit (quarterly recommended)",
+  "outcome_description": "A comprehensive social media audit including: complete account inventory, profile optimization analysis with scores, content performance evaluation, audience and engagement assessment, prioritized recommendations, 90-day action plan, and presentation-ready report.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. For best results, pull actual data from analytics before starting. The more specific your inputs, the more actionable the recommendations. Use this quarterly to track progress.",
+  "prerequisites": [
+   "Access to all social media accounts",
+   "Access to analytics/insights",
+   "List of all account handles",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Understanding of business goals"
+  ],
+  "target_role": "Social Media Manager, Marketing Agency, In-House Marketing, Freelancer",
+  "updated_at": "2025-12-14 15:30:17.791451+00",
+  "workflow_id": 227
+ },
+ {
+  "created_at": "2025-12-14 15:33:54.329419+00",
+  "id": 24,
+  "next_steps": "Train team on new processes → Set up notification systems → Implement daily routine → Track metrics from day one → Review and adjust weekly → Build template library over time → Identify and nurture advocates → Scale as community grows",
+  "outcome_description": "A complete community management system including: community vision and voice guidelines, response templates for all common situations, engagement playbook with daily/weekly tactics, escalation framework with contacts, and sustainable daily/weekly/monthly routines.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Community management is a marathon not a sprint. Start with the basics, build habits, then add complexity. Consistency beats intensity every time.",
+  "prerequisites": [
+   "Access to all social media accounts",
+   "Understanding of brand voice",
+   "List of team members involved (if any)",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Current community size and platforms"
+  ],
+  "target_role": "Community Manager, Social Media Manager, Brand Manager, Founder",
+  "updated_at": "2025-12-14 15:33:54.329419+00",
+  "workflow_id": 228
+ },
+ {
+  "created_at": "2025-12-14 15:38:34.454925+00",
+  "id": 25,
+  "next_steps": "Build target list using research methods → Vet candidates against criteria → Personalize and send outreach → Track responses and follow up → Negotiate and sign contracts → Track campaign performance → Analyze results → Nurture relationships for future campaigns",
+  "outcome_description": "A complete influencer outreach system including: defined criteria and ideal influencer profile, research methods and vetting checklist, personalized outreach templates with follow-up sequence, negotiation playbook and contract essentials, campaign tracking system, and relationship management framework.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Personalization is key - generic outreach fails. Start with smaller influencers who are more likely to respond and often deliver better ROI. Build relationships, not just transactions.",
+  "prerequisites": [
+   "Clear product/service to promote",
+   "Budget range defined",
+   "Understanding of target audience",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Email or social accounts for outreach"
+  ],
+  "target_role": "Marketing Manager, Brand Manager, PR, Small Business Owner, Agency",
+  "updated_at": "2025-12-14 15:38:34.454925+00",
+  "workflow_id": 229
+ },
+ {
+  "created_at": "2025-12-14 15:48:39.205637+00",
+  "id": 26,
+  "next_steps": "Share plan with crisis team → Store in accessible location → Set up monitoring system → Train team on protocols → Test plan with scenario exercise → Review and update quarterly → Conduct post-mortem after any incident → Keep contact info current",
+  "outcome_description": "A comprehensive crisis management plan including: identified crisis scenarios ranked by likelihood and impact, crisis response team structure with contacts, response protocols and decision trees, holding statements and scenario-specific templates, monitoring and detection system, and post-crisis recovery plan with post-mortem template.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. IMPORTANT: Complete this BEFORE a crisis happens. During a crisis you will not have time to create a plan. Store the completed plan somewhere your whole team can access quickly. Review and update at least quarterly.",
+  "prerequisites": [
+   "Active social media presence",
+   "Understanding of your brand and industry",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "List of team members and contacts",
+   "Ideally completed BEFORE a crisis happens"
+  ],
+  "target_role": "Social Media Manager, PR, Communications, Brand Manager, Founder",
+  "updated_at": "2025-12-14 15:48:39.205637+00",
+  "workflow_id": 230
+ },
+ {
+  "created_at": "2025-12-14 15:54:25.074474+00",
+  "id": 27,
+  "next_steps": "Set up brand hashtag → Create UGC terms page → Add UGC prompts to touchpoints (email, packaging, social) → Start daily monitoring → Begin requesting rights → Build your UGC library → Start posting UGC regularly → Track and optimize",
+  "outcome_description": "A complete UGC system including: UGC strategy with goals and quality tiers, multi-channel collection system with incentives, rights and permissions process with templates, curation guidelines and organization system, and distribution plan with repurposing framework.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. UGC is a long game - start small and build momentum. Consistency in asking and featuring is key. Always get permission before using content beyond simple resharing.",
+  "prerequisites": [
+   "Active customer base",
+   "Social media presence",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Basic understanding of your brand aesthetic",
+   "Ability to create a UGC terms page (or work with someone who can)"
+  ],
+  "target_role": "Social Media Manager, E-Commerce Brand Manager, Marketing Manager, Community Manager",
+  "updated_at": "2025-12-14 15:54:25.074474+00",
+  "workflow_id": 231
+ },
+ {
+  "created_at": "2025-12-14 16:06:59.410479+00",
+  "id": 28,
+  "next_steps": "Set up report templates in your preferred tool → Schedule recurring calendar blocks for reporting → Create data collection spreadsheet → Pull first report using templates → Get feedback from stakeholders → Refine based on what they want to see → Automate what you can → Improve insights over time",
+  "outcome_description": "A complete social media reporting system including: reporting framework by stakeholder type, key metrics mapped to business goals with data sources, report templates for weekly/monthly/quarterly frequencies, insights and analysis framework with writing templates, and efficient reporting workflow with automation suggestions.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Remember: insights matter more than data. Stakeholders want to know what to do, not just what happened. Always connect metrics to business goals and end with recommendations.",
+  "prerequisites": [
+   "Active social media accounts with analytics access",
+   "Understanding of business goals",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Basic spreadsheet skills",
+   "Optional: Google Analytics access"
+  ],
+  "target_role": "Social Media Manager, Marketing Agency, In-House Marketing, Freelancer",
+  "updated_at": "2025-12-14 16:06:59.410479+00",
+  "workflow_id": 232
+ },
+ {
+  "created_at": "2025-12-15 10:07:12.135017+00",
+  "id": 49,
+  "next_steps": "Practice script until natural then Use on next discovery call then Score lead using criteria then Adjust based on what works then Refine questions over time",
+  "outcome_description": "A complete discovery call script including: clear discovery objectives and success criteria, opening and rapport framework, SPIN-based discovery questions, BANT+ qualification criteria with scoring, and transition to next steps scripts.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Key principle: You should talk 25% and listen 75%. Great discovery is about asking great questions, not pitching. Always end with a clear next step.",
+  "prerequisites": [
+   "Clear understanding of what you sell",
+   "Knowledge of your ideal customer",
+   "Typical sales process defined",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Sales Representative, Account Executive, Business Development, Founder, Consultant",
+  "updated_at": "2025-12-15 10:07:12.135017+00",
+  "workflow_id": 257
+ },
+ {
+  "created_at": "2025-12-14 16:11:16.98735+00",
+  "id": 29,
+  "next_steps": "Save hashtag sets for easy access → Start using sets on next posts → Track hashtag reach weekly → Note what performs best → Adjust sets monthly → Full refresh quarterly → Stay updated on platform changes",
+  "outcome_description": "A complete hashtag strategy including: hashtag goals and categories framework, researched hashtag library with 50+ hashtags organized by size, strategic hashtag sets for different content types, platform-specific strategies for Instagram/TikTok/LinkedIn/Twitter, and tracking system for continuous optimization.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Remember: hashtags are one part of discovery, not the whole picture. Great content + strategic hashtags = growth. Test, track, and adapt based on your results.",
+  "prerequisites": [
+   "Active social media accounts",
+   "Understanding of your niche",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Access to platform analytics (basic)"
+  ],
+  "target_role": "Social Media Manager, Content Creator, Small Business Owner, Marketing Team",
+  "updated_at": "2025-12-14 16:11:16.98735+00",
+  "workflow_id": 233
+ },
+ {
+  "created_at": "2025-12-15 07:10:22.267233+00",
+  "id": 30,
+  "next_steps": "Complete pre-launch checklist → Install conversion tracking → Set up campaign in Google Ads → Double-check all settings → Launch → Monitor Day 1 → Review Week 1 → Optimize Week 2-4 → Scale winners",
+  "outcome_description": "A complete Google Ads campaign ready to launch including: clear campaign structure with themed ad groups, researched keywords organized by intent with match types, compelling responsive search ads with all extensions, strategic bidding and budget settings, and comprehensive pre-launch checklist.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Important: Verify keyword volumes and competition in Google Keyword Planner before launching. Test conversion tracking before spending. Start conservative and scale what works.",
+  "prerequisites": [
+   "Google Ads account",
+   "Website with landing page ready",
+   "Conversion action defined (what counts as success)",
+   "Access to ChatGPT, Claude, or similar AI tool",
+   "Budget approved"
+  ],
+  "target_role": "PPC Manager, Marketing Manager, Small Business Owner, Agency",
+  "updated_at": "2025-12-15 07:10:22.267233+00",
+  "workflow_id": 234
+ },
+ {
+  "created_at": "2025-12-15 07:41:22.149239+00",
+  "id": 31,
+  "next_steps": "Complete pre-launch checklist → Verify pixel tracking with test conversion → Build campaign in Ads Manager → Double-check all settings → Launch → Monitor Day 1 → Review Week 1 → Optimize Week 2-4 → Scale winners → Test new creative",
+  "outcome_description": "A complete Meta Ads campaign ready to launch including: correct objective and campaign structure, strategic audience targeting (cold, warm, hot), creative strategy with ad concepts and copy, budget and bidding settings, and comprehensive launch checklist with measurement plan.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Critical: Pixel tracking must work before launching. Test a real conversion. Give campaigns 7 days before making major changes. Creative is your #1 lever - test multiple angles.",
+  "prerequisites": [
+   "Meta Business Manager account",
+   "Meta Ads account",
+   "Meta Pixel installed (or ready to install)",
+   "Landing page or website ready",
+   "Creative assets (images/videos) or ability to create",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Paid Social Manager, Marketing Manager, E-Commerce Owner, Agency",
+  "updated_at": "2025-12-15 07:41:22.149239+00",
+  "workflow_id": 235
+ },
+ {
+  "created_at": "2025-12-15 07:48:51.497126+00",
+  "id": 32,
+  "next_steps": "Complete pre-launch checklist → Verify Insight Tag tracking → Build campaign in Campaign Manager → Set up CRM sync for lead quality → Launch → Monitor Week 1 → Optimize Week 2-4 → Track lead quality in CRM → Calculate ROI → Scale winners",
+  "outcome_description": "A complete LinkedIn Ads campaign ready to launch including: correct objective and campaign strategy, precise B2B targeting with job titles and company attributes, professional ad copy across multiple formats, budget and bidding strategy for LinkedIn's premium pricing, and measurement plan including lead quality tracking.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. LinkedIn is expensive – quality targeting matters more than anywhere else. Track lead quality in your CRM, not just CPL. Give campaigns 2 weeks before major changes.",
+  "prerequisites": [
+   "LinkedIn Campaign Manager access",
+   "LinkedIn Company Page",
+   "LinkedIn Insight Tag installed (or ready to install)",
+   "Landing page or lead gen form ready",
+   "Content assets (guides, case studies, etc.)",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "B2B Marketing Manager, Demand Gen Specialist, Agency, SaaS Marketing",
+  "updated_at": "2025-12-15 07:48:51.497126+00",
+  "workflow_id": 237
+ },
+ {
+  "created_at": "2025-12-15 07:53:38.089689+00",
+  "id": 33,
+  "next_steps": "Complete Merchant Center setup → Optimize product feed → Build campaign in Google Ads → Verify tracking → Launch → Monitor daily Week 1 → Optimize search terms weekly → Review product performance monthly → Scale winners",
+  "outcome_description": "A complete Google Shopping campaign ready to launch including: properly configured Merchant Center, optimized product feed with titles and custom labels, strategic campaign structure (Standard Shopping or Performance Max), ROAS-based bidding strategy, and ongoing optimization routine.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Shopping success starts with your feed – spend time optimizing titles and fixing errors. Search term optimization is your weekly must-do. ROAS targets should be based on actual margins.",
+  "prerequisites": [
+   "E-commerce website with products",
+   "Google Merchant Center account (or ready to create)",
+   "Google Ads account",
+   "Product data/inventory access",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "E-Commerce Manager, PPC Manager, Online Store Owner, Agency",
+  "updated_at": "2025-12-15 07:53:38.089689+00",
+  "workflow_id": 238
+ },
+ {
+  "created_at": "2025-12-15 08:21:35.955029+00",
+  "id": 34,
+  "next_steps": "Verify all pixels are working → Build audience segments → Create ads per temperature → Set up campaigns on each platform → Configure frequency caps → Apply exclusions → Launch → Monitor frequency weekly → Refresh creative monthly → Optimize based on ROAS",
+  "outcome_description": "A complete cross-platform retargeting system including: audience segments by temperature (hot/warm/cool), platform-specific campaign setup (Google, Meta, LinkedIn), tailored ad sequences with escalating offers, frequency caps and exclusions to prevent annoyance, and measurement framework for optimization.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Key principle: Different messages for different intent levels. Hot audiences get urgency and offers. Cool audiences get brand awareness. Watch frequency closely – annoyed visitors do not convert.",
+  "prerequisites": [
+   "Website with traffic (1,000+ monthly visitors recommended)",
+   "Tracking pixels installed (Google, Meta, etc.)",
+   "Ad accounts on retargeting platforms",
+   "Creative assets (images, videos)",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Performance Marketing Manager, E-Commerce Manager, PPC/Paid Social Manager, Agency",
+  "updated_at": "2025-12-15 08:21:35.955029+00",
+  "workflow_id": 240
+ },
+ {
+  "created_at": "2025-12-15 10:11:21.664524+00",
+  "id": 50,
+  "next_steps": "Export proposal to PDF then Send with brief email then Offer to walk through together then Follow up in 2-3 days if no response then Track proposal in CRM",
+  "outcome_description": "A complete winning sales proposal including: compelling executive summary that hooks decision-makers, clear understanding and solution section, professional pricing with value justification, social proof with relevant testimonials, and clear next steps with acceptance mechanism.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Key principle: Lead with their problem, not your solution. Frame price as investment with ROI. Make next steps crystal clear. Keep it under 6 pages.",
+  "prerequisites": [
+   "Completed discovery call with prospect",
+   "Understanding of their problem and goals",
+   "Pricing determined",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Sales Representative, Account Executive, Consultant, Agency Owner, Freelancer",
+  "updated_at": "2025-12-15 10:11:21.664524+00",
+  "workflow_id": 258
+ },
+ {
+  "created_at": "2025-12-15 08:26:44.948631+00",
+  "id": 35,
+  "next_steps": "Document current creative learnings → Set up testing budget → Create first concept test with hypothesis → Run for full duration → Analyze with significance check → Iterate on winner → Build testing rhythm → Track learnings over time",
+  "outcome_description": "A complete creative testing system including: prioritized testing framework using ICE scoring, hypothesis-driven test designs for concepts, hooks, formats, and copy, proper test setup with statistical controls, analysis framework with significance calculations, and iteration/scaling process for winners.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Key principle: Test one variable at a time with clear hypothesis. Wait for statistical significance before declaring winners. Iterate on winners before testing new concepts. Build a learning database over time.",
+  "prerequisites": [
+   "Active ad campaigns with some baseline performance",
+   "Creative production capability (in-house or agency)",
+   "Testing budget (min 15-20% of total ad spend)",
+   "Conversion tracking set up",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Performance Marketing Manager, Creative Strategist, Paid Social Manager, Agency Creative Teams",
+  "updated_at": "2025-12-15 08:26:44.948631+00",
+  "workflow_id": 241
+ },
+ {
+  "created_at": "2025-12-15 08:32:07.557534+00",
+  "id": 36,
+  "next_steps": "Complete P1 actions immediately → Work through P2 this week → Schedule P3 for this month → Track results after 2 weeks → Schedule next audit in 3 months",
+  "outcome_description": "A comprehensive PPC audit including: account structure and settings review, keyword and search term waste analysis, ad performance evaluation, bidding and budget efficiency assessment, and prioritized action plan with timeline and expected impact.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Have your account open to pull data as you go. Focus on documenting findings in each section before moving on. The action plan prioritizes by impact and effort.",
+  "prerequisites": [
+   "Access to PPC account (Google Ads, Meta, etc.)",
+   "At least 30 days of campaign data",
+   "Ability to pull performance reports",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "PPC Manager, Agency Account Manager, Marketing Manager, Consultant",
+  "updated_at": "2025-12-15 08:32:07.557534+00",
+  "workflow_id": 242
+ },
+ {
+  "created_at": "2025-12-15 08:35:54.995817+00",
+  "id": 37,
+  "next_steps": "Implement winning variation → Document learnings → Plan next test based on roadmap → Run continuous testing cycles → Track cumulative improvement over time",
+  "outcome_description": "A complete A/B testing process including: prioritized testing opportunities based on impact potential, specific testable hypotheses with success metrics, detailed variation designs with specs, proper test setup in your tool, and results analysis framework with iteration plan.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Key principle: Test one variable at a time with clear hypothesis. Wait for statistical significance (95%). Document learnings even from losing tests. Always have a next test planned.",
+  "prerequisites": [
+   "Landing page with traffic (1,000+ monthly visitors recommended)",
+   "A/B testing tool (VWO, Optimizely, Unbounce, or similar)",
+   "Conversion tracking set up",
+   "Ability to make page changes",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "CRO Specialist, Marketing Manager, E-Commerce Manager, Growth Marketer",
+  "updated_at": "2025-12-15 08:35:54.995817+00",
+  "workflow_id": 243
+ },
+ {
+  "created_at": "2025-12-15 08:42:50.562414+00",
+  "id": 38,
+  "next_steps": "Implement Phase 1 changes (cut poor performers) then Phase 2 (increase winners) then Monitor first 2 weeks then Review results at Week 4 then Set up weekly optimization routine then Repeat full process monthly",
+  "outcome_description": "A complete budget optimization including: current budget performance analysis, efficiency calculations with waste identification, specific reallocation plan with expected impact, implementation timeline with rollback plan, and automated rules for ongoing optimization.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Key principle: Move money from inefficient campaigns to efficient ones. Start conservative, measure results, then get more aggressive. Document everything for stakeholders.",
+  "prerequisites": [
+   "Active ad campaigns with 2+ weeks of data",
+   "Access to ad platform (Google Ads, Meta, etc.)",
+   "Clear target CPA, ROAS, or CPL",
+   "Ability to change campaign budgets",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "PPC Manager, Marketing Manager, E-Commerce Owner, Agency Account Manager",
+  "updated_at": "2025-12-15 08:42:50.562414+00",
+  "workflow_id": 244
+ },
+ {
+  "created_at": "2025-12-15 08:47:28.590652+00",
+  "id": 39,
+  "next_steps": "Create first report using template and workflow then Gather feedback from audience then Refine template based on feedback then Establish regular reporting cadence then Consider automation for data pulls",
+  "outcome_description": "A complete ad reporting system including: report purpose and audience definition, selected metrics appropriate for stakeholders, report structure optimized for readability, insight and recommendation frameworks, and reusable template with workflow for efficient ongoing reporting.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Key principle: Lead with results and insights, not data. Match detail level to audience. Build a template once, reuse forever. Reports should drive decisions, not just inform.",
+  "prerequisites": [
+   "Active ad campaigns with data to report",
+   "Access to ad platforms (Google Ads, Meta, etc.)",
+   "Clear KPIs and targets",
+   "Reporting tool (Slides, Docs, Sheets, etc.)",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "PPC Manager, Marketing Manager, Agency Account Manager, Performance Marketer",
+  "updated_at": "2025-12-15 08:47:28.590652+00",
+  "workflow_id": 245
+ },
+ {
+  "created_at": "2025-12-15 08:51:18.786479+00",
+  "id": 40,
+  "next_steps": "Build sequence in email platform then Send test emails to yourself then Activate sequence then Review after 100 subscribers then Start A/B testing subject lines then Monthly optimization reviews",
+  "outcome_description": "A complete welcome email sequence including: strategy with clear goals and timing, mapped sequence with purpose for each email, written copy for all emails in your brand voice, automation setup instructions for your platform, and testing plan for ongoing optimization.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Key principle: Welcome sequences should deliver value first, sell second. Every email needs one clear purpose and one clear CTA. Test and optimize continuously.",
+  "prerequisites": [
+   "Email marketing platform (Klaviyo, Mailchimp, ConvertKit, etc.)",
+   "Active email list or signup form",
+   "Clear understanding of target audience",
+   "Product or service to promote",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Email Marketer, E-Commerce Manager, SaaS Marketer, Marketing Manager",
+  "updated_at": "2025-12-15 08:51:18.786479+00",
+  "workflow_id": 246
+ },
+ {
+  "created_at": "2025-12-15 08:55:38.526701+00",
+  "id": 41,
+  "next_steps": "Build automation in platform then Test full sequence then Activate with small batch first then Monitor first 2 weeks then Set up monthly optimization reviews then Iterate based on conversion data",
+  "outcome_description": "A complete lead nurture sequence including: buyer journey mapping with stage-specific content, email sequence with copy for all stages (awareness to decision), automation setup with smart branching logic, and lead scoring system with sales handoff process.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Key principle: Match content to buyer stage. Early emails educate, middle emails differentiate, late emails convert. Use lead scoring to identify hot leads for faster handoff.",
+  "prerequisites": [
+   "Email marketing platform with automation (HubSpot, ActiveCampaign, etc.)",
+   "Existing leads to nurture",
+   "Content library (blogs, case studies, guides)",
+   "Understanding of buyer journey",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Email Marketer, B2B Marketer, SaaS Marketer, Demand Generation Manager",
+  "updated_at": "2025-12-15 08:55:38.526701+00",
+  "workflow_id": 247
+ },
+ {
+  "created_at": "2025-12-15 09:02:27.050654+00",
+  "id": 42,
+  "next_steps": "Connect email platform to store then Build and test automation then Activate flow then Monitor first 100 abandoned carts then Start A/B testing subject lines then Monthly optimization reviews",
+  "outcome_description": "A complete cart abandonment recovery system including: strategy based on AOV and product type, mapped sequence with timing and incentive escalation, email copy for all recovery emails, automation setup with dynamic cart content, and testing plan for ongoing optimization.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Key principle: First email should have no discount (catch easy wins). Escalate incentives gradually. Every email must show the actual cart contents. Test timing and subject lines first.",
+  "prerequisites": [
+   "E-commerce store (Shopify, WooCommerce, etc.)",
+   "Email platform with cart abandonment capability",
+   "Integration between store and email platform",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "E-Commerce Manager, Email Marketer, Online Store Owner, Retention Marketer",
+  "updated_at": "2025-12-15 09:02:27.050654+00",
+  "workflow_id": 248
+ },
+ {
+  "created_at": "2025-12-15 09:07:02.017364+00",
+  "id": 43,
+  "next_steps": "Create inactive segments then Build and activate automation then Monitor win-back rates then Implement sunset process then Establish monthly hygiene routine then Quarterly optimization reviews",
+  "outcome_description": "A complete re-engagement system including: inactivity definitions and segments based on your sending frequency, win-back email sequence with escalating approaches, automation setup with sunset flow for non-responders, and ongoing list hygiene process to maintain list health.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Key principle: Define inactivity based on YOUR email frequency. Start soft, escalate gradually. Always provide easy way to stay. Clean non-responders to protect deliverability.",
+  "prerequisites": [
+   "Email marketing platform with automation",
+   "Email list with inactive subscribers",
+   "Ability to create segments",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Email Marketer, Marketing Manager, E-Commerce Manager, Newsletter Creator",
+  "updated_at": "2025-12-15 09:07:02.017364+00",
+  "workflow_id": 249
+ },
+ {
+  "created_at": "2025-12-15 09:19:38.015396+00",
+  "id": 44,
+  "next_steps": "Write and load all emails into platform then Set up automation and scheduling then Build pre-launch waitlist then Test entire sequence then Execute launch then Debrief and document learnings",
+  "outcome_description": "A complete product launch email system including: launch timeline with all phases mapped, pre-launch hype sequence to build anticipation, launch day and launch window emails to drive sales, post-launch follow-up for buyers and non-buyers, and automation setup with tracking.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Key principle: Build anticipation before asking for the sale. Use urgency that is real. Send more emails than you think during launch window. Always debrief and improve.",
+  "prerequisites": [
+   "Email marketing platform",
+   "Product or offer to launch",
+   "Email list to launch to",
+   "Sales/product page ready",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Marketing Manager, E-Commerce Manager, Product Marketer, Founder",
+  "updated_at": "2025-12-15 09:19:38.015396+00",
+  "workflow_id": 252
+ },
+ {
+  "created_at": "2025-12-15 09:25:24.485038+00",
+  "id": 45,
+  "next_steps": "Create landing page with signup form then Write and send first issue then Announce to existing audience then Start consistent promotion then Review metrics weekly then Optimize monthly",
+  "outcome_description": "A complete newsletter strategy including: clear positioning and value proposition, content pillars and format structure, editorial calendar with production workflow, reusable newsletter template, and growth plan with optimization process.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Key principle: Consistency beats perfection. Pick a niche and own it. Treat subscribers like friends. Build a template and stick to it. Grow by providing value first.",
+  "prerequisites": [
+   "Email platform for newsletters",
+   "Topic expertise or content to share",
+   "Time commitment for consistent publishing",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Content Creator, Marketing Manager, Founder, Newsletter Creator",
+  "updated_at": "2025-12-15 09:25:24.485038+00",
+  "workflow_id": 253
+ },
+ {
+  "created_at": "2025-12-15 09:29:25.02887+00",
+  "id": 46,
+  "next_steps": "Finish building all segments in platform then Update next campaign with segment targeting then Track segment performance for first month then Conduct monthly segment review then Expand segmentation based on results",
+  "outcome_description": "A complete email segmentation system including: data audit with gap analysis, 5-8 core segment definitions based on your business, segments built in your platform with exact criteria, content strategy for each segment, and maintenance process for ongoing optimization.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Key principle: Start with 5-8 segments you can act on. Each segment needs different content to matter. Behavioral data beats demographic data. Maintain segments monthly or they go stale.",
+  "prerequisites": [
+   "Email marketing platform with segmentation capability",
+   "Email list with at least 500+ subscribers",
+   "Some data about subscribers (behavior, purchases, etc.)",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Email Marketer, Marketing Manager, E-Commerce Manager, Growth Marketer",
+  "updated_at": "2025-12-15 09:29:25.02887+00",
+  "workflow_id": 254
+ },
+ {
+  "created_at": "2025-12-15 09:32:53.727653+00",
+  "id": 47,
+  "next_steps": "Fix critical authentication issues immediately then Request blacklist removal if needed then Clean list and remove inactive then Improve engagement with better content then Set up ongoing monitoring then Re-audit quarterly",
+  "outcome_description": "A complete email deliverability audit including: technical authentication check (SPF, DKIM, DMARC), sender reputation analysis with blacklist check, list health and hygiene assessment, content and engagement review, and prioritized action plan with monitoring process.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Key principle: Authentication is foundation, then reputation, then list health, then content. Fix issues in that order. Monitor continuously. Prevention is easier than recovery.",
+  "prerequisites": [
+   "Access to email platform (ESP) with metrics",
+   "Access to DNS settings (or IT contact)",
+   "Domain used for sending",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Email Marketer, Marketing Manager, Email Administrator, Marketing Ops",
+  "updated_at": "2025-12-15 09:32:53.727653+00",
+  "workflow_id": 255
+ },
+ {
+  "created_at": "2025-12-15 10:15:30.375837+00",
+  "id": 51,
+  "next_steps": "Print quick reference card then Practice with role play partner then Use on next sales call then Note what works and does not then Update playbook monthly then Share learnings with team",
+  "outcome_description": "A complete objection handling playbook including: categorized list of your common objections, response scripts for price and budget objections, responses for timing and authority objections, responses for competition and trust objections, and a universal framework with quick reference card.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Key principle: Listen first, ask questions second, respond third. Never get defensive. Objections are buying signals - they mean the prospect is still engaged.",
+  "prerequisites": [
+   "Experience with sales conversations",
+   "Knowledge of common objections you face",
+   "Understanding of your competitors",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Sales Representative, Account Executive, Sales Manager, Founder, Sales Team",
+  "updated_at": "2025-12-15 10:15:30.375837+00",
+  "workflow_id": 259
+ },
+ {
+  "created_at": "2025-12-15 10:19:46.119803+00",
+  "id": 52,
+  "next_steps": "Save all templates in your CRM then Set up daily follow-up routine then Start using templates on next prospect then Track response rates then Optimize based on what works",
+  "outcome_description": "A complete sales follow-up system including: follow-up strategy with timing and channels, post-meeting follow-up templates, no-response sequence with multiple angles, multi-channel touchpoints for phone and LinkedIn, and tracking system with automation.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Key principle: 80% of sales need 5+ follow-ups. Always add value. Vary your approach and channel. Be persistent but not annoying. Track everything.",
+  "prerequisites": [
+   "Active prospects to follow up with",
+   "CRM or tracking system (even spreadsheet)",
+   "Email and ideally phone/LinkedIn access",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Sales Representative, Account Executive, Founder, Business Development, Freelancer",
+  "updated_at": "2025-12-15 10:19:46.119803+00",
+  "workflow_id": 260
+ },
+ {
+  "created_at": "2025-12-15 10:36:21.336246+00",
+  "id": 53,
+  "next_steps": "Update CRM with new stages then Create required fields in CRM then Set up dashboard then Schedule first pipeline review then Train team on process then Run weekly cleanup routine",
+  "outcome_description": "A complete CRM pipeline management system including: clear pipeline stages with probabilities, entry and exit criteria for each stage, deal hygiene rules for clean data, structured pipeline review process, and metrics dashboard for tracking health.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Key principle: Pipeline stages should reflect buyer journey, not your activities. Keep it clean with regular hygiene. Review frequently with focus on action, not status.",
+  "prerequisites": [
+   "CRM system (or spreadsheet)",
+   "Active deals to manage",
+   "Basic sales process defined",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Sales Representative, Sales Manager, Revenue Operations, Founder",
+  "updated_at": "2025-12-15 10:36:21.336246+00",
+  "workflow_id": 261
+ },
+ {
+  "created_at": "2025-12-15 10:40:46.366214+00",
+  "id": 54,
+  "next_steps": "Document ICP for team then Create qualification checklist then Set up CRM fields then Train team on framework then Review and calibrate after 30 days",
+  "outcome_description": "A complete lead qualification system including: ideal customer profile with anti-ICP, customized qualification framework (BANT/MEDDIC/etc.), specific qualification questions, lead scoring system, and qualification process with workflow.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Key principle: Time spent on bad leads is time lost on good ones. Qualify fast, disqualify faster. Use your ICP ruthlessly. Score objectively, not hopefully.",
+  "prerequisites": [
+   "Knowledge of your current customers",
+   "Understanding of your sales process",
+   "CRM or lead tracking system",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Sales Representative, SDR/BDR, Sales Manager, Founder",
+  "updated_at": "2025-12-15 10:40:46.366214+00",
+  "workflow_id": 262
+ },
+ {
+  "created_at": "2025-12-15 10:45:26.15783+00",
+  "id": 55,
+  "next_steps": "Build slides using templates then Customize for specific prospect then Practice and time yourself then Test demo/tech then Deliver and close then Send follow-up within 2 hours",
+  "outcome_description": "A complete sales presentation including: clear goals and audience analysis, compelling story structure (hook-problem-solution-proof-action), essential slides with customer-centric messaging, proof points and differentiation, and strong call-to-action with next steps script.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Key principle: The presentation is about THEM, not you. Tell a story. Less slides = more impact. End with a clear ask, not just questions.",
+  "prerequisites": [
+   "Completed discovery with prospect",
+   "Understanding of their problem and goals",
+   "Presentation software (PowerPoint, Google Slides, etc.)",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Sales Representative, Account Executive, Consultant, Founder",
+  "updated_at": "2025-12-15 10:45:26.15783+00",
+  "workflow_id": 263
+ },
+ {
+  "created_at": "2025-12-15 10:50:04.872699+00",
+  "id": 56,
+  "next_steps": "Complete preparation before negotiation then Use scripts during conversation then Document agreement immediately then Send follow-up email same day then Complete debrief to learn",
+  "outcome_description": "A complete contract negotiation system including: negotiation strategy with power analysis, clear boundaries and trade-off options, responses to common buyer tactics, scripts for key negotiation moments, and documentation templates for closing.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 5 steps. Key principle: Never give without getting. Silence is power. Document everything. The deal is not done until the contract is signed.",
+  "prerequisites": [
+   "Proposal or quote already sent",
+   "Prospect ready to negotiate",
+   "Authority to negotiate (or know your limits)",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Sales Representative, Account Executive, Founder, Sales Manager",
+  "updated_at": "2025-12-15 10:50:04.872699+00",
+  "workflow_id": 264
+ },
+ {
+  "created_at": "2025-12-15 12:05:28.257768+00",
+  "id": 57,
+  "next_steps": "Assess deal readiness first then Clear all blockers then Execute closing sequence then Document the win and hand off then Complete win review to learn",
+  "outcome_description": "A complete deal closing system including: readiness assessment with scoring, blocker identification and resolution plan, closing sequence with scripts and follow-ups, and win documentation with handoff templates.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. Key principle: Do not push for close until ready. Clear blockers proactively. The deal is not done until the contract is signed. Document everything for smooth handoff.",
+  "prerequisites": [
+   "Deal in late stage (proposal sent or negotiation)",
+   "Prospect showing buying signals",
+   "Authority to close the deal",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Sales Representative, Account Executive, Founder, Sales Manager",
+  "updated_at": "2025-12-15 12:05:28.257768+00",
+  "workflow_id": 265
+ },
+ {
+  "created_at": "2025-12-15 12:11:01.850414+00",
+  "id": 58,
+  "next_steps": "Complete analysis within 1-2 weeks of loss then Share with manager and team then Update playbooks and battlecards then Set win-back reminder if appropriate then Track loss patterns over time",
+  "outcome_description": "A complete lost deal analysis including: documented facts and timeline, root cause analysis with 5 Whys, specific lessons and action items, playbook updates and team sharing template, and win-back assessment.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. Key principle: Be brutally honest with yourself. The stated reason is rarely the real reason. Every loss is tuition for future wins.",
+  "prerequisites": [
+   "Recently lost deal (within 1-2 weeks ideal)",
+   "Access to deal history and notes",
+   "Willingness to be honest about what happened",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Sales Representative, Account Executive, Sales Manager, Founder",
+  "updated_at": "2025-12-15 12:11:01.850414+00",
+  "workflow_id": 266
+ },
+ {
+  "created_at": "2025-12-15 12:16:25.218641+00",
+  "id": 59,
+  "next_steps": "Identify best expansion opportunity then Build business case with ROI then Plan and execute conversation then Follow through until closed then Track and repeat with other customers",
+  "outcome_description": "A complete upsell/cross-sell system including: opportunity identification with readiness assessment, business case with ROI calculation, conversation plan with scripts, and execution framework with follow-through.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. Key principle: Happy customers first - do not expand unhappy ones. Value before price. Relationship before transaction. Right timing beats hard selling.",
+  "prerequisites": [
+   "Existing customer relationship",
+   "Knowledge of their current product/value",
+   "Expansion products/services available",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Account Manager, Customer Success Manager, Sales Representative, Founder",
+  "updated_at": "2025-12-15 12:16:25.218641+00",
+  "workflow_id": 267
+ },
+ {
+  "created_at": "2025-12-15 12:20:31.970782+00",
+  "id": 60,
+  "next_steps": "Identify happy customers ready for ask then Prepare context-specific script then Execute the ask naturally then Follow through on every referral then Build systematic referral practice",
+  "outcome_description": "A complete referral request system including: referral opportunity identification with readiness check, planned ask with context-specific scripts, and follow-through process with templates for outreach and tracking.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Referrals are earned by great service. Make it easy for them. Always close the loop. The best time to ask is after a win.",
+  "prerequisites": [
+   "Happy customer relationship",
+   "Recent positive interaction or win",
+   "Knowledge of their network",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Sales Representative, Account Manager, Customer Success Manager, Founder",
+  "updated_at": "2025-12-15 12:20:31.970782+00",
+  "workflow_id": 268
+ },
+ {
+  "created_at": "2025-12-15 12:23:24.254025+00",
+  "id": 61,
+  "next_steps": "Review and categorize all deals honestly then Apply forecasting methodology then Build three scenarios then Set commit number and actions then Review weekly and track accuracy",
+  "outcome_description": "A complete sales forecast including: pipeline assessment with coverage analysis, methodology-based calculation (weighted, category, historical, or blended), three-scenario forecast (worst/expected/best), and commit number with action plan.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. Key principle: Be honest with yourself - optimism kills forecasts. Use methodology over gut feel. Track accuracy to improve over time. Commit means commit.",
+  "prerequisites": [
+   "Active pipeline with deals",
+   "Knowledge of deal stages and values",
+   "Target/quota for the period",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Sales Manager, Sales Representative, Founder, Revenue Operations",
+  "updated_at": "2025-12-15 12:23:24.254025+00",
+  "workflow_id": 269
+ },
+ {
+  "created_at": "2025-12-15 12:25:44.858511+00",
+  "id": 62,
+  "next_steps": "Define or verify commission structure then Calculate commissions with breakdown then Document and submit for approval then Process payment then Archive for records",
+  "outcome_description": "A complete commission calculation including: documented commission structure with rules and tiers, calculated commission amounts with full breakdown, and formal commission statement ready for approval and payment.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Show your work - transparency prevents disputes. Double-check math. Document exceptions. Pay on time.",
+  "prerequisites": [
+   "Commission plan/structure defined",
+   "Sales data for the period",
+   "Access to CRM or deal records",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Sales Operations, Sales Manager, Founder, Finance",
+  "updated_at": "2025-12-15 12:25:44.858511+00",
+  "workflow_id": 270
+ },
+ {
+  "created_at": "2025-12-15 12:30:06.288547+00",
+  "id": 63,
+  "next_steps": "Send welcome email immediately then Schedule and run kickoff meeting then Gather all required information then Deliver first quick win within week 1 then Establish regular check-in rhythm",
+  "outcome_description": "A complete client onboarding system including: structured onboarding plan with timeline and checklist, professional welcome email and kickoff meeting materials, information gathering questionnaire and asset requests, and success milestones with early win strategy.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. Key principle: First impressions matter. Be organized, proactive, and deliver early wins. Make them glad they chose you.",
+  "prerequisites": [
+   "Signed contract/agreement",
+   "Basic client information",
+   "Understanding of project scope",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Account Manager, Customer Success Manager, Project Manager, Agency Owner, Freelancer",
+  "updated_at": "2025-12-15 12:30:06.288547+00",
+  "workflow_id": 272
+ },
+ {
+  "created_at": "2025-12-15 12:32:46.355501+00",
+  "id": 64,
+  "next_steps": "Define project foundation then Run kickoff meeting then Send summary within 24 hours then Confirm alignment then Start first milestone",
+  "outcome_description": "A complete project kickoff including: project foundation with SMART goals and scope definition, kickoff meeting agenda with facilitator script, and post-kickoff documentation with alignment confirmation.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Projects that start poorly rarely recover. Invest in the kickoff. Document everything. Confirm alignment before work begins.",
+  "prerequisites": [
+   "Signed agreement or approved project",
+   "Basic project information",
+   "Team assigned",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Project Manager, Agency Owner, Freelancer, Consultant",
+  "updated_at": "2025-12-15 12:32:46.355501+00",
+  "workflow_id": 273
+ },
+ {
+  "created_at": "2025-12-15 12:36:09.337976+00",
+  "id": 65,
+  "next_steps": "Gather all inputs then Create brief document then Internal review then Send to client for approval then Get sign-off and distribute to team",
+  "outcome_description": "A complete project brief including: comprehensive inputs gathering, professional brief document (creative or general format), and review/approval process with templates.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: A good brief is the foundation of good work. Be specific. Get sign-off. Reference throughout the project.",
+  "prerequisites": [
+   "Project approved or in planning",
+   "Basic project information from client",
+   "Understanding of deliverables needed",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Project Manager, Creative Lead, Account Manager, Freelancer",
+  "updated_at": "2025-12-15 12:36:09.337976+00",
+  "workflow_id": 274
+ },
+ {
+  "created_at": "2025-12-15 14:45:23.601746+00",
+  "id": 66,
+  "next_steps": "Define all scope elements then Build complete SOW document then Add change order process then Review and send to client then Get signature and deposit then Reference SOW throughout project",
+  "outcome_description": "A bulletproof Scope of Work document including: detailed deliverables with specifications, explicit exclusions, timeline with milestones, payment terms, revision policy, change order process, and scope creep prevention scripts.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: What is not in the SOW is not in the project. Be specific. Document exclusions. Use change orders for everything else.",
+  "prerequisites": [
+   "Agreed project concept",
+   "Pricing determined",
+   "Basic deliverables known",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Freelancer, Agency Owner, Consultant, Project Manager",
+  "updated_at": "2025-12-15 14:45:23.601746+00",
+  "workflow_id": 275
+ },
+ {
+  "created_at": "2025-12-15 14:48:43.602061+00",
+  "id": 67,
+  "next_steps": "Set communication framework with client then Use templates for consistency then Handle difficult situations with prepared scripts then Review and adjust approach based on client feedback",
+  "outcome_description": "A complete client communication system including: communication framework with cadence and channels, ready-to-use templates for common situations, and scripts for handling difficult conversations professionally.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Proactive beats reactive. When in doubt, over-communicate. Document important things in writing. Stay professional even when it is hard.",
+  "prerequisites": [
+   "Active client relationship",
+   "Basic client information",
+   "Understanding of engagement type",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Account Manager, Project Manager, Freelancer, Agency Owner",
+  "updated_at": "2025-12-15 14:48:43.602061+00",
+  "workflow_id": 276
+ },
+ {
+  "created_at": "2025-12-15 14:52:12.000503+00",
+  "id": 68,
+  "next_steps": "Gather status information then Create formatted report then Send to client then Set up recurring reminders then Maintain consistent rhythm",
+  "outcome_description": "A complete status reporting system including: gathered status information with RAG indicator, formatted status report in multiple styles (email, detailed, Slack), and established reporting rhythm with reminders.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Consistency builds trust. Be honest about status. Keep reports brief and scannable. Always include action items.",
+  "prerequisites": [
+   "Active project or client relationship",
+   "Access to project information",
+   "Understanding of progress and blockers",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Project Manager, Account Manager, Freelancer, Agency Owner",
+  "updated_at": "2025-12-15 14:52:12.000503+00",
+  "workflow_id": 277
+ },
+ {
+  "created_at": "2025-12-15 14:54:58.767538+00",
+  "id": 69,
+  "next_steps": "Plan feedback timing and method then Send feedback request then Process responses then Create action plan then Respond to client then Implement improvements",
+  "outcome_description": "A complete feedback collection system including: feedback plan with timing and method, tailored questions for different formats (email, survey, call), and processing template with action plan.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Feedback is a gift. Ask at the right time. Do not get defensive. Act on what you learn. Close the loop.",
+  "prerequisites": [
+   "Active client relationship",
+   "Appropriate timing for feedback",
+   "Willingness to hear honest feedback",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Project Manager, Account Manager, Freelancer, Agency Owner",
+  "updated_at": "2025-12-15 14:54:58.767538+00",
+  "workflow_id": 278
+ },
+ {
+  "created_at": "2025-12-15 14:58:31.346911+00",
+  "id": 70,
+  "next_steps": "Prepare handoff inventory then Create documentation then Hold handoff meeting then Transfer access then Notify client then Verify recipient is ready then Provide post-handoff support",
+  "outcome_description": "A complete project handoff including: handoff package with inventory and critical items, comprehensive handoff documentation with all context, and execution plan with client notification and verification.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: A good handoff means the recipient can work independently. Document everything. Do not disappear immediately. Verify they have what they need.",
+  "prerequisites": [
+   "Project or responsibility to hand off",
+   "Recipient identified",
+   "Access to project files and documentation",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Project Manager, Team Lead, Freelancer, Agency Owner",
+  "updated_at": "2025-12-15 14:58:31.346911+00",
+  "workflow_id": 279
+ },
+ {
+  "created_at": "2025-12-15 15:01:13.646257+00",
+  "id": 71,
+  "next_steps": "Complete outstanding items then Hold closing conversation then Send closing email then Revoke/return access then Request testimonial and referral then Document learnings then Set up stay connected plan",
+  "outcome_description": "A complete client offboarding including: preparation with checklist and opportunity assessment, professional execution with closing emails for different situations, and value capture with testimonial/referral requests and learnings documentation.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: How you end matters. Stay professional regardless of circumstances. Capture value. Keep the door open. Every ending can be a new beginning.",
+  "prerequisites": [
+   "Client relationship ending",
+   "Final deliverables ready",
+   "Access to client information",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Account Manager, Project Manager, Freelancer, Agency Owner",
+  "updated_at": "2025-12-15 15:01:13.646257+00",
+  "workflow_id": 280
+ },
+ {
+  "created_at": "2025-12-15 15:03:51.179529+00",
+  "id": 72,
+  "next_steps": "Identify right timing then Send request with prompts then Follow up if needed then Polish received testimonial then Get approval then Add to library and use everywhere",
+  "outcome_description": "A complete testimonial including: timing strategy and readiness assessment, request templates with guidance prompts for clients, and polished testimonial ready for use with placement plan.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Make it easy for them. Give guidance. Get specific results mentioned. Always get approval. Use it everywhere.",
+  "prerequisites": [
+   "Positive client relationship",
+   "Results or value delivered",
+   "Good timing for request",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Freelancer, Agency Owner, Account Manager, Marketing",
+  "updated_at": "2025-12-15 15:03:51.179529+00",
+  "workflow_id": 281
+ },
+ {
+  "created_at": "2025-12-15 15:06:31.427027+00",
+  "id": 73,
+  "next_steps": "Gather all metrics and data then Build report document then Send with summary email then Discuss on call then Send follow-up recap then Archive and set reminder for next month",
+  "outcome_description": "A complete monthly client report including: gathered metrics with analysis, professional report document with executive summary and visualizations, and delivery strategy with discussion guide.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Show value, not just activity. Tell a story. Keep it scannable. Always look forward. Discuss, do not just send.",
+  "prerequisites": [
+   "Completed month of work",
+   "Access to metrics and data",
+   "List of completed work",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Agency Owner, Account Manager, Freelancer, Consultant",
+  "updated_at": "2025-12-15 15:06:31.427027+00",
+  "workflow_id": 282
+ },
+ {
+  "created_at": "2025-12-15 15:13:41.027958+00",
+  "id": 75,
+  "next_steps": "Define ideal candidate profile then Set up sourcing channels then Start daily outreach routine then Track responses and optimize weekly then Build talent community for future roles",
+  "outcome_description": "A complete candidate sourcing system including: detailed ideal candidate profile with search keywords, multi-channel sourcing strategy with LinkedIn boolean searches, personalized outreach templates with follow-up sequences, and tracking system for optimization.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. Key principle: Best candidates are not looking. Personalization wins. Quality over quantity. Track everything and optimize weekly.",
+  "prerequisites": [
+   "Job description ready",
+   "Approval to hire",
+   "LinkedIn Recruiter or Sales Navigator (recommended)",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Recruiter, HR Manager, Hiring Manager, Founder",
+  "updated_at": "2025-12-15 15:13:41.027958+00",
+  "workflow_id": 284
+ },
+ {
+  "created_at": "2025-12-15 15:17:56.375745+00",
+  "id": 76,
+  "next_steps": "Design process stages then Create question bank then Brief all interviewers then Calibrate on evaluation criteria then Run consistent process for all candidates then Debrief and decide based on evidence",
+  "outcome_description": "A complete structured interview process including: staged process with clear purposes, behavioral and situational question bank with probing questions, detailed interview guides for each stage with time allocations, and standardized evaluation system with scorecards and debrief process.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. Key principle: Structure beats gut feel. Same questions for all candidates. Evidence-based evaluation. Quick feedback loops. Every interview is also selling the role.",
+  "prerequisites": [
+   "Job description finalized",
+   "Key competencies identified",
+   "Interviewers available",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Hiring Manager, HR Manager, Recruiter, Founder",
+  "updated_at": "2025-12-15 15:17:56.375745+00",
+  "workflow_id": 285
+ },
+ {
+  "created_at": "2025-12-15 15:21:17.716854+00",
+  "id": 77,
+  "next_steps": "Define criteria for role then Build scorecard template then Hold calibration session then Distribute to interviewers then Use consistently for all candidates then Debrief using structured process",
+  "outcome_description": "A complete interview scorecard system including: defined evaluation criteria with good/bad examples, detailed scorecard template with rating scale, quick scorecard alternative, calibration process for interviewers, and usage guidelines with debrief process.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Evidence over gut feel. Same criteria for all candidates. Complete scorecard before discussing with others. Calibrate to ensure consistency.",
+  "prerequisites": [
+   "Job description with requirements",
+   "Interview process defined",
+   "Interviewers identified",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Hiring Manager, HR Manager, Recruiter, Interviewer",
+  "updated_at": "2025-12-15 15:21:17.716854+00",
+  "workflow_id": 286
+ },
+ {
+  "created_at": "2025-12-15 15:29:18.888794+00",
+  "id": 78,
+  "next_steps": "Prepare questions and concerns then Schedule and conduct call then Document findings then Summarize across references then Include in hiring decision",
+  "outcome_description": "A complete reference check system including: preparation checklist with red flags awareness, detailed call guide with opening script and core questions, and comprehensive documentation template with recommendation.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Read between the lines. Lukewarm praise is a warning sign. The rehire question is gold. Document everything.",
+  "prerequisites": [
+   "Candidate has passed interviews",
+   "References provided by candidate",
+   "Interview notes with concerns to probe",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Hiring Manager, HR Manager, Recruiter",
+  "updated_at": "2025-12-15 15:29:18.888794+00",
+  "workflow_id": 287
+ },
+ {
+  "created_at": "2025-12-16 05:13:44.546497+00",
+  "id": 79,
+  "next_steps": "Gather all offer details then Generate formal letter then Get approvals then Call candidate first then Send written offer then Track response and handle negotiations",
+  "outcome_description": "A complete offer letter package including: verified compensation and employment details, professional formal offer letter with all required sections, warm email version, phone call script, and post-acceptance workflow.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Always call before you email. Accuracy matters. Be warm and excited. Handle negotiations gracefully.",
+  "prerequisites": [
+   "Candidate selected for offer",
+   "Compensation approved",
+   "Start date agreed",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "HR Manager, Hiring Manager, Founder, Recruiter",
+  "updated_at": "2025-12-16 05:13:44.546497+00",
+  "workflow_id": 288
+ },
+ {
+  "created_at": "2025-12-16 05:30:59.384562+00",
+  "id": 81,
+  "next_steps": "Execute pre-boarding checklist 2 weeks before then Send welcome communications then Execute Week 1 schedule then Weekly check-ins through Day 90 then Conduct milestone reviews then Collect feedback and improve",
+  "outcome_description": "A complete onboarding system including: detailed pre-boarding checklist with all admin and IT tasks, day-by-day first week schedule with specific activities, 30-60-90 day milestone plan with goals for each phase, review meeting agendas, feedback survey questions, and success metrics.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. Key principle: Preparation is 80% of success. First week shapes perception. Structure prevents drift. Great onboarding equals great retention.",
+  "prerequisites": [
+   "Offer accepted",
+   "Start date confirmed",
+   "IT and HR notified",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "HR Manager, Hiring Manager, Team Lead, Founder",
+  "updated_at": "2025-12-16 05:30:59.384562+00",
+  "workflow_id": 290
+ },
+ {
+  "created_at": "2025-12-16 05:34:49.439626+00",
+  "id": 82,
+  "next_steps": "Define role context and success then Build 30-day learning goals then Build 60-day contribution goals then Build 90-day ownership goals then Set up tracking system then Review plan with employee and sign then Execute with regular check-ins",
+  "outcome_description": "A complete 30-60-90 day plan including: role context with success criteria, phased goals for each 30-day period with specific measurable objectives, weekly breakdowns and milestones, review meeting agendas for days 30, 60, and 90, and progress tracking system with check-in templates.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. Key principle: 30 days = Learn. 60 days = Contribute. 90 days = Own. Regular check-ins ensure success. Adjust the plan as reality unfolds.",
+  "prerequisites": [
+   "New hire starting or recently started",
+   "Job description and responsibilities clear",
+   "Understanding of team priorities",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Manager, HR Manager, Hiring Manager, New Employee",
+  "updated_at": "2025-12-16 05:34:49.439626+00",
+  "workflow_id": 291
+ },
+ {
+  "created_at": "2025-12-16 05:42:57.47183+00",
+  "id": 83,
+  "next_steps": "Gather evidence from full period then Assess competencies with examples then Write balanced review document then Conduct collaborative meeting then Set goals for next period then Create development plan then Schedule follow-up check-ins then File documentation",
+  "outcome_description": "A complete performance review including: evidence gathering with bias awareness, competency assessment with ratings, formal written review document, meeting agenda with conversation scripts, and follow-up plan with goal tracking.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. Key principle: No surprises. Balance positive and development. Specific examples always. Review is the start not the end. Follow through on development.",
+  "prerequisites": [
+   "Employee to review identified",
+   "Review period defined",
+   "Access to performance data and feedback",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Manager, HR Manager, Team Lead",
+  "updated_at": "2025-12-16 05:42:57.47183+00",
+  "workflow_id": 292
+ },
+ {
+  "created_at": "2025-12-16 05:50:22.292507+00",
+  "id": 84,
+  "next_steps": "Determine frequency for employee level then Select structure then Set up shared document then Have expectations conversation then Prepare for each 1:1 then Conduct with 70/30 listening then Follow up on commitments then Track themes then Improve quarterly",
+  "outcome_description": "A complete one-on-one meeting system including: appropriate frequency and structure for employee level, preparation checklist and questions bank, meeting guide with listening and coaching techniques, feedback approaches, follow-up system with action tracking, and continuous improvement process.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. Key principle: Their meeting not yours. Listen 70% talk 30%. Never cancel. Follow through. Coach before solving. Ask for feedback on yourself.",
+  "prerequisites": [
+   "Direct report to meet with",
+   "Calendar access for scheduling",
+   "Shared document tool",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Manager, Team Lead, HR Manager",
+  "updated_at": "2025-12-16 05:50:22.292507+00",
+  "workflow_id": 293
+ },
+ {
+  "created_at": "2025-12-16 06:01:24.66092+00",
+  "id": 85,
+  "next_steps": "Assess if PIP is appropriate then Consult HR then Create PIP document with SMART goals then Deliver PIP with dignity then Monitor weekly with documentation then Conduct mid-point review then Conclude fairly then Document everything",
+  "outcome_description": "A complete PIP process including: pre-PIP assessment to confirm appropriateness, comprehensive PIP document with SMART goals and support plan, delivery meeting script and guidance, weekly monitoring templates, and conclusion process for both success and failure outcomes.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. Key principle: PIPs should be genuine opportunities. Not first step - last resort after feedback. Clear measurable goals. Real support. Fair process. Dignity throughout.",
+  "prerequisites": [
+   "Employee with documented performance issues",
+   "Prior feedback already given",
+   "HR consultation completed",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Manager, HR Manager, Team Lead",
+  "updated_at": "2025-12-16 06:01:24.66092+00",
+  "workflow_id": 295
+ },
+ {
+  "created_at": "2025-12-16 06:05:43.300054+00",
+  "id": 86,
+  "next_steps": "Identify departure type and timeline then Notify all stakeholders then Execute knowledge transfer then Complete IT access revocation then Process HR and finance items then Conduct exit interview then Verify completion then Support remaining team",
+  "outcome_description": "A complete offboarding system including: departure type-specific approach, stakeholder notifications, knowledge transfer plan with brain dump template, IT/HR/Finance checklists, equipment return tracking, final verification, and post-departure follow-up.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. Key principle: Departure type determines approach. Security first for terminations. Knowledge transfer for resignations. Dignity always. Nothing falls through cracks.",
+  "prerequisites": [
+   "Employee departure confirmed",
+   "Last day established",
+   "Manager and HR aligned",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "HR Manager, Manager, Team Lead",
+  "updated_at": "2025-12-16 06:05:43.300054+00",
+  "workflow_id": 296
+ },
+ {
+  "created_at": "2025-12-16 06:21:49.35979+00",
+  "id": 87,
+  "next_steps": "Review employee context then Select appropriate interviewer then Schedule interview then Conduct with open questions then Document thoroughly then Categorize and analyze then Share appropriately then Track patterns then Take action",
+  "outcome_description": "A complete exit interview system including: preparation with context review and interviewer selection, comprehensive question bank covering all key areas, probing techniques for honest answers, feedback summary template, categorization framework, distribution guidelines, and aggregate tracking for pattern identification.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Create safety for honesty. Listen more than talk. Do not defend. Patterns matter more than individuals. Action is what creates value.",
+  "prerequisites": [
+   "Employee departure confirmed",
+   "Interview scheduled before last day",
+   "Context and history reviewed",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "HR Manager, Manager, Team Lead",
+  "updated_at": "2025-12-16 06:21:49.35979+00",
+  "workflow_id": 297
+ },
+ {
+  "created_at": "2025-12-16 06:26:18.78794+00",
+  "id": 88,
+  "next_steps": "Validate meeting should exist then Define clear purpose and outcome then Optimize attendees and duration then Create timed agenda with owners then Send agenda in advance then Facilitate with structure then Capture and send notes then Follow up on actions then Improve continuously",
+  "outcome_description": "A complete team meeting system including: purpose validation, attendee optimization, duration design, multiple agenda templates by meeting type, facilitation techniques, problem-handling scripts, meeting notes template, and follow-up process.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Start and end on time. Every item has time and owner. Drive to decisions. Send notes same day. Follow up on actions.",
+  "prerequisites": [
+   "Meeting to plan or improve",
+   "Understanding of attendees and topics",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Manager, Team Lead, Project Manager",
+  "updated_at": "2025-12-16 06:26:18.78794+00",
+  "workflow_id": 298
+ },
+ {
+  "created_at": "2025-12-16 06:31:05.695687+00",
+  "id": 89,
+  "next_steps": "Define scope appropriate for company stage then Write core sections then Add policies and culture then Create acknowledgment form then Get legal review then Get leadership approval then Launch to employees then Collect acknowledgments then Schedule annual review",
+  "outcome_description": "A complete employee handbook including: welcome and company introduction, employment basics with legal statements, workplace policies (conduct, harassment, safety), compensation and benefits overview, time off and leave policies, work arrangements and remote policy, technology and data security policies, culture and values section, separation procedures, and acknowledgment form. Plus pre-launch checklist, launch plan, and maintenance schedule.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. IMPORTANT: Have an employment attorney review your handbook before distribution. Laws vary by jurisdiction. Key principle: Clear, readable, actually useful. Not just legal protection but genuine guidance.",
+  "prerequisites": [
+   "Company information and policies defined",
+   "Understanding of benefits and time off",
+   "Company values articulated",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "HR Manager, Founder, Operations Manager",
+  "updated_at": "2025-12-16 06:31:05.695687+00",
+  "workflow_id": 299
+ },
+ {
+  "created_at": "2025-12-16 07:34:56.750582+00",
+  "id": 90,
+  "next_steps": "Create customer profile then Assign onboarding tier then Design phased journey then Execute kickoff call then Complete setup and integrations then Deliver training then Track activation metrics then Document value delivered then Handoff to ongoing success",
+  "outcome_description": "A complete customer onboarding system including: customer profile with goals and stakeholders, tier assignment based on value and complexity, phased journey design (kickoff, setup, activation, adoption), call scripts and email templates, milestone tracking, success metrics, and handoff documentation.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. Key principle: Time to value is everything. Activation predicts retention. Build relationships not just usage. Document wins for renewals.",
+  "prerequisites": [
+   "New customer signed",
+   "Contract details known",
+   "Primary contact identified",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Customer Success Manager, Account Manager, Onboarding Specialist",
+  "updated_at": "2025-12-16 07:34:56.750582+00",
+  "workflow_id": 300
+ },
+ {
+  "created_at": "2025-12-16 07:43:58.318448+00",
+  "id": 91,
+  "next_steps": "Analyze audience and gather data then Define strategy based on health then Build 10-15 slide deck then Prepare facilitation approach then Run conversational QBR then Send recap same day then Track all action items then Update internal team then Prepare for next QBR",
+  "outcome_description": "A complete QBR system including: audience analysis and strategy by health status, data gathering templates, 12-slide deck structure with slide templates, facilitation guide with scripts, tough situation handling, notes template, recap email template, and action tracking.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. Key principle: QBRs are conversations not presentations. Value first, features never. Listen more than talk. Follow-up is where trust is built.",
+  "prerequisites": [
+   "Customer relationship established",
+   "Quarter of data available",
+   "Usage and value metrics accessible",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Customer Success Manager, Account Manager, Account Executive",
+  "updated_at": "2025-12-16 07:43:58.318448+00",
+  "workflow_id": 301
+ },
+ {
+  "created_at": "2025-12-16 07:48:33.475782+00",
+  "id": 92,
+  "next_steps": "Analyze churn reasons then Map to metrics then Define weights and scoring then Build calculation model then Set up alerts and triggers then Create intervention playbooks then Build portfolio view then Pilot with sample customers then Roll out and track accuracy",
+  "outcome_description": "A complete customer health scoring system including: 5-category framework (Engagement, Relationship, Outcomes, Sentiment, Service), weighted scoring model with specific metrics, health score calculation formula, scorecard template, alert triggers, intervention playbooks by health level, portfolio dashboard, and implementation plan.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Start simple - 5 metrics is better than 20 unmaintained. Score without action is useless. Validate predictions against actual churn. Iterate based on results.",
+  "prerequisites": [
+   "Customer data available",
+   "Understanding of churn reasons",
+   "Access to usage analytics",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Customer Success Manager, CS Leader, Account Manager",
+  "updated_at": "2025-12-16 07:48:33.475782+00",
+  "workflow_id": 302
+ },
+ {
+  "created_at": "2025-12-16 07:52:28.131541+00",
+  "id": 93,
+  "next_steps": "Identify warning signs then Score risk level then Diagnose root cause through conversation then Select appropriate save play then Execute with specific actions then Document outcome then Create win-back plan if lost then Capture and share learnings",
+  "outcome_description": "A complete churn prevention system including: early warning sign checklist, risk scoring framework, diagnostic conversation scripts, 5 root-cause-specific save playbooks (Value, Service, Price, Champion, External), save plan template, communication templates, outcome documentation, win-back strategy, and learning capture for prevention.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. Key principle: Early detection is everything. Match save play to root cause. Listen before solving. Every churn is a learning opportunity. Saved customers need extra attention.",
+  "prerequisites": [
+   "At-risk customer identified",
+   "Access to customer data and history",
+   "Authority to make save offers",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Customer Success Manager, CS Leader, Account Manager",
+  "updated_at": "2025-12-16 07:52:28.131541+00",
+  "workflow_id": 303
+ },
+ {
+  "created_at": "2025-12-16 07:58:11.201347+00",
+  "id": 94,
+  "next_steps": "Assess severity and classify then Register escalation then Acknowledge customer immediately then Mobilize internal team then Communicate regularly then Track resolution progress then Confirm resolution with customer then Send closure communication then Schedule follow-up then Complete post-mortem then Share learnings",
+  "outcome_description": "A complete customer escalation system including: 4-level severity matrix, impact assessment framework, escalation registration template, customer communication templates (acknowledgment, status, workaround, executive), internal war room process, update cadence by severity, de-escalation techniques, resolution tracking, closure communications, post-escalation follow-up plan, and post-mortem template.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Speed of response matters. Communication beats silence always. Own it completely. Keep every commitment. Close the loop properly. Learn and prevent recurrence.",
+  "prerequisites": [
+   "Customer escalation received",
+   "Access to customer information",
+   "Authority to mobilize resources",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Customer Success Manager, Support Manager, Account Manager",
+  "updated_at": "2025-12-16 07:58:11.201347+00",
+  "workflow_id": 304
+ },
+ {
+  "created_at": "2025-12-16 08:01:46.547231+00",
+  "id": 95,
+  "next_steps": "Design survey structure then Define audience and segmentation then Create invitation templates then Set up response tracking then Establish follow-up SLAs then Create detractor outreach process then Plan promoter activation then Build feedback action process then Schedule quarterly reviews then Close the loop with customers",
+  "outcome_description": "A complete NPS program including: NPS fundamentals and calculation, survey design (2-3 questions), invitation templates, timing and frequency guidelines, audience segmentation, follow-up process by score type, detractor call scripts and emails, passive improvement questions, promoter activation options, feedback categorization, and close-the-loop communication.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: NPS without follow-up is useless. Every detractor deserves a call. Promoters are your growth engine. Always close the loop - tell customers what changed because of their feedback.",
+  "prerequisites": [
+   "Customer list available",
+   "Survey tool selected or available",
+   "Process for follow-up in place",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Customer Success Manager, CS Leader, Marketing Manager",
+  "updated_at": "2025-12-16 08:01:46.547231+00",
+  "workflow_id": 305
+ },
+ {
+  "created_at": "2025-12-16 08:13:24.750258+00",
+  "id": 96,
+  "next_steps": "Start 120 days out with health assessment then Map stakeholders and decision maker then Build compelling value story then Select strategy based on health then Prepare renewal meeting then Execute meeting with value focus then Follow up with proposal then Handle challenges per playbook then Close and document then Plan next renewal immediately",
+  "outcome_description": "A complete renewal system including: renewal timeline with milestones, health assessment framework, stakeholder mapping, forecast template, strategy selection by situation (Expansion, Standard, Save, Rescue), value story builder, proposal strategy with negotiation boundaries, renewal meeting script, objection handling, email templates, challenge playbooks (Price, Competition, Champion Left, Ghosting), closure checklist, and documentation.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. Key principle: Start 120 days out. Know your decision maker. Value story is everything. Match strategy to situation. Never let renewals surprise you.",
+  "prerequisites": [
+   "Customer with upcoming renewal",
+   "Access to customer data and history",
+   "Value metrics available",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Customer Success Manager, Account Manager, Renewal Manager",
+  "updated_at": "2025-12-16 08:13:24.750258+00",
+  "workflow_id": 306
+ },
+ {
+  "created_at": "2025-12-16 08:17:56.936694+00",
+  "id": 97,
+  "next_steps": "Detect expansion signals then Qualify opportunity (health check) then Build business case with ROI then Set pricing strategy then Enable champion then Execute expansion conversation then Handle objections then Close deal then Onboard expansion then Document and plan next expansion",
+  "outcome_description": "A complete expansion system including: 6 expansion types defined, signal detection checklist, qualification framework, current state analysis, expansion value proposition builder, pricing strategy with options, stakeholder strategy, conversation script, email templates, objection handling playbooks, closing checklist, expansion onboarding by type, and documentation.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. Key principle: Never expand unhealthy customer. Lead with value delivered. Listen before pitching. Enable your champion. Onboarding expansion is critical for future growth.",
+  "prerequisites": [
+   "Healthy customer with expansion signal",
+   "Value delivered documented",
+   "Champion relationship established",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Customer Success Manager, Account Manager, Account Executive",
+  "updated_at": "2025-12-16 08:17:56.936694+00",
+  "workflow_id": 307
+ },
+ {
+  "created_at": "2025-12-16 08:22:51.219038+00",
+  "id": 98,
+  "next_steps": "Complete handoff document then Schedule internal handoff meeting then CSM asks key questions then Choose introduction method then Execute warm introduction then Schedule customer kickoff then Confirm ownership transfer then Complete quality check then Begin onboarding",
+  "outcome_description": "A complete handoff system including: 8-section handoff document template, preparation checklist, internal handoff meeting agenda with CSM questions, joint handoff call script, introduction email templates, kickoff call agenda, ownership transition framework, completion checklists for Sales and CSM, and quality assessment.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Customer should never say I already told Sales this. No promises forgotten. Warm introduction not cold handoff. Clear ownership from day one.",
+  "prerequisites": [
+   "Deal closed and contract signed",
+   "CSM assigned to account",
+   "Customer information available",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Sales Rep, Customer Success Manager, CS Leader",
+  "updated_at": "2025-12-16 08:22:51.219038+00",
+  "workflow_id": 308
+ },
+ {
+  "created_at": "2025-12-16 08:31:45.420846+00",
+  "id": 99,
+  "next_steps": "Qualify customer as advocate candidate then Choose appropriate advocacy type then Time the ask appropriately then Make personalized ask then Handle response gracefully then Log in tracker then Thank and recognize then Share impact updates then Nurture relationship then Track program metrics",
+  "outcome_description": "A complete customer advocacy system including: 6 advocacy types defined, 5-factor qualification framework, timing guidelines, ask principles and formula, ask templates for all 6 advocacy types, response handling scripts, advocacy tracker, recognition ideas, nurturing cadence, impact update templates, burnout prevention, and program metrics dashboard.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Right customer, right ask, right time. Make it easy to say yes. Start small build up. Always thank genuinely. Give more than you take. Nurture relationships not extract value.",
+  "prerequisites": [
+   "Happy customer with results",
+   "Strong relationship established",
+   "Clear results documented",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Customer Success Manager, Marketing Manager, CS Leader",
+  "updated_at": "2025-12-16 08:31:45.420846+00",
+  "workflow_id": 309
+ },
+ {
+  "created_at": "2025-12-16 08:37:25.70622+00",
+  "id": 100,
+  "next_steps": "Log invoice receipt then Validate all invoice details then Match to PO and receipt then Route to appropriate approver then Obtain approval then Enter in accounting system then Schedule payment appropriately then Execute payment then Record and file documentation then Reconcile monthly",
+  "outcome_description": "A complete invoice processing system including: invoice receipt logging, validation checklist (basic info, amounts, PO match, goods receipt), discrepancy handling with vendor email template, approval authority matrix, approval request templates, approval tracking, GL coding checklist, payment timing strategy, payment method selection, execution checklist, vendor confirmation template, and record keeping requirements.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Three-way match (PO, receipt, invoice). Process within 48 hours. Take early payment discounts when beneficial. Maintain complete documentation.",
+  "prerequisites": [
+   "Invoice received",
+   "Access to accounting system",
+   "Knowledge of approval authorities",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Finance Manager, Accountant, Freelancer, Operations Manager",
+  "updated_at": "2025-12-16 08:37:25.70622+00",
+  "workflow_id": 310
+ },
+ {
+  "created_at": "2025-12-16 08:49:09.322249+00",
+  "id": 101,
+  "next_steps": "Send close reminders 5 days out then Collect all data before month end then Close sub-ledgers Day 1 then Complete bank reconciliations Day 2 then Record accruals Day 2 then Reconcile all accounts Day 3 then Manager review Day 4 then Final adjustments Day 5 then Close and lock period then Generate and distribute reports then Document lessons learned",
+  "outcome_description": "A comprehensive month-end close system including: close calendar with pre-close and close day tasks, team assignment matrix, pre-close checklist, reminder email templates, detailed close tasks for cash/banking, revenue/AR, expenses/AP, accruals, payroll, prepaids, fixed assets, inventory, account reconciliation templates, analytical review with variance analysis, review checklists, finalization steps, standard report package list, metrics dashboard, distribution templates, and process improvement tracking.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. Key principle: Start preparation before month end. Follow checklist consistently. Reconcile all accounts. Review variances before finalizing. Document everything.",
+  "prerequisites": [
+   "Access to accounting system",
+   "Bank statements available",
+   "Prior month closed",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Controller, Accountant, Finance Manager, CFO",
+  "updated_at": "2025-12-16 08:49:09.322249+00",
+  "workflow_id": 311
+ },
+ {
+  "created_at": "2025-12-16 08:53:03.108419+00",
+  "id": 102,
+  "next_steps": "Analyze historical performance then Document all assumptions then Build revenue forecast using multiple methods then Create headcount plan then Build expense budget by category then Include initiative investments then Add contingency reserve then Create scenario analysis then Get leadership approval then Communicate to organization then Monitor monthly vs actual",
+  "outcome_description": "A comprehensive budget planning system including: budget timeline and stakeholder matrix, historical revenue and expense analysis, assumptions framework (macro, strategic, operational, risk), revenue forecasting using three methods (top-down, bottom-up, pipeline), revenue by segment and monthly breakdown, detailed headcount budget, operating expenses by category (marketing, sales, technology, G&A), initiative investments, contingency planning, full income statement budget, quarterly view, cash flow summary, three-scenario analysis, sensitivity analysis, approval sign-off, communication templates, and monitoring plan.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. Key principle: Good budgets start with understanding history. Document all assumptions. Use multiple forecasting methods. Build from bottom-up with top-down validation. Include contingency. Monitor monthly.",
+  "prerequisites": [
+   "Prior period financials available",
+   "Strategic priorities defined",
+   "Headcount plan drafted",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Finance Manager, CFO, Department Head, Controller",
+  "updated_at": "2025-12-16 08:53:03.108419+00",
+  "workflow_id": 312
+ },
+ {
+  "created_at": "2025-12-16 08:55:45.470976+00",
+  "id": 103,
+  "next_steps": "Define clear requirements then Weight evaluation criteria then Identify and shortlist vendors then Complete demos and trials then Check references then Complete due diligence then Score vendors against criteria then Select and document decision then Negotiate contract then Onboard vendor then Track success metrics",
+  "outcome_description": "A comprehensive vendor evaluation system including: business need documentation, stakeholder matrix, must-have and nice-to-have requirements, technical and service requirements, weighted evaluation criteria, vendor long list to short list process, scoring matrix with weighted calculation, must-have requirements check, due diligence checklist, reference check template, security and compliance review, pricing comparison (Year 1 and 3-year TCO), pros and cons analysis, selection decision documentation, contract negotiation checklist, and vendor onboarding plan.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Define requirements first. Evaluate at least 3 vendors. Weight criteria by importance. Always check references. Consider total cost of ownership. Document everything.",
+  "prerequisites": [
+   "Clear business need identified",
+   "Budget approved",
+   "Stakeholders identified",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Procurement Manager, Operations Manager, Finance Manager, IT Manager",
+  "updated_at": "2025-12-16 08:55:45.470976+00",
+  "workflow_id": 313
+ },
+ {
+  "created_at": "2025-12-16 08:58:50.901913+00",
+  "id": 104,
+  "next_steps": "Complete initial review and overview then Locate and document key terms then Assess risk level then Analyze financial terms in detail then Review liability and indemnification then Check termination rights and renewal then Review IP and confidentiality then Document all issues by priority then Define negotiation strategy then Communicate redlines then Negotiate changes then Complete final review then Obtain approvals then Execute and file then Calendar key dates",
+  "outcome_description": "A comprehensive contract review system including: contract overview and purpose check, key terms location checklist, risk level assessment, financial terms analysis (pricing, payment, protections), liability and indemnification review, termination rights analysis (convenience, cause, renewal, post-termination), IP and confidentiality review, warranties and dispute resolution check, issues summary by priority, negotiation strategy with leverage assessment, trade-off planning, redline document template, negotiation cover email, final review checklist, approval sign-off, and key dates tracking.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Read the entire contract. Focus on liability and termination. Check auto-renewal terms. Understand IP ownership. Document all negotiations. Get proper approvals. Calendar key dates.",
+  "prerequisites": [
+   "Contract document received",
+   "Business context understood",
+   "Authority to negotiate",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Legal, Finance Manager, Operations Manager, Business Owner",
+  "updated_at": "2025-12-16 08:58:50.901913+00",
+  "workflow_id": 314
+ },
+ {
+  "created_at": "2025-12-16 09:01:41.749476+00",
+  "id": 105,
+  "next_steps": "Define audience and requirements then Select report components then Gather and verify all data then Build income statement with variances then Create balance sheet summary then Prepare cash flow summary then Calculate key metrics/KPIs then Analyze significant variances then Write executive summary then Add outlook and action items then Complete quality review then Distribute to stakeholders then Follow up on questions",
+  "outcome_description": "A comprehensive financial reporting system including: audience-specific requirements matrix, report component selection, data gathering checklist by category, template selection by report type, complete income statement with variance analysis, balance sheet summary with month-over-month comparison, cash flow summary with key metrics, KPI dashboard by business model (SaaS, Services, E-commerce), variance analysis framework, executive summary template, outlook section, action items table, quality checklist, distribution list, and distribution email template.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Know your audience. Lead with key insights. Explain variances. Keep it concise. Use consistent formatting. Review before sending.",
+  "prerequisites": [
+   "Period closed in accounting system",
+   "Data verified and reconciled",
+   "Prior period and budget data available",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Controller, CFO, Finance Manager, Accountant",
+  "updated_at": "2025-12-16 09:01:41.749476+00",
+  "workflow_id": 315
+ },
+ {
+  "created_at": "2025-12-16 09:05:25.154007+00",
+  "id": 106,
+  "next_steps": "Create accurate complete invoices then Track in AR system then Monitor aging weekly then Send courtesy reminder before due then Follow collection timeline then Make collection calls as needed then Document all communications then Apply payments correctly then Reconcile AR monthly then Review bad debt reserve then Report on performance metrics",
+  "outcome_description": "A complete accounts receivable system including: invoice creation checklist and template, AR tracking register, aging summary and metrics, DSO calculation, collection timeline with specific actions by days past due, 5 collection email templates (courtesy to final notice), collection call script with handling for common responses, payment application process, short payment handling, monthly AR reconciliation, roll-forward template, bad debt reserve calculation by aging bucket, write-off process and checklist, and AR performance report with trends.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Invoice promptly and accurately. Send reminders before due. Follow up consistently. Document everything. Reconcile monthly. Watch DSO and aging trends.",
+  "prerequisites": [
+   "Customer invoice data available",
+   "Access to accounting system",
+   "AR aging report available",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Accountant, Finance Manager, AR Specialist, Business Owner",
+  "updated_at": "2025-12-16 09:05:25.154007+00",
+  "workflow_id": 316
+ },
+ {
+  "created_at": "2025-12-16 09:12:58.836072+00",
+  "id": 107,
+  "next_steps": "Receive and log invoice then Check for duplicates then Verify vendor info then Complete three-way match then Assign GL coding then Route for approval then Schedule payment strategically then Evaluate early payment discounts then Execute payment accurately then Notify vendor then Reconcile AP monthly then Reconcile to vendor statements then Report on metrics",
+  "outcome_description": "A complete accounts payable system including: invoice receipt logging, duplicate check process, vendor verification, three-way match framework (PO, receipt, invoice), GL coding template, data entry checklist, approval workflow with authority matrix, approval request email template, payment timing strategy with early discount analysis, AP aging management, priority payment list, payment method selection guide, payment processing checklist, vendor communication templates (confirmation, remittance, delay notification), monthly AP reconciliation, vendor statement reconciliation, open PO review, and AP performance report with cash forecast.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Check for duplicates first. Always three-way match. Get proper approvals. Take discounts when beneficial. Pay on time. Reconcile monthly. Maintain vendor relationships.",
+  "prerequisites": [
+   "Vendor invoice received",
+   "Access to accounting system",
+   "Approval authority matrix defined",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Accountant, Finance Manager, AP Specialist, Business Owner",
+  "updated_at": "2025-12-16 09:12:58.836072+00",
+  "workflow_id": 318
+ },
+ {
+  "created_at": "2025-12-16 09:18:40.739289+00",
+  "id": 108,
+  "next_steps": "Analyze cost structure and set floor then Research competitors and positioning then Quantify customer value and set ceiling then Select pricing model then Design tier structure then Determine value metric then Test with customers then Build financial model then Plan rollout strategy then Prepare customer communication then Update all systems then Launch and monitor then Review and adjust",
+  "outcome_description": "A comprehensive pricing strategy system including: cost structure analysis with pricing floor, competitive analysis with positioning options, value driver identification and quantification, pricing ceiling calculation, 7 pricing model options with pros/cons, three-tier design framework, pricing page layout, add-ons and discounts structure, value metric selection, psychological pricing, Van Westendorp price sensitivity methodology, A/B testing framework, financial sensitivity model, scenario analysis, implementation rollout options, existing customer handling strategies, price change announcement template, FAQ for support, and monitoring dashboard with early warning signals.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 4 steps. Key principle: Price based on value not just cost. Know your floor and ceiling. Test before committing. Communicate value not price. Monitor and adjust continuously.",
+  "prerequisites": [
+   "Cost data available",
+   "Competitive information gathered",
+   "Customer insights available",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Product Manager, Finance Manager, CEO, Sales Leader",
+  "updated_at": "2025-12-16 09:18:40.739289+00",
+  "workflow_id": 319
+ },
+ {
+  "created_at": "2025-12-16 09:21:17.122026+00",
+  "id": 109,
+  "next_steps": "Document current inventory state then Classify using ABC analysis then Calculate key metrics then Create demand forecasts then Set reorder points with safety stock then Calculate economic order quantities then Establish cycle count schedule then Conduct regular audits then Investigate all variances then Address overstock and dead stock then Reduce carrying costs then Report on performance monthly",
+  "outcome_description": "A comprehensive inventory management system including: inventory overview by category and location, ABC analysis with classification criteria, key metrics calculations (turns, DOI, stockout rate, fill rate, carrying cost), inventory health dashboard, four demand forecasting methods, seasonality pattern analysis, reorder point formula with safety stock calculation, EOQ calculation with practical adjustments, purchase order process and tracking, three audit types with cycle count schedule, count process checklist, variance analysis template, overstock and dead stock management options, stockout prevention strategies, carrying cost reduction opportunities, and executive inventory report.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Accurate counts are foundation. ABC classification focuses effort. Set reorder points for all items. Include safety stock. Cycle count regularly. Address overstock proactively. Monitor turns.",
+  "prerequisites": [
+   "Current inventory data available",
+   "Sales/demand history available",
+   "Supplier lead times known",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Operations Manager, Inventory Manager, E-Commerce Manager, Business Owner",
+  "updated_at": "2025-12-16 09:21:17.122026+00",
+  "workflow_id": 320
+ },
+ {
+  "created_at": "2025-12-16 09:32:51.947525+00",
+  "id": 110,
+  "next_steps": "Complete procurement request form then Attach supporting documents then Submit to appropriate approver then Approver reviews against checklist then Verify budget availability then Approve or return with feedback then Procurement creates PO then Place order with vendor then Track shipment then Confirm delivery and inspect then Match invoice to PO then Close request and notify requester",
+  "outcome_description": "A complete procurement request system including: detailed request form (item details, cost breakdown, timing, justification, vendor preference), request submission checklist, approval requirements by amount, supporting documentation requirements, competitive quote template, approver review checklist (need, cost, budget, compliance, timing), approval workflow tracking, approval communication templates (approved, return, rejected), budget verification process, purchase order creation, order placement tracking, delivery tracking with shipment status, inspection checklist, request closure checklist with final cost comparison, requester notification template, and procurement metrics dashboard.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Be specific in requests. Provide realistic cost estimates. Include business justification. Do not inflate urgency. Attach supporting documents. Confirm receipt promptly.",
+  "prerequisites": [
+   "Clear understanding of what is needed",
+   "Cost estimate researched",
+   "Budget code known",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Employee, Manager, Procurement Manager, Operations Manager",
+  "updated_at": "2025-12-16 09:32:51.947525+00",
+  "workflow_id": 321
+ },
+ {
+  "created_at": "2025-12-16 09:41:23.413679+00",
+  "id": 111,
+  "next_steps": "Define problem with evidence then Set measurable goals then Define explicit non-goals then Write user stories with priority then Add acceptance criteria for each story then Document edge cases and errors then Specify non-functional requirements then Capture UI/UX requirements then Address technical considerations then Identify dependencies and risks then Plan release and rollout then Get stakeholder reviews then Resolve all feedback then Obtain final approval",
+  "outcome_description": "A complete PRD template including: document header with metadata and stakeholders, problem definition with current state and evidence, goals with measurable success metrics, explicit non-goals, user stories in standard format with MoSCoW prioritization, detailed functional requirements with acceptance criteria (Given/When/Then), user flows including happy path and alternates, edge cases and error handling table, non-functional requirements (performance, scalability, security, accessibility, compatibility, localization), UI/UX requirements with design status, technical considerations (architecture, integrations, dependencies, risks, technical debt), release planning with phasing and rollout strategy, estimation template, validation checklist, and stakeholder approval tracking.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Start with problem not solution. Include evidence. Make metrics measurable. Define clear acceptance criteria. Document edge cases. Get stakeholder alignment early.",
+  "prerequisites": [
+   "Problem or opportunity identified",
+   "Stakeholders identified",
+   "Basic user research done",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Product Manager, Product Owner, Business Analyst, Technical Lead",
+  "updated_at": "2025-12-16 09:41:23.413679+00",
+  "workflow_id": 322
+ },
+ {
+  "created_at": "2025-12-16 12:39:00.249129+00",
+  "id": 125,
+  "next_steps": "Conduct discovery interviews then Identify real problem vs stated problem then Define success metrics then Document scope in writing then Specify deliverables and dates then Create phased timeline then Establish governance then Build detailed work plan then Send regular status updates then Quality check all deliverables then Incorporate client feedback then Plan knowledge transfer then Deliver training sessions then Hand over documentation then Hold closing meeting then Collect feedback then Request testimonial then Note future opportunities then Archive project materials",
+  "outcome_description": "A complete consulting framework including: engagement overview template, stated vs real problem analysis, success metrics definition, discovery process checklist (interviews, document review, data analysis, observation, benchmarking), key discovery questions by category (business context, stakeholders, constraints, success), discovery findings template, scope of work definition (in/out of scope, assumptions, dependencies), deliverables table with due dates, phased timeline, governance structure, work plan with task breakdown by phase, milestones and sign-offs, resource plan, status report template, meeting agenda template, email templates (kickoff, milestone delivery), findings report structure (7 sections), recommendation framework (rationale, impact, implementation, priority), presentation structure, deliverable quality checklist (content, quality, client-ready), client feedback loop process, knowledge transfer plan (objectives, activities, documentation, training), project closure checklist (deliverables, administrative, knowledge transfer, relationship), final meeting agenda, close-out report template, client feedback survey (7 ratings), testimonial request email, and future opportunities tracking.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Never skip discovery. Define scope clearly. Identify real problem. Set measurable success. Communicate regularly. Document everything. Get milestone sign-off. Transfer knowledge. Close professionally. Ask for feedback and referrals.",
+  "prerequisites": [
+   "Client engagement or opportunity",
+   "Understanding of consulting approach",
+   "Client stakeholder access",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Consultant, Freelancer, Agency, Professional Services",
+  "updated_at": "2025-12-16 12:39:00.249129+00",
+  "workflow_id": 337
+ },
+ {
+  "created_at": "2025-12-16 09:47:35.404437+00",
+  "id": 112,
+  "next_steps": "Define user with context and characteristics then Analyze underlying need and motivation then Check story size and INVEST criteria then Split if too large then Articulate value proposition then Write story in standard format then Add acceptance criteria in Given-When-Then then Document edge cases then Add technical notes and dependencies then Define Definition of Done then Validate against INVEST then Refine with team then Capture and resolve questions then Estimate as team then Verify Definition of Ready",
+  "outcome_description": "A complete user story writing system including: user definition with persona details and context, user needs analysis with underlying motivation, current experience and pain points, story scope check with INVEST criteria, story splitting strategies (7 methods), value proposition and business value assessment, priority assessment matrix, user story in standard format (As a/I want to/So that), story details template, acceptance criteria in Given-When-Then format, checklist format alternative, edge cases table, technical notes section, dependencies, design references, out of scope items, standard Definition of Done, INVEST validation checklist, clarity check questions, common problems checklist, team refinement session guide, discussion prompts, feedback capture table, estimation template, and Definition of Ready checklist.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Focus on user not system. State need not solution. Keep stories small. Make criteria testable. Document edge cases. Refine with the team. Estimate together.",
+  "prerequisites": [
+   "Feature or need identified",
+   "User persona understood",
+   "Basic requirements known",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Product Manager, Product Owner, Scrum Master, Business Analyst",
+  "updated_at": "2025-12-16 09:47:35.404437+00",
+  "workflow_id": 323
+ },
+ {
+  "created_at": "2025-12-16 09:52:49.590757+00",
+  "id": 113,
+  "next_steps": "Calculate team capacity with adjustments then Review and prioritize backlog then Account for carryover then Define clear sprint goal then Select stories supporting goal then Fill remaining capacity by priority then Break down into tasks then Verify hours against capacity then Discuss commitment with team then Take confidence vote then Make final commitment then Set up sprint board then Send kickoff communication then Inform stakeholders then Start execution",
+  "outcome_description": "A complete sprint planning system including: sprint overview with key dates, constraints and risks, team capacity calculation with individual availability tracking, capacity adjustments (PTO, meetings, support, buffer), backlog health check, prioritized backlog table, carryover from last sprint, sprint goal definition with success criteria, story selection process with categories (goal stories, additional, bugs/debt), sprint totals with buffer calculation, task breakdown template, hours check against capacity, team commitment discussion guide, confidence vote template, final commitment documentation, sprint board setup with WIP limits, board checklist, sprint kickoff email template, stakeholder communication template, and one-page sprint plan summary.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Calculate real capacity. Only commit refined stories. Sprint goal is not a story list. Leave 10-15% buffer. Task breakdown validates estimates. Team must genuinely commit.",
+  "prerequisites": [
+   "Backlog refined with estimated stories",
+   "Team availability known",
+   "Historical velocity data (if available)",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Scrum Master, Product Owner, Engineering Lead, Team Lead",
+  "updated_at": "2025-12-16 09:52:49.590757+00",
+  "workflow_id": 324
+ },
+ {
+  "created_at": "2025-12-16 10:12:13.883664+00",
+  "id": 114,
+  "next_steps": "Gather changes from all sources then Identify user benefit for each change then Categorize by type and importance then Check audience relevance then Write user-focused release notes then Apply writing guidelines then Create format variations as needed then Review content and accuracy then Get stakeholder approvals then Plan distribution channels then Schedule timing then Publish and distribute then Monitor feedback",
+  "outcome_description": "A complete release notes system including: release overview template, change sources checklist, change inventory tables (features, improvements, bugs, performance, security, deprecations, known issues), categorization criteria (highlight, include, mention, omit), audience relevance matrix, documentation links tracking, release notes structure (8 sections), full release notes draft template, writing guidelines with do and do not lists, good vs bad examples, feature description formula, 4 format variations (short, social, technical, internal), review checklist (content, accuracy, formatting), stakeholder review tracking, distribution plan with locations and timing, audience targeting matrix, and communication templates (email, in-app, Slack, social).",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Write for users not developers. Focus on benefits not features. Be specific not vague. Use simple language. Include links. Call out breaking changes. Review before publishing.",
+  "prerequisites": [
+   "Release content finalized",
+   "Changes documented in tickets/PRs",
+   "Release date confirmed",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Product Manager, Technical Writer, Marketing, Developer",
+  "updated_at": "2025-12-16 10:12:13.883664+00",
+  "workflow_id": 325
+ },
+ {
+  "created_at": "2025-12-16 10:17:26.515671+00",
+  "id": 115,
+  "next_steps": "Determine launch tier based on importance then Define goals and success metrics then Create timeline with milestones then Assign RACI to team then Build messaging framework then Create assets per tier then Prepare communication templates then Enable sales team then Train support team then Send internal announcement then Execute launch day checklist then Monitor metrics in real-time then Track issues and address then Conduct post-launch review then Document learnings",
+  "outcome_description": "A complete feature launch system including: launch overview with tier definitions (Tier 1/2/3), launch objectives and success metrics table, risk assessment matrix, launch timeline with key milestones, weekly countdown checklist, RACI matrix for launch team, messaging framework (one-liner, elevator pitch, value proposition, key messages, talking points, FAQ), launch assets checklist by tier, asset status tracker, communication templates (blog post outline, email announcement, in-app announcement, social media), sales enablement materials (talking points, objection handling, demo script), support enablement (common questions, known issues, escalation path), internal announcement template, launch day checklist (pre-launch, launch sequence, post-launch), monitoring dashboard (real-time metrics, channel performance, sentiment tracking, issue tracker), and post-launch review template (results vs goals, 30-day metrics, what worked, improvements, learnings).",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Start planning early. Define clear metrics. Create consistent messaging. Prepare assets before launch. Enable sales and support. Monitor closely. Measure and learn.",
+  "prerequisites": [
+   "Feature development complete or near complete",
+   "Launch date determined",
+   "Stakeholders identified",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Product Manager, Marketing Manager, Product Marketing, Launch Lead",
+  "updated_at": "2025-12-16 10:17:26.515671+00",
+  "workflow_id": 326
+ },
+ {
+  "created_at": "2025-12-16 10:21:58.094559+00",
+  "id": 116,
+  "next_steps": "Define audience and skill level then Set clear goal for reader then Plan document structure then Create content inventory then Write using templates then Follow writing guidelines then Include working examples then Add troubleshooting then Get technical review then Test usability with real user then Complete editorial review then Check accessibility then Publish then Schedule maintenance then Monitor metrics",
+  "outcome_description": "A complete technical documentation system including: documentation overview template, audience analysis framework, documentation type definitions with structure recommendations (Getting Started, How-to, API Reference, Tutorial, Conceptual, Troubleshooting), content outline template, content inventory checklist, full documentation template with all standard sections, writing guidelines (tone, voice, formatting), step writing formula, code example formula, API documentation template (endpoint, request, response, errors, code examples), content checklist (completeness, clarity, formatting), review checklists (technical accuracy, usability, editorial, accessibility), review feedback log, final approval tracking, publishing checklist (pre-publish, publish, post-publish), maintenance schedule, and documentation metrics (usage, feedback, quality).",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Know your audience. Define clear goal. Plan before writing. Use simple language. Include examples. Test with real users. Review for accuracy. Keep it updated.",
+  "prerequisites": [
+   "Feature or topic to document",
+   "Access to product/feature",
+   "Subject matter expert available",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Technical Writer, Developer, Product Manager, DevRel",
+  "updated_at": "2025-12-16 10:21:58.094559+00",
+  "workflow_id": 327
+ },
+ {
+  "created_at": "2025-12-16 10:27:04.241852+00",
+  "id": 117,
+  "next_steps": "Read PR description and context then Identify files and scope then Note focus areas for change type then Estimate review time then Review tests first then Review main logic then Check all quality areas then Categorize feedback by severity then Write constructive comments then Make approval decision then Submit with summary comment then Plan follow-up then Capture learnings then Share with team if valuable",
+  "outcome_description": "A complete code review system including: review context template (PR info, change overview, context questions), review scope with file listing, focus areas by change type (feature, bug fix, refactoring, performance, security), preparation checklist, time estimation by PR size, recommended review order, comprehensive code quality checklist (correctness, design, readability, performance, security, testing, documentation), feedback category prefixes (BLOCKER, MUST, SHOULD, NIT, QUESTION, PRAISE), constructive feedback formula (what, why, how), tone guidelines with examples, review findings summary table, overall assessment options, review submission template with summary comment, follow-up tracking, review metrics (time, quality, team), learnings capture (patterns, knowledge sharing, process improvements), and best practices for reviewers and authors.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Review to improve not criticize. Focus on code not person. Be specific and actionable. Explain the why. Praise good work. Review promptly. Keep learning.",
+  "prerequisites": [
+   "Pull request/merge request to review",
+   "Access to code repository",
+   "Understanding of project standards",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Developer, Tech Lead, Engineering Manager, QA Engineer",
+  "updated_at": "2025-12-16 10:27:04.241852+00",
+  "workflow_id": 328
+ },
+ {
+  "created_at": "2025-12-16 10:29:44.89358+00",
+  "id": 118,
+  "next_steps": "Identify all competitor types then Prioritize top 3-5 for deep analysis then Research each using multiple sources then Create feature comparison matrix then Analyze pricing and positioning then Map competitive strengths and weaknesses then Capture win/loss insights then Evaluate strategic options then Define positioning strategy then Create battle cards then Develop prioritized action plan then Set up monitoring then Schedule regular reviews",
+  "outcome_description": "A complete competitor analysis system including: competitor identification by category (direct, indirect, potential, substitutes), competitor research template (company overview, products, pricing, market position, marketing/sales, strengths/weaknesses, recent developments), research sources checklist, feature comparison matrix, feature analysis (unique, table stakes, gaps), pricing comparison with value analysis, positioning map template with axes, competitor scorecard, competitive advantages/disadvantages, win/loss insights, strategic options framework (differentiate, compete, niche, disrupt), positioning statement template, battle cards template, priority action plan by timeframe and function, and monitoring plan with review schedule.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Include all competitor types. Use multiple sources. Be objective. Focus on actionable insights. Update regularly. Share with teams. Monitor continuously.",
+  "prerequisites": [
+   "Knowledge of your market",
+   "List of known competitors",
+   "Access to public information sources",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Product Manager, Marketing Manager, Strategy Lead, Business Owner",
+  "updated_at": "2025-12-16 10:29:44.89358+00",
+  "workflow_id": 329
+ },
+ {
+  "created_at": "2025-12-16 10:45:53.531958+00",
+  "id": 119,
+  "next_steps": "Define clear research questions then Set scope boundaries then Select research methods then Identify data sources then Create research timeline then Size market (TAM/SAM/SOM) then Analyze growth trends then Profile target customers then Map customer needs and buying process then Assess industry and technology trends then Evaluate competitive landscape then Identify barriers to entry then Synthesize key findings then Score market attractiveness then Identify opportunities and threats then Develop recommendations then Assess go/no-go then Define action items",
+  "outcome_description": "A complete market research system including: research brief template, research objectives and scope definition, research framework (5 areas: market size, structure, customers, competition, trends), research methods selection (primary vs secondary), data sources inventory, research timeline and budget, market sizing template (TAM/SAM/SOM with calculations), growth analysis (historical and forecast), customer segmentation analysis, customer profile template, needs and pain points analysis, buying process mapping, willingness to pay assessment, industry trends framework, technology trends assessment, regulatory and economic factors, competitive landscape analysis, barriers to entry evaluation, key findings synthesis, market attractiveness scorecard, opportunities and threats analysis, risk assessment matrix, strategic recommendations with alternatives, go/no-go assessment framework, and action items with follow-up research needs.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Start with clear questions. Define scope before researching. Use multiple sources. Validate assumptions. Be objective. Quantify where possible. Focus on actionable insights.",
+  "prerequisites": [
+   "Clear business question to answer",
+   "Target market identified",
+   "Access to research resources",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Product Manager, Marketing Manager, Strategy Lead, Founder",
+  "updated_at": "2025-12-16 10:45:53.531958+00",
+  "workflow_id": 331
+ },
+ {
+  "created_at": "2025-12-16 12:52:33.472744+00",
+  "id": 126,
+  "next_steps": "Analyze target learners then Identify performance gap then Define learning objectives (Know/Do/Feel) then Plan success metrics by level then Design module structure then Balance time allocation then Select learning methods then Create facilitator guide then Write participant workbook then Design slides then Create job aids then Design activities with debrief then Create assessment then Plan delivery logistics then Prepare room/tech setup then Create evaluation surveys then Plan follow-up timeline then Draft follow-up emails then Engage managers then Pilot and refine",
+  "outcome_description": "A complete training material creation system including: training overview template, target learner profile, training need and performance gap analysis, learning objectives framework (Know/Do/Feel), objective breakdown with assessment methods, success metrics by Kirkpatrick level (reaction, learning, behavior, results), training structure with modules, time allocation breakdown with recommended percentages, learning methods selection, facilitator guide template (preparation checklist, module-by-module with Say/Do/Show/Ask/Activity/Transition, closing, tips), participant workbook template (objectives, concepts, exercises, reflection, action plan, resources), job aid/quick reference card template, presentation slide outline with design guidelines, visual elements planning, detailed activity design (purpose, instructions, debrief), assessment questions template, delivery preparation checklist by timeframe (2 weeks, 1 week, 1 day, day of), room/tech setup for in-person and virtual, materials checklist, 4-level evaluation plan with survey questions, follow-up reinforcement timeline, follow-up email templates (thank you, tips, check-in), and manager involvement guide.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Start with objectives. Know learners. Less lecture more practice. One idea per slide. Include facilitator notes. Design activities with debrief. Create job aids. Plan reinforcement. Measure at multiple levels. Involve managers.",
+  "prerequisites": [
+   "Training need identified",
+   "Target audience defined",
+   "Content expertise available",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "L&D Professional, Trainer, HR, Manager, Course Creator",
+  "updated_at": "2025-12-16 12:52:33.472744+00",
+  "workflow_id": 339
+ },
+ {
+  "created_at": "2025-12-16 10:51:19.998008+00",
+  "id": 120,
+  "next_steps": "Define analysis context and scope then Identify strengths by category with evidence then Assess competitive advantage and sustainability then Identify weaknesses by category honestly then Assess impact and fixability then Identify opportunities by source then Quantify opportunity potential then Identify threats by source then Assess probability and impact then Complete SWOT matrix then Develop TOWS strategies for all quadrants then Evaluate and prioritize strategies then Determine strategic posture then Create strategic initiatives then Identify quick wins then Set monitoring schedule",
+  "outcome_description": "A complete SWOT analysis system including: analysis context and framework explanation, strengths analysis by category (people, product, technology, financial, brand, customers) with evidence and competitive advantage rating, sustainability assessment, weaknesses analysis by category with impact and fixability rating, opportunities analysis by source (market, technology, customer, competitor, regulatory, partnerships) with potential sizing and timing, threats analysis by source with probability, impact and urgency ratings, complete SWOT matrix visualization, SWOT balance assessment, TOWS strategy matrix (SO, WO, ST, WT strategies) connecting all quadrants, strategy evaluation criteria (impact, feasibility, urgency), priority strategies by timeframe, strategic posture determination (aggressive, competitive, conservative, defensive), strategic initiatives template with full details, quick wins identification, and monitoring plan with review schedule.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Be specific not generic. Provide evidence. Distinguish internal vs external. Quantify where possible. Prioritize by impact. Connect to strategies via TOWS. Focus on actionable items.",
+  "prerequisites": [
+   "Business context and objectives",
+   "Knowledge of internal operations",
+   "Understanding of market and competitors",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Strategy Lead, Business Owner, Product Manager, Leadership Team",
+  "updated_at": "2025-12-16 10:51:19.998008+00",
+  "workflow_id": 332
+ },
+ {
+  "created_at": "2025-12-16 10:56:59.386418+00",
+  "id": 121,
+  "next_steps": "Write executive summary (do last but shown first) then Define problem with evidence then Describe solution with features and benefits then Create value proposition statement then Size market (TAM/SAM/SOM) then Profile target customer then Define business model and pricing then Calculate unit economics then Analyze competition then Identify competitive advantages then Create go-to-market strategy then Plan sales approach then Document team and organization then Build financial projections then Define funding requirements then Specify use of funds then Create milestone roadmap then Identify risks and mitigations",
+  "outcome_description": "A complete business plan system including: executive summary template, problem and solution framework, value proposition statement, target market analysis with TAM/SAM/SOM, customer profile and segmentation, market trends analysis, business model canvas elements, revenue model and pricing structure, unit economics table (ARPU, CAC, LTV, churn), value chain analysis, cost structure breakdown, competitive analysis matrix, competitive positioning comparison, sustainable competitive advantages with moat analysis, go-to-market strategy with marketing channels and budget allocation, sales strategy and team plan, customer acquisition and journey mapping, launch phases, founding team profiles, organization growth plan, advisor/board structure, 5-year financial projections (revenue, P&L, cash flow), key SaaS/business metrics, funding requirements template, use of funds breakdown, milestone-based execution roadmap, success metrics table, and risk mitigation matrix.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Lead with opportunity. Show dont tell with data. Be realistic about projections. Address risks proactively. Know your numbers. Tell compelling story. Keep it concise. Tailor to audience.",
+  "prerequisites": [
+   "Business concept defined",
+   "Basic market understanding",
+   "Financial assumptions available",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Founder, Entrepreneur, Business Owner, Strategy Lead",
+  "updated_at": "2025-12-16 10:56:59.386418+00",
+  "workflow_id": 333
+ },
+ {
+  "created_at": "2025-12-16 12:17:29.637338+00",
+  "id": 122,
+  "next_steps": "Define OKR context and level then Review OKR framework and principles then Prioritize focus areas then Brainstorm objectives for each area then Validate objectives against criteria then Select 3-5 final objectives then Brainstorm Key Results for each objective then Select 2-5 KRs per objective then Add baseline and target to each KR then Assign owner to each KR then Validate KR quality then Score initial confidence then Check vertical alignment then Check horizontal dependencies then Plan cascading then Set tracking schedule then Create complete OKR document then Share with team",
+  "outcome_description": "A complete OKR setting system including: OKR context template, OKR framework explanation (Objectives vs Key Results), OKR principles checklist, focus area prioritization, objective brainstorming by focus area, objective quality check criteria (7 items), good vs bad objective examples, objective validation checklist, recommended objective counts by level, Key Result framework with types (Metric, Milestone, Binary), KR formula template, common KR mistakes with corrections, Key Result templates for each objective with baseline/target/measurement/owner, KR quality validation matrix (6 criteria), confidence scoring guide with ideal range, KR count recommendations, vertical alignment check (to company goals), horizontal alignment check (cross-team dependencies), cascading template (to teams/individuals), alignment checklist, tracking cadence recommendations, scoring method (0.0-1.0 scale with colors), weekly tracking template, check-in questions, and complete OKR document template.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Less is more. Objectives inspire, KRs measure. 70% = success. Check in weekly. Separate from BAU. Align vertically and horizontally. Adapt if context changes. Celebrate and learn.",
+  "prerequisites": [
+   "Company strategy or priorities defined",
+   "Understanding of team goals",
+   "Baseline metrics available",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Leadership, Manager, Team Lead, HR/People Ops",
+  "updated_at": "2025-12-16 12:17:29.637338+00",
+  "workflow_id": 334
+ },
+ {
+  "created_at": "2025-12-16 12:25:00.838311+00",
+  "id": 123,
+  "next_steps": "Define target audience and prerequisites then Analyze learner needs then Create measurable learning objectives then Validate objectives with Blooms then Define success criteria then Brainstorm all topics then Decide scope (in/out) then Plan content depth then Choose course structure then Design modules with objectives then Create logical flow then Build detailed module outline then Create session agenda then Allocate time by type then Plan energy management then Select activity types then Design activity for each module then Plan debrief questions then Create final project then List all materials then Check technology needs",
+  "outcome_description": "A complete course/workshop design system including: course overview template, target audience analysis, learner needs analysis (know, need to know, problems, questions), Blooms Taxonomy levels guide, primary learning objective template, specific learning objectives with levels, objective validation checklist, success criteria by objective, topic brainstorm, scope decision framework (must/should/nice to have/out of scope), content depth planning, course architecture options (linear, building blocks, problem-based, case-based, spiral), module overview table, module flow logic, detailed module outline template, full session agenda with timing, time allocation breakdown with percentages, recommended balance guidance, energy management by time of day, activity types by format (in-person, virtual, self-paced), activity selection criteria, detailed activity design template for each module (objective, instructions, materials, debrief), final project/capstone template, instructor materials checklist, participant materials list, and technology/equipment requirements.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Start with objectives. Know your audience. Less content more practice. 40-50% activities. Build progressively. Plan for energy. Include variety. Always debrief. Leave buffer. Iterate.",
+  "prerequisites": [
+   "Topic expertise",
+   "Understanding of target audience",
+   "Duration and format defined",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Educator, Trainer, Consultant, Course Creator, Coach",
+  "updated_at": "2025-12-16 12:25:00.838311+00",
+  "workflow_id": 335
+ },
+ {
+  "created_at": "2025-12-16 12:30:12.73302+00",
+  "id": 124,
+  "next_steps": "Define goals and success metrics then Profile target audience then Choose webinar format then Confirm speakers then Plan timing and structure then Schedule engagement elements then Set up technology then Create registration page then Build planning timeline then Outline content and key takeaways then Create slide outline then Build promotion timeline then Write email sequence then Create social posts then Complete materials checklist then Create day-of checklist then Write run of show then Plan troubleshooting then Draft follow-up emails then Define lead handling then Plan content repurposing then Prepare analysis template",
+  "outcome_description": "A complete webinar planning system including: webinar overview template, goals and success metrics table, target audience profile, format options with use cases (presentation, panel, interview, demo, workshop, AMA), speaker planning, timing and structure breakdown, engagement elements schedule, technology requirements, registration setup, planning timeline, content outline with opening/sections/closing, slide outline template, promotion timeline by week, promotion channels with tactics and budget, complete email sequence (7 emails: 4 promotion, 3 reminders), social media post templates, registration page elements, materials checklist (content, promotion, operational), day-of checklist (pre-webinar, during, post), detailed run of show with speaker cues, troubleshooting guide, follow-up timeline and emails (thank you, no-show, nurture), lead scoring and handling by segment, content repurposing checklist, and webinar analysis template with metrics and learnings.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Set clear goals. Know audience. Promote early and often. Less content. Build in engagement. Do dry run. Start on time. Follow up within 24 hours. Analyze and improve. Repurpose.",
+  "prerequisites": [
+   "Webinar topic defined",
+   "Speaker(s) available",
+   "Webinar platform access",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Marketing Manager, Content Creator, Educator, Sales, Event Manager",
+  "updated_at": "2025-12-16 12:30:12.73302+00",
+  "workflow_id": 336
+ },
+ {
+  "created_at": "2025-12-16 13:27:13.645771+00",
+  "id": 127,
+  "next_steps": "Identify user question and intent then Select article type then Research search terms then Plan content structure then Define scope then Write optimized title then Write brief introduction then List prerequisites then Write step-by-step content then Add screenshots and visuals then Show expected result then Link related articles then Simplify language then Apply formatting then Optimize for SEO then Add metadata and tags then Assign categories then Add internal links then Check accessibility then Get peer review then Publish article then Set up metrics tracking then Enable feedback collection then Schedule maintenance review",
+  "outcome_description": "A complete knowledge base article system including: article overview template, target audience analysis (role, technical level, urgency, device, mindset), user intent definition, search terms identification, article type templates (how-to, troubleshooting, FAQ, getting started, reference, best practices), content outline framework, scope definition (in/out), article template with all sections (title, introduction, prerequisites, main content, expected result, next steps), title guidelines with examples, writing guidelines (language/tone dos and donts, formatting rules, visual guidelines, callout types), content checklist (before writing, content quality, writing quality, completeness), SEO optimization template (title tag, meta description, keywords, placement), categorization and tagging, internal linking strategy, search terms table, publishing checklist (pre-publish review, approval workflow, publish actions, post-publish verification), maintenance plan (review schedule, update triggers), article metrics tracking, feedback collection setup, and version history template.",
+  "platform_instructions": "This SOP works with any AI assistant. Keep the same chat open for all 3 steps. Key principle: Start with user question. Use searchable title. Keep it scannable. One topic per article. Number steps. Show dont just tell. Test instructions. Link related articles. Keep current. Measure and improve.",
+  "prerequisites": [
+   "Topic or user question identified",
+   "Product knowledge available",
+   "Knowledge base platform access",
+   "Access to ChatGPT, Claude, or similar AI tool"
+  ],
+  "target_role": "Support, Technical Writer, Product Manager, Documentation Lead",
+  "updated_at": "2025-12-16 13:27:13.645771+00",
+  "workflow_id": 340
+ }
+]

@@ -1,0 +1,1242 @@
+[
+ {
+  "column_default": null,
+  "column_name": "id",
+  "data_type": "bigint",
+  "is_nullable": "NO",
+  "table_name": "categories",
+  "udt_name": "int8"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "created_at",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "NO",
+  "table_name": "categories",
+  "udt_name": "timestamptz"
+ },
+ {
+  "column_default": null,
+  "column_name": "slug",
+  "data_type": "text",
+  "is_nullable": "NO",
+  "table_name": "categories",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "name",
+  "data_type": "text",
+  "is_nullable": "NO",
+  "table_name": "categories",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "description",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "categories",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "icon",
+  "data_type": "text",
+  "is_nullable": "NO",
+  "table_name": "categories",
+  "udt_name": "text"
+ },
+ {
+  "column_default": "0",
+  "column_name": "sort_order",
+  "data_type": "integer",
+  "is_nullable": "NO",
+  "table_name": "categories",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": "0",
+  "column_name": "workflow_count",
+  "data_type": "integer",
+  "is_nullable": "NO",
+  "table_name": "categories",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": "gen_random_uuid()",
+  "column_name": "id",
+  "data_type": "uuid",
+  "is_nullable": "NO",
+  "table_name": "client_presets",
+  "udt_name": "uuid"
+ },
+ {
+  "column_default": null,
+  "column_name": "user_id",
+  "data_type": "uuid",
+  "is_nullable": "NO",
+  "table_name": "client_presets",
+  "udt_name": "uuid"
+ },
+ {
+  "column_default": null,
+  "column_name": "client_company",
+  "data_type": "text",
+  "is_nullable": "NO",
+  "table_name": "client_presets",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "client_contact_name",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "client_presets",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "client_contact_email",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "client_presets",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "client_website",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "client_presets",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "client_industry",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "client_presets",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "client_tone",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "client_presets",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "client_brand_context",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "client_presets",
+  "udt_name": "text"
+ },
+ {
+  "column_default": "false",
+  "column_name": "is_favorite",
+  "data_type": "boolean",
+  "is_nullable": "YES",
+  "table_name": "client_presets",
+  "udt_name": "bool"
+ },
+ {
+  "column_default": null,
+  "column_name": "last_used_at",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "YES",
+  "table_name": "client_presets",
+  "udt_name": "timestamptz"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "created_at",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "YES",
+  "table_name": "client_presets",
+  "udt_name": "timestamptz"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "updated_at",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "YES",
+  "table_name": "client_presets",
+  "udt_name": "timestamptz"
+ },
+ {
+  "column_default": null,
+  "column_name": "client_name",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "client_presets",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "client_role",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "client_presets",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "client_target_audience",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "client_presets",
+  "udt_name": "text"
+ },
+ {
+  "column_default": "nextval('global_daily_stats_id_seq'::regclass)",
+  "column_name": "id",
+  "data_type": "integer",
+  "is_nullable": "NO",
+  "table_name": "global_daily_stats",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": null,
+  "column_name": "date",
+  "data_type": "date",
+  "is_nullable": "NO",
+  "table_name": "global_daily_stats",
+  "udt_name": "date"
+ },
+ {
+  "column_default": "0",
+  "column_name": "total_anonymous",
+  "data_type": "integer",
+  "is_nullable": "YES",
+  "table_name": "global_daily_stats",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": "0",
+  "column_name": "total_logged_in",
+  "data_type": "integer",
+  "is_nullable": "YES",
+  "table_name": "global_daily_stats",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "created_at",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "YES",
+  "table_name": "global_daily_stats",
+  "udt_name": "timestamptz"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "updated_at",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "YES",
+  "table_name": "global_daily_stats",
+  "udt_name": "timestamptz"
+ },
+ {
+  "column_default": "nextval('job_profiles_id_seq'::regclass)",
+  "column_name": "id",
+  "data_type": "integer",
+  "is_nullable": "NO",
+  "table_name": "job_profiles",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": null,
+  "column_name": "slug",
+  "data_type": "character varying",
+  "is_nullable": "NO",
+  "table_name": "job_profiles",
+  "udt_name": "varchar"
+ },
+ {
+  "column_default": null,
+  "column_name": "title",
+  "data_type": "character varying",
+  "is_nullable": "NO",
+  "table_name": "job_profiles",
+  "udt_name": "varchar"
+ },
+ {
+  "column_default": null,
+  "column_name": "description",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "job_profiles",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "icon",
+  "data_type": "character varying",
+  "is_nullable": "YES",
+  "table_name": "job_profiles",
+  "udt_name": "varchar"
+ },
+ {
+  "column_default": null,
+  "column_name": "hero_headline",
+  "data_type": "character varying",
+  "is_nullable": "YES",
+  "table_name": "job_profiles",
+  "udt_name": "varchar"
+ },
+ {
+  "column_default": null,
+  "column_name": "hero_subheadline",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "job_profiles",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "meta_title",
+  "data_type": "character varying",
+  "is_nullable": "YES",
+  "table_name": "job_profiles",
+  "udt_name": "varchar"
+ },
+ {
+  "column_default": null,
+  "column_name": "meta_description",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "job_profiles",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "seo_text",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "job_profiles",
+  "udt_name": "text"
+ },
+ {
+  "column_default": "0",
+  "column_name": "sort_order",
+  "data_type": "integer",
+  "is_nullable": "YES",
+  "table_name": "job_profiles",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": "'draft'::character varying",
+  "column_name": "status",
+  "data_type": "character varying",
+  "is_nullable": "YES",
+  "table_name": "job_profiles",
+  "udt_name": "varchar"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "created_at",
+  "data_type": "timestamp without time zone",
+  "is_nullable": "YES",
+  "table_name": "job_profiles",
+  "udt_name": "timestamp"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "updated_at",
+  "data_type": "timestamp without time zone",
+  "is_nullable": "YES",
+  "table_name": "job_profiles",
+  "udt_name": "timestamp"
+ },
+ {
+  "column_default": null,
+  "column_name": "id",
+  "data_type": "bigint",
+  "is_nullable": "NO",
+  "table_name": "sop_details",
+  "udt_name": "int8"
+ },
+ {
+  "column_default": null,
+  "column_name": "workflow_id",
+  "data_type": "bigint",
+  "is_nullable": "NO",
+  "table_name": "sop_details",
+  "udt_name": "int8"
+ },
+ {
+  "column_default": null,
+  "column_name": "target_role",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "sop_details",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "prerequisites",
+  "data_type": "ARRAY",
+  "is_nullable": "YES",
+  "table_name": "sop_details",
+  "udt_name": "_text"
+ },
+ {
+  "column_default": null,
+  "column_name": "outcome_description",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "sop_details",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "next_steps",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "sop_details",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "platform_instructions",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "sop_details",
+  "udt_name": "text"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "created_at",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "YES",
+  "table_name": "sop_details",
+  "udt_name": "timestamptz"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "updated_at",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "YES",
+  "table_name": "sop_details",
+  "udt_name": "timestamptz"
+ },
+ {
+  "column_default": "uuid_generate_v4()",
+  "column_name": "id",
+  "data_type": "uuid",
+  "is_nullable": "NO",
+  "table_name": "subscriptions",
+  "udt_name": "uuid"
+ },
+ {
+  "column_default": null,
+  "column_name": "user_id",
+  "data_type": "uuid",
+  "is_nullable": "YES",
+  "table_name": "subscriptions",
+  "udt_name": "uuid"
+ },
+ {
+  "column_default": null,
+  "column_name": "customer_id",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "subscriptions",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "subscription_id",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "subscriptions",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "order_id",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "subscriptions",
+  "udt_name": "text"
+ },
+ {
+  "column_default": "'free'::text",
+  "column_name": "status",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "subscriptions",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "plan_type",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "subscriptions",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "current_period_start",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "YES",
+  "table_name": "subscriptions",
+  "udt_name": "timestamptz"
+ },
+ {
+  "column_default": null,
+  "column_name": "current_period_end",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "YES",
+  "table_name": "subscriptions",
+  "udt_name": "timestamptz"
+ },
+ {
+  "column_default": null,
+  "column_name": "canceled_at",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "YES",
+  "table_name": "subscriptions",
+  "udt_name": "timestamptz"
+ },
+ {
+  "column_default": null,
+  "column_name": "amount",
+  "data_type": "integer",
+  "is_nullable": "YES",
+  "table_name": "subscriptions",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": "'USD'::text",
+  "column_name": "currency",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "subscriptions",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "lemon_squeezy_data",
+  "data_type": "jsonb",
+  "is_nullable": "YES",
+  "table_name": "subscriptions",
+  "udt_name": "jsonb"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "created_at",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "YES",
+  "table_name": "subscriptions",
+  "udt_name": "timestamptz"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "updated_at",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "YES",
+  "table_name": "subscriptions",
+  "udt_name": "timestamptz"
+ },
+ {
+  "column_default": null,
+  "column_name": "customer_portal_url",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "subscriptions",
+  "udt_name": "text"
+ },
+ {
+  "column_default": "nextval('user_achievements_id_seq'::regclass)",
+  "column_name": "id",
+  "data_type": "integer",
+  "is_nullable": "NO",
+  "table_name": "user_achievements",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": null,
+  "column_name": "user_id",
+  "data_type": "uuid",
+  "is_nullable": "NO",
+  "table_name": "user_achievements",
+  "udt_name": "uuid"
+ },
+ {
+  "column_default": null,
+  "column_name": "achievement_code",
+  "data_type": "text",
+  "is_nullable": "NO",
+  "table_name": "user_achievements",
+  "udt_name": "text"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "unlocked_at",
+  "data_type": "timestamp without time zone",
+  "is_nullable": "YES",
+  "table_name": "user_achievements",
+  "udt_name": "timestamp"
+ },
+ {
+  "column_default": "nextval('user_favorites_id_seq'::regclass)",
+  "column_name": "id",
+  "data_type": "integer",
+  "is_nullable": "NO",
+  "table_name": "user_favorites",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": null,
+  "column_name": "user_id",
+  "data_type": "uuid",
+  "is_nullable": "NO",
+  "table_name": "user_favorites",
+  "udt_name": "uuid"
+ },
+ {
+  "column_default": null,
+  "column_name": "workflow_id",
+  "data_type": "integer",
+  "is_nullable": "NO",
+  "table_name": "user_favorites",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "created_at",
+  "data_type": "timestamp without time zone",
+  "is_nullable": "YES",
+  "table_name": "user_favorites",
+  "udt_name": "timestamp"
+ },
+ {
+  "column_default": "gen_random_uuid()",
+  "column_name": "id",
+  "data_type": "uuid",
+  "is_nullable": "NO",
+  "table_name": "user_profiles",
+  "udt_name": "uuid"
+ },
+ {
+  "column_default": null,
+  "column_name": "user_id",
+  "data_type": "uuid",
+  "is_nullable": "NO",
+  "table_name": "user_profiles",
+  "udt_name": "uuid"
+ },
+ {
+  "column_default": null,
+  "column_name": "your_name",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "user_profiles",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "your_email",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "user_profiles",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "your_company",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "user_profiles",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "your_website",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "user_profiles",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "your_industry",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "user_profiles",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "your_services",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "user_profiles",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "your_tone",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "user_profiles",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "your_brand_context",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "user_profiles",
+  "udt_name": "text"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "created_at",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "YES",
+  "table_name": "user_profiles",
+  "udt_name": "timestamptz"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "updated_at",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "YES",
+  "table_name": "user_profiles",
+  "udt_name": "timestamptz"
+ },
+ {
+  "column_default": null,
+  "column_name": "your_role",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "user_profiles",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "your_target_audience",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "user_profiles",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "your_differentiator",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "user_profiles",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "user_id",
+  "data_type": "uuid",
+  "is_nullable": "NO",
+  "table_name": "user_stats",
+  "udt_name": "uuid"
+ },
+ {
+  "column_default": "0",
+  "column_name": "total_workflows",
+  "data_type": "integer",
+  "is_nullable": "YES",
+  "table_name": "user_stats",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": "0",
+  "column_name": "current_streak",
+  "data_type": "integer",
+  "is_nullable": "YES",
+  "table_name": "user_stats",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": null,
+  "column_name": "last_used_at",
+  "data_type": "timestamp without time zone",
+  "is_nullable": "YES",
+  "table_name": "user_stats",
+  "udt_name": "timestamp"
+ },
+ {
+  "column_default": "0",
+  "column_name": "favorites_count",
+  "data_type": "integer",
+  "is_nullable": "YES",
+  "table_name": "user_stats",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "updated_at",
+  "data_type": "timestamp without time zone",
+  "is_nullable": "YES",
+  "table_name": "user_stats",
+  "udt_name": "timestamp"
+ },
+ {
+  "column_default": "nextval('user_templates_id_seq'::regclass)",
+  "column_name": "id",
+  "data_type": "integer",
+  "is_nullable": "NO",
+  "table_name": "user_templates",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": null,
+  "column_name": "user_id",
+  "data_type": "uuid",
+  "is_nullable": "NO",
+  "table_name": "user_templates",
+  "udt_name": "uuid"
+ },
+ {
+  "column_default": null,
+  "column_name": "workflow_id",
+  "data_type": "integer",
+  "is_nullable": "NO",
+  "table_name": "user_templates",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": null,
+  "column_name": "template_name",
+  "data_type": "text",
+  "is_nullable": "NO",
+  "table_name": "user_templates",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "input_values",
+  "data_type": "jsonb",
+  "is_nullable": "NO",
+  "table_name": "user_templates",
+  "udt_name": "jsonb"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "created_at",
+  "data_type": "timestamp without time zone",
+  "is_nullable": "YES",
+  "table_name": "user_templates",
+  "udt_name": "timestamp"
+ },
+ {
+  "column_default": "nextval('user_usage_id_seq'::regclass)",
+  "column_name": "id",
+  "data_type": "integer",
+  "is_nullable": "NO",
+  "table_name": "user_usage",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": null,
+  "column_name": "user_id",
+  "data_type": "uuid",
+  "is_nullable": "YES",
+  "table_name": "user_usage",
+  "udt_name": "uuid"
+ },
+ {
+  "column_default": null,
+  "column_name": "session_id",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "user_usage",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "workflow_id",
+  "data_type": "integer",
+  "is_nullable": "NO",
+  "table_name": "user_usage",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": null,
+  "column_name": "input_values",
+  "data_type": "jsonb",
+  "is_nullable": "YES",
+  "table_name": "user_usage",
+  "udt_name": "jsonb"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "used_at",
+  "data_type": "timestamp without time zone",
+  "is_nullable": "YES",
+  "table_name": "user_usage",
+  "udt_name": "timestamp"
+ },
+ {
+  "column_default": "nextval('workflow_daily_stats_id_seq'::regclass)",
+  "column_name": "id",
+  "data_type": "integer",
+  "is_nullable": "NO",
+  "table_name": "workflow_daily_stats",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": null,
+  "column_name": "workflow_id",
+  "data_type": "text",
+  "is_nullable": "NO",
+  "table_name": "workflow_daily_stats",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "date",
+  "data_type": "date",
+  "is_nullable": "NO",
+  "table_name": "workflow_daily_stats",
+  "udt_name": "date"
+ },
+ {
+  "column_default": "0",
+  "column_name": "anonymous_count",
+  "data_type": "integer",
+  "is_nullable": "YES",
+  "table_name": "workflow_daily_stats",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": "0",
+  "column_name": "logged_in_count",
+  "data_type": "integer",
+  "is_nullable": "YES",
+  "table_name": "workflow_daily_stats",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "created_at",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "YES",
+  "table_name": "workflow_daily_stats",
+  "udt_name": "timestamptz"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "updated_at",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "YES",
+  "table_name": "workflow_daily_stats",
+  "udt_name": "timestamptz"
+ },
+ {
+  "column_default": null,
+  "column_name": "workflow_id",
+  "data_type": "integer",
+  "is_nullable": "NO",
+  "table_name": "workflow_job_profiles",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": null,
+  "column_name": "job_profile_id",
+  "data_type": "integer",
+  "is_nullable": "NO",
+  "table_name": "workflow_job_profiles",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": "false",
+  "column_name": "is_featured",
+  "data_type": "boolean",
+  "is_nullable": "YES",
+  "table_name": "workflow_job_profiles",
+  "udt_name": "bool"
+ },
+ {
+  "column_default": "0",
+  "column_name": "sort_order",
+  "data_type": "integer",
+  "is_nullable": "YES",
+  "table_name": "workflow_job_profiles",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": "gen_random_uuid()",
+  "column_name": "id",
+  "data_type": "uuid",
+  "is_nullable": "NO",
+  "table_name": "workflow_ratings",
+  "udt_name": "uuid"
+ },
+ {
+  "column_default": null,
+  "column_name": "workflow_id",
+  "data_type": "bigint",
+  "is_nullable": "NO",
+  "table_name": "workflow_ratings",
+  "udt_name": "int8"
+ },
+ {
+  "column_default": null,
+  "column_name": "user_id",
+  "data_type": "uuid",
+  "is_nullable": "NO",
+  "table_name": "workflow_ratings",
+  "udt_name": "uuid"
+ },
+ {
+  "column_default": null,
+  "column_name": "rating",
+  "data_type": "integer",
+  "is_nullable": "NO",
+  "table_name": "workflow_ratings",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "created_at",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "YES",
+  "table_name": "workflow_ratings",
+  "udt_name": "timestamptz"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "updated_at",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "YES",
+  "table_name": "workflow_ratings",
+  "udt_name": "timestamptz"
+ },
+ {
+  "column_default": null,
+  "column_name": "id",
+  "data_type": "bigint",
+  "is_nullable": "NO",
+  "table_name": "workflows",
+  "udt_name": "int8"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "created_at",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "NO",
+  "table_name": "workflows",
+  "udt_name": "timestamptz"
+ },
+ {
+  "column_default": null,
+  "column_name": "slug",
+  "data_type": "text",
+  "is_nullable": "NO",
+  "table_name": "workflows",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "title",
+  "data_type": "text",
+  "is_nullable": "NO",
+  "table_name": "workflows",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "description",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "text"
+ },
+ {
+  "column_default": "'[]'::jsonb",
+  "column_name": "steps",
+  "data_type": "jsonb",
+  "is_nullable": "NO",
+  "table_name": "workflows",
+  "udt_name": "jsonb"
+ },
+ {
+  "column_default": "'combined'::text",
+  "column_name": "workflow_type",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "category_id",
+  "data_type": "bigint",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "int8"
+ },
+ {
+  "column_default": "'{}'::text[]",
+  "column_name": "tags",
+  "data_type": "ARRAY",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "_text"
+ },
+ {
+  "column_default": "'any'::text",
+  "column_name": "tool",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "text"
+ },
+ {
+  "column_default": "'beginner'::text",
+  "column_name": "difficulty",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "text"
+ },
+ {
+  "column_default": "5",
+  "column_name": "estimated_minutes",
+  "data_type": "integer",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": "'📝'::text",
+  "column_name": "icon",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "meta_title",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "meta_description",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "text"
+ },
+ {
+  "column_default": "false",
+  "column_name": "featured",
+  "data_type": "boolean",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "bool"
+ },
+ {
+  "column_default": "0",
+  "column_name": "usage_count",
+  "data_type": "integer",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": "'draft'::text",
+  "column_name": "status",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "text"
+ },
+ {
+  "column_default": "0",
+  "column_name": "sort_order",
+  "data_type": "integer",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": "15",
+  "column_name": "time_saved_minutes",
+  "data_type": "integer",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "int4"
+ },
+ {
+  "column_default": null,
+  "column_name": "long_description",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "example_output",
+  "data_type": "text",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "text"
+ },
+ {
+  "column_default": null,
+  "column_name": "use_cases",
+  "data_type": "ARRAY",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "_text"
+ },
+ {
+  "column_default": "now()",
+  "column_name": "updated_at",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "timestamptz"
+ },
+ {
+  "column_default": "false",
+  "column_name": "is_sop",
+  "data_type": "boolean",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "bool"
+ },
+ {
+  "column_default": null,
+  "column_name": "deliverables",
+  "data_type": "jsonb",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "jsonb"
+ },
+ {
+  "column_default": null,
+  "column_name": "suggested_next_actions",
+  "data_type": "ARRAY",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "_text"
+ },
+ {
+  "column_default": null,
+  "column_name": "sop_details",
+  "data_type": "jsonb",
+  "is_nullable": "YES",
+  "table_name": "workflows",
+  "udt_name": "jsonb"
+ }
+]
